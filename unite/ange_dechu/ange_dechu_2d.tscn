@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://trdogkxbmerw"]
+
+[ext_resource type="Texture2D" uid="uid://bvtcu0s4woiek" path="res://unite/ange_dechu/dark_angel_front.png" id="1_an3s2"]
+[ext_resource type="Texture2D" uid="uid://n2r5v86nsk86" path="res://unite/ange_dechu/dark_angel_back.png" id="2_4og2l"]
+[ext_resource type="Texture2D" uid="uid://c7puo88xab5g8" path="res://unite/ange_dechu/dark_angel_droite.png" id="3_it7k1"]
+[ext_resource type="Texture2D" uid="uid://bcxxghe7dw256" path="res://unite/ange_dechu/dark_angel_gauche.png" id="4_ugh07"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o0x6t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_an3s2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4og2l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_it7k1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ugh07")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="AngeDechu2D" type="Area2D"]
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_o0x6t")

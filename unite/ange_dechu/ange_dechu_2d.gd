@@ -42,6 +42,15 @@ func _physics_process(delta: float) -> void:
 	velocity = (velocity + av * avoid_weight).normalized() * speed
 	move_and_collide(velocity * delta)
 	if velocity != Vector2.ZERO:
-		$AnimationPlayer.play("running")
+		if abs(velocity.x) > abs(velocity.y):
+			if velocity.x > 0:
+				$AnimationPlayer.play("running-right")
+			else:
+				$AnimationPlayer.play("running-left")
+		else:
+			if velocity.y > 0:
+				$AnimationPlayer.play("running-down")
+			else:
+				$AnimationPlayer.play("running-up")
 	else:
 		$AnimationPlayer.stop()

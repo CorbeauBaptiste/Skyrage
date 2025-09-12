@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://qcpy13ljk2r"]
+[gd_scene load_steps=7 format=3 uid="uid://qcpy13ljk2r"]
 
 [ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unite/ange_dechu/dark_angel-m-001_2.png" id="1_asp4u"]
 [ext_resource type="Script" uid="uid://cs6ymrkbmpcwh" path="res://unite/ange_dechu/ange_dechu_2d.gd" id="1_f4pf2"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_f4pf2"]
-radius = 18.0278
+[sub_resource type="CircleShape2D" id="CircleShape2D_a2y1r"]
 
 [sub_resource type="Animation" id="Animation_f4pf2"]
 resource_name = "running"
@@ -44,31 +43,19 @@ _data = {
 &"running": SubResource("Animation_f4pf2")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7032n"]
-radius = 30.0
-
-[node name="AngeDechu2D" type="CharacterBody2D" groups=["Unit"]]
-collision_layer = 2
-collision_mask = 3
+[node name="AngeDechu2D" type="CharacterBody2D"]
 script = ExtResource("1_f4pf2")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_asp4u")
-hframes = 3
-vframes = 4
-frame = 6
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_f4pf2")
+shape = SubResource("CircleShape2D_a2y1r")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_7032n")
 }
 
-[node name="Detect" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
-shape = SubResource("CircleShape2D_7032n")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_asp4u")
+hframes = 3
+vframes = 4
+frame = 6

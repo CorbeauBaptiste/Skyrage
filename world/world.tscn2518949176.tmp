@@ -18,7 +18,6 @@ sources/0 = SubResource("TileSetAtlasSource_tcf2h")
 script = ExtResource("1_4717r")
 
 [node name="TileMap" type="TileMap" parent="."]
-show_behind_parent = true
 tile_set = SubResource("TileSet_4717r")
 format = 2
 
@@ -29,6 +28,3 @@ tile_set = SubResource("TileSet_4717r")
 
 [node name="AngeDechu2D" parent="." instance=ExtResource("2_tcf2h")]
 position = Vector2(226, 120)
-
-[node name="AngeDechu2D2" parent="." instance=ExtResource("2_tcf2h")]
-position = Vector2(138, 94)

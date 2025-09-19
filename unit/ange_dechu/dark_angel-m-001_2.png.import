@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1culla8cifow"
-path="res://.godot/imported/wizard.png-4165c7ee02b7bc22abcda3ebcf136309.ctex"
+uid="uid://bsyve6cfh3bej"
+path="res://.godot/imported/dark_angel-m-001_2.png-19312dd394d6efc552fe4c04167018db.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://RTSAssets (2)/RTSAssets/wizard.png"
-dest_files=["res://.godot/imported/wizard.png-4165c7ee02b7bc22abcda3ebcf136309.ctex"]
+source_file="res://unit/ange_dechu/dark_angel-m-001_2.png"
+dest_files=["res://.godot/imported/dark_angel-m-001_2.png-19312dd394d6efc552fe4c04167018db.ctex"]
 
 [params]
 

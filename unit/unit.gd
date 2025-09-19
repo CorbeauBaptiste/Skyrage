@@ -4,16 +4,13 @@ class_name Unit
 @export var speed = 100: set = _set_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
-var target_radius = 20
+var target_radius = 50
 var selected = false:
 	set = set_selected
 var target = null:
 	set = set_target
 
 var arrow = preload("res://projectile.tscn")
-
-func _ready():
-	add_to_group("units")
 
 func set_selected(value):
 	selected = value

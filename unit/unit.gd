@@ -1,6 +1,7 @@
 extends CharacterBody2D
+class_name Unit
 
-@export var speed = 100
+@export var speed = 100: set = _set_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -8,6 +9,8 @@ var selected = false:
 	set = set_selected
 var target = null:
 	set = set_target
+
+var arrow = preload("res://projectile.tscn")
 
 func set_selected(value):
 	selected = value
@@ -34,7 +37,7 @@ func avoid():
 
 func _physics_process(delta: float) -> void:
 	velocity = Vector2.ZERO
-	if target != null:
+	if target:
 		velocity = position.direction_to(target)
 		if position.distance_to(target) < target_radius:
 			target = null
@@ -54,3 +57,15 @@ func _physics_process(delta: float) -> void:
 				$AnimationPlayer.play("running-up")
 	else:
 		$AnimationPlayer.stop()
+	
+	var mouse_pos = get_global_mouse_position()
+	$Marker2D.look_at(mouse_pos)
+	
+	if Input.is_action_just_pressed("right_mouse") and selected:
+		var arrow_instance = arrow.instantiate()
+		arrow_instance.rotation = $Marker2D.rotation
+		arrow_instance.global_position = $Marker2D.global_position
+		add_child(arrow_instance)
+
+func _set_speed(new_value):
+	speed = new_value

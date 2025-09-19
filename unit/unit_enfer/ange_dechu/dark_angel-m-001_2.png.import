@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsyve6cfh3bej"
-path="res://.godot/imported/dark_angel-m-001_2.png-19312dd394d6efc552fe4c04167018db.ctex"
+path="res://.godot/imported/dark_angel-m-001_2.png-4ed35cbac8424622bd6fd899da85d855.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://unit/ange_dechu/dark_angel-m-001_2.png"
-dest_files=["res://.godot/imported/dark_angel-m-001_2.png-19312dd394d6efc552fe4c04167018db.ctex"]
+source_file="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png"
+dest_files=["res://.godot/imported/dark_angel-m-001_2.png-4ed35cbac8424622bd6fd899da85d855.ctex"]
 
 [params]
 

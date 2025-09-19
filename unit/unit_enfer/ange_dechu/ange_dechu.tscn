@@ -1,12 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://5lktl71fmbdd"]
+[gd_scene load_steps=11 format=3 uid="uid://bl7go3g78ckpo"]
 
-[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/ange_dechu/dark_angel-m-001_2.png" id="1_asp4u"]
-[ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_f4pf2"]
+[ext_resource type="Script" uid="uid://dhswa30qo8s0j" path="res://unit/unit_enfer/unit_enfer.gd" id="1_8uh7m"]
+[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png" id="2_6uqi0"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7032n"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
 radius = 14.8661
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jo6b1"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ykrsh"]
 radius = 29.0
 
 [sub_resource type="Animation" id="Animation_yu1y8"]
@@ -101,25 +101,25 @@ _data = {
 &"running-up": SubResource("Animation_sv62o")
 }
 
-[node name="AngeDechu2D" type="CharacterBody2D"]
+[node name="UnitEnfer" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_f4pf2")
-metadata/_custom_type_script = "uid://crka5xwh24rix"
+script = ExtResource("1_8uh7m")
+metadata/_custom_type_script = "uid://dhswa30qo8s0j"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_asp4u")
+texture = ExtResource("2_6uqi0")
 hframes = 3
 vframes = 4
 frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_7032n")
+shape = SubResource("CircleShape2D_ppyta")
 
 [node name="Detect" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
-shape = SubResource("CircleShape2D_jo6b1")
+shape = SubResource("CircleShape2D_ykrsh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

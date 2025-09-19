@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://3naivixtwygu"]
+
+[ext_resource type="Texture2D" uid="uid://day8w4c35i5tw" path="res://blue-preview.png" id="1_ivno5"]
+[ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://menuprincipal.gd" id="1_s16su"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_s16su"]
+font_size = 64
+
+[node name="MenuPrincipal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s16su")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ivno5")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -264.0
+offset_top = 73.0
+offset_right = 271.0
+offset_bottom = 161.0
+grow_horizontal = 2
+text = "MENU PRINCIPAL"
+label_settings = SubResource("LabelSettings_s16su")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -226.0
+offset_top = -104.0
+offset_right = 224.0
+offset_bottom = 156.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "START"
+metadata/_edit_use_anchors_ = true
+
+[node name="ParamBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PARAMÈTRES"
+
+[node name="CreditBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "CRÉDITS"
+
+[node name="QuitBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "QUITTER"
+metadata/_edit_use_anchors_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 326)
+
+[connection signal="button_down" from="VBoxContainer/StartBTN" to="." method="_on_start_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/ParamBTN" to="." method="_on_param_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/CreditBTN" to="." method="_on_credit_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/QuitBTN" to="." method="_on_quit_btn_button_down"]

@@ -1,7 +1,5 @@
 class_name Item
 extends Resource
-# TODO: Creer la class Entity pour definir les degats, la range, afin de definir les effets 
-#extends Entity
 
 enum ItemType {BONUS, MALUS}
 enum EffectType {IMMEDIATE, COUNT, DURATION}

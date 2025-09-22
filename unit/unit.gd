@@ -1,20 +1,19 @@
 extends CharacterBody2D
 class_name Unit
 
-@export var speed = 100: set = set_speed
-@export var enfer = true: set = set_side
-@export var health = 20: set = set_health
-@export var attack_speed = 1: set = set_attack_speed
+@export var speed = 100: set = _set_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
-var target_radius = 50
+var target_radius = 20
 var selected = false:
 	set = set_selected
 var target = null:
 	set = set_target
 
-var arrow = preload("res://projectile.tscn"):
-	set = set_arrow
+var arrow = preload("res://projectile.tscn")
+
+func _ready():
+	add_to_group("units")
 
 func set_selected(value):
 	selected = value
@@ -26,12 +25,6 @@ func set_selected(value):
 func set_target(value):
 	target = value
 
-func set_arrow(value):
-	arrow = value
-
-func set_side(value):
-	enfer = value
-
 func avoid():
 	var result = Vector2.ZERO
 	var neighbors = $Detect.get_overlapping_bodies()
@@ -40,6 +33,10 @@ func avoid():
 			result += i.position.direction_to(position)
 		result /= neighbors.size()
 	return result.normalized()
+
+#func _input(event):
+	#if event.is_action_pressed("set_target"):
+		#target = get_global_mouse_position()
 
 func _physics_process(delta: float) -> void:
 	velocity = Vector2.ZERO
@@ -64,42 +61,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		$AnimationPlayer.stop()
 	
-	if Input.is_action_just_pressed("right_mouse") and selected:
-		var ennemies = $Range.get_overlapping_bodies()
-		if ennemies.size() > 1:
-			if $Timer.is_stopped():
-				for ennemy in ennemies:
-					if ennemy == self or ennemy.get_side() == self.get_side():
-						continue
-					var ennemy_pos = ennemy.global_position
-					$Marker2D.look_at(ennemy_pos)
-					var arrow_instance = arrow.instantiate()
-					if self.get_side() == true:
-						arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
-						arrow_instance.set_target(false)
-					else:
-						arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
-						arrow_instance.set_target(true)
-					arrow_instance.rotation = $Marker2D.rotation
-					arrow_instance.global_position = $Marker2D.global_position
-					add_child(arrow_instance)
-				$Timer.start()
-
-func set_speed(new_value):
-	speed = new_value
-
-func set_health(value):
-	health = value
+	var mouse_pos = get_global_mouse_position()
+	$Marker2D.look_at(mouse_pos)
 	
-	if health == 0:
-		queue_free()
-		set_selected(false)
+	if Input.is_action_just_pressed("right_mouse") and selected:
+		var arrow_instance = arrow.instantiate()
+		arrow_instance.rotation = $Marker2D.rotation
+		arrow_instance.global_position = $Marker2D.global_position
+		add_child(arrow_instance)
 
-func set_attack_speed(value):
-	attack_speed = value
-
-func get_side():
-	return enfer
-
-func get_health():
-	return health
+func _set_speed(new_value):
+	speed = new_value

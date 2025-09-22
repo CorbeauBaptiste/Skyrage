@@ -1,18 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl7go3g78ckpo"]
+[gd_scene load_steps=11 format=3 uid="uid://bl7go3g78ckpo"]
 
+[ext_resource type="Script" uid="uid://dhswa30qo8s0j" path="res://unit/unit_enfer/unit_enfer.gd" id="1_8uh7m"]
 [ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png" id="2_6uqi0"]
-
-[sub_resource type="GDScript" id="GDScript_6ov51"]
-script/source = "extends Unit
-
-var HEALTH = 20
-
-func take_damage():
-	HEALTH -= 1
-	
-	if HEALTH == 0:
-		queue_free()
-"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
 radius = 14.8661
@@ -112,14 +101,11 @@ _data = {
 &"running-up": SubResource("Animation_sv62o")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ipigq"]
-radius = 110.023
-
-[node name="AngeDechu" type="CharacterBody2D"]
-scale = Vector2(0.5, 0.5)
+[node name="UnitEnfer" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
-script = SubResource("GDScript_6ov51")
+script = ExtResource("1_8uh7m")
+metadata/_custom_type_script = "uid://dhswa30qo8s0j"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_6uqi0")
@@ -141,12 +127,3 @@ libraries = {
 }
 
 [node name="Marker2D" type="Marker2D" parent="."]
-
-[node name="Range" type="Area2D" parent="."]
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
-shape = SubResource("CircleShape2D_ipigq")
-
-[node name="Timer" type="Timer" parent="."]
-one_shot = true

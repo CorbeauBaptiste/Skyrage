@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sf08tjwfhtx7"
-path="res://.godot/imported/sunny.png-77e94573d8404ab7e5f7efd9267bb8a7.ctex"
+uid="uid://kpqj2xxml7ge"
+path="res://.godot/imported/iso_tile_export.png-b5c56a5daaaa82ba609f989b1e7903ef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Backgrounds/sunny.png"
-dest_files=["res://.godot/imported/sunny.png-77e94573d8404ab7e5f7efd9267bb8a7.ctex"]
+source_file="res://iso_tile_export.png"
+dest_files=["res://.godot/imported/iso_tile_export.png-b5c56a5daaaa82ba609f989b1e7903ef.ctex"]
 
 [params]
 

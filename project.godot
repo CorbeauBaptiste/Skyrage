@@ -15,26 +15,12 @@ run/main_scene="uid://ce10vc07drsvy"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
-[display]
+[layer_names]
 
-window/size/viewport_width=480
-window/size/viewport_height=270
-window/stretch/mode="viewport"
-
-[input]
-
-set_target={
-"deadzone": 0.2,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(165, 30),"global_position":Vector2(174, 78),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
-right_mouse={
-"deadzone": 0.2,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(247, 8),"global_position":Vector2(256, 56),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Ground"
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

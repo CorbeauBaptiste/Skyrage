@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c87jyg6odmal3"
-path="res://.godot/imported/terrain.png-84a626877af7de08ecf24965bda52835.ctex"
+uid="uid://bgpn5gfgnli8e"
+path="res://.godot/imported/ciel.jpg-20c8a52777cf50b6b34f479f29e61c5c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://terrain.png"
-dest_files=["res://.godot/imported/terrain.png-84a626877af7de08ecf24965bda52835.ctex"]
+source_file="res://Backgrounds/ciel.jpg"
+dest_files=["res://.godot/imported/ciel.jpg-20c8a52777cf50b6b34f479f29e61c5c.ctex"]
 
 [params]
 

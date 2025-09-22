@@ -5,7 +5,7 @@ static func create_pomme_adam() -> Item:
 	var item = Item.new(
 		Item.ItemType.MALUS,
 		60.0, 
-		"la pomme d'adam",
+		"La pomme d'adam",
 		"Ralenti les unitées du camp qui l'obtient",
 		Item.EffectType.DURATION,
 		4,  # secondes
@@ -18,7 +18,7 @@ static func create_rage_fourbe() -> Item:
 	var item = Item.new(
 		Item.ItemType.MALUS,
 		40.0, 
-		"la rage fourbe",
+		"La rage fourbe",
 		"Diminution des dégâts de l'équipe de 10%",
 		Item.EffectType.DURATION,
 		5,  # secondes
@@ -31,7 +31,7 @@ static func create_fourberie_scapin() -> Item:
 	var item = Item.new(
 		Item.ItemType.MALUS,
 		10.0, 
-		"la fourberie de scapin",
+		"La fourberie de scapin",
 		"Votre tour perd 100 PV",
 		Item.EffectType.IMMEDIATE,
 		1, # one time
@@ -57,7 +57,7 @@ static func create_revolte_sombre() -> Item:
 	var item = Item.new(
 		Item.ItemType.MALUS,
 		5.0, 
-		"la révolte sombre",
+		"La révolte sombre",
 		"Les attaques des unités concernées font 0 dégâts",
 		Item.EffectType.DURATION,
 		4, # secondes

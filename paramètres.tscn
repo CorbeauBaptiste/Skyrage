@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnpihx4y83tlp"]
+
+[ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://paramètres.gd" id="1_twxth"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
+load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_uxf0q"]
+font_size = 64
+
+[node name="Paramètres" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_twxth")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CompressedTexture2D_ivno5")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -215.0
+offset_top = 97.0
+offset_right = 193.0
+offset_bottom = 185.0
+grow_horizontal = 2
+text = "PARAMÈTRES"
+label_settings = SubResource("LabelSettings_uxf0q")
+
+[node name="BRIGHTNESS" type="Label" parent="."]
+layout_mode = 0
+offset_left = 269.0
+offset_top = 298.0
+offset_right = 451.0
+offset_bottom = 340.0
+theme_override_font_sizes/font_size = 30
+text = "LUMINOSITÉ"
+
+[node name="SON" type="Label" parent="."]
+layout_mode = 0
+offset_left = 322.0
+offset_top = 378.0
+offset_right = 390.0
+offset_bottom = 423.0
+theme_override_font_sizes/font_size = 32
+text = "SON"
+
+[node name="exit" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_font_sizes/font_size = 64
+text = "✘"
+
+[connection signal="button_down" from="exit" to="." method="_on_button_exit_down"]

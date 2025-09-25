@@ -108,7 +108,7 @@ radius = 138.033
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_mxtfi")
-metadata/_custom_type_script = "uid://bj4wsrmkllys1"
+enfer = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_48dlh")
@@ -132,11 +132,14 @@ libraries = {
 [node name="Marker2D" type="Marker2D" parent="."]
 
 [node name="Range" type="Area2D" parent="."]
-collision_layer = 2
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_48dlh")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

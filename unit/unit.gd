@@ -10,7 +10,10 @@ var selected = false:
 var target = null:
 	set = set_target
 
-var arrow = preload("res://projectile.tscn")
+var inRange = []
+
+var arrow = preload("res://unit/unit_paradis/projectile/windcharge.tscn"):
+	set = set_arrow
 
 func set_selected(value):
 	selected = value
@@ -21,6 +24,9 @@ func set_selected(value):
 
 func set_target(value):
 	target = value
+
+func set_arrow(value):
+	arrow = value
 
 func avoid():
 	var result = Vector2.ZERO
@@ -58,14 +64,16 @@ func _physics_process(delta: float) -> void:
 	else:
 		$AnimationPlayer.stop()
 	
-	var mouse_pos = get_global_mouse_position()
-	$Marker2D.look_at(mouse_pos)
-	
 	if Input.is_action_just_pressed("right_mouse") and selected:
-		var arrow_instance = arrow.instantiate()
-		arrow_instance.rotation = $Marker2D.rotation
-		arrow_instance.global_position = $Marker2D.global_position
-		add_child(arrow_instance)
+		var ennemies = $Range.get_overlapping_bodies()
+		if ennemies:
+			for ennemy in ennemies:
+				var ennemy_pos = ennemy.global_position
+				$Marker2D.look_at(ennemy_pos)
+				var arrow_instance = arrow.instantiate()
+				arrow_instance.rotation = $Marker2D.rotation
+				arrow_instance.global_position = $Marker2D.global_position
+				add_child(arrow_instance)
 
 func _set_speed(new_value):
 	speed = new_value

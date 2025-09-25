@@ -1,4 +1,4 @@
-extends UnitEnfer
+extends Unit
 
 var HEALTH = 20
 

@@ -1,4 +1,4 @@
-extends UnitParadis
+extends Unit
 
 var HEALTH = 1
 
@@ -7,9 +7,3 @@ func take_damage():
 	
 	if HEALTH == 0:
 		queue_free()
-
-func _on_range_body_entered(body: Node2D) -> void:
-	inRange.append(body)
-
-func _on_range_body_exited(body: Node2D) -> void:
-	inRange.erase(body)

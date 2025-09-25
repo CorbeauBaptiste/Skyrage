@@ -31,8 +31,9 @@ tile_set = SubResource("TileSet_4717r")
 
 [node name="UnitParadis" parent="." instance=ExtResource("4_h5o24")]
 position = Vector2(112, 220)
-enfer = false
-speed = 100
 
 [node name="UnitEnfer" parent="." instance=ExtResource("3_4717r")]
 position = Vector2(419, 110)
+
+[node name="UnitEnfer2" parent="." instance=ExtResource("3_4717r")]
+position = Vector2(346, 48)

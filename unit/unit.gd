@@ -1,7 +1,8 @@
 extends CharacterBody2D
 class_name Unit
 
-@export var speed = 100: set = _set_speed
+@export var speed = 100: set = set_speed
+@export var enfer = true: set = set_side
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -27,6 +28,9 @@ func set_target(value):
 
 func set_arrow(value):
 	arrow = value
+
+func set_side(value):
+	enfer = value
 
 func avoid():
 	var result = Vector2.ZERO
@@ -66,8 +70,11 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("right_mouse") and selected:
 		var ennemies = $Range.get_overlapping_bodies()
-		if ennemies:
+		if ennemies.size() > 1:
+			
 			for ennemy in ennemies:
+				if ennemy == self:
+					continue
 				var ennemy_pos = ennemy.global_position
 				$Marker2D.look_at(ennemy_pos)
 				var arrow_instance = arrow.instantiate()
@@ -75,5 +82,5 @@ func _physics_process(delta: float) -> void:
 				arrow_instance.global_position = $Marker2D.global_position
 				add_child(arrow_instance)
 
-func _set_speed(new_value):
+func set_speed(new_value):
 	speed = new_value

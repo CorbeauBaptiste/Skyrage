@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://3naivixtwygu"]
 
-[ext_resource type="Texture2D" uid="uid://day8w4c35i5tw" path="res://blue-preview.png" id="1_ivno5"]
 [ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://menuprincipal.gd" id="1_s16su"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
+load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="LabelSettings" id="LabelSettings_s16su"]
 font_size = 64
@@ -13,6 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
 script = ExtResource("1_s16su")
 
 [node name="Background" type="TextureRect" parent="."]
@@ -22,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_ivno5")
+texture = SubResource("CompressedTexture2D_ivno5")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -74,9 +77,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "QUITTER"
 metadata/_edit_use_anchors_ = true
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 326)
 
 [connection signal="button_down" from="VBoxContainer/StartBTN" to="." method="_on_start_btn_button_down"]
 [connection signal="button_down" from="VBoxContainer/ParamBTN" to="." method="_on_param_btn_button_down"]

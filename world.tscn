@@ -1,5 +1,7 @@
-[gd_scene load_steps=10 format=4 uid="uid://ce10vc07drsvy"]
+[gd_scene load_steps=13 format=4 uid="uid://ce10vc07drsvy"]
 
+[ext_resource type="Texture2D" uid="uid://5icgqo2jccfq" path="res://b_enfer.png" id="4_036b0"]
+[ext_resource type="Texture2D" uid="uid://co7lbrldyhsqk" path="res://b_paradis.png" id="4_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://dn72l6havsj05" path="res://spritesheet.png" id="4_pkg7o"]
 [ext_resource type="Texture2D" uid="uid://kpqj2xxml7ge" path="res://iso_tile_export.png" id="6_ioo17"]
 
@@ -1565,6 +1567,10 @@ tile_layout = 5
 tile_size = Vector2i(32, 16)
 sources/0 = SubResource("TileSetAtlasSource_aqk2v")
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dwbse"]
+radius = 253.333
+height = 676.667
+
 [node name="Level" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -1583,3 +1589,28 @@ tile_set = SubResource("TileSet_036b0")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 327)
 zoom = Vector2(2.5, 2.5)
+
+[node name="Base_Enfer" type="Area2D" parent="."]
+position = Vector2(141, 468)
+scale = Vector2(-0.3, 0.3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base_Enfer"]
+position = Vector2(6.66669, -8.33337)
+shape = SubResource("CapsuleShape2D_dwbse")
+
+[node name="Sprite2D" type="Sprite2D" parent="Base_Enfer"]
+position = Vector2(6.66667, -10)
+texture = ExtResource("4_036b0")
+
+[node name="Base_Paradis" type="Area2D" parent="."]
+position = Vector2(988, 3)
+scale = Vector2(-0.3, 0.3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base_Paradis"]
+position = Vector2(6.66669, -8.33337)
+shape = SubResource("CapsuleShape2D_dwbse")
+
+[node name="Sprite2D" type="Sprite2D" parent="Base_Paradis"]
+position = Vector2(-13.3332, -46.6667)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_aqk2v")

@@ -3,6 +3,7 @@ extends Resource
 
 enum ItemType {BONUS, MALUS}
 enum EffectType {IMMEDIATE, COUNT, DURATION}
+// TODO: Target become class Target
 enum Target {ALLY, SINGLE}
 
 var type: ItemType

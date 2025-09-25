@@ -1,7 +1,18 @@
 [gd_scene load_steps=12 format=3 uid="uid://87hem040vnrn"]
 
-[ext_resource type="Script" uid="uid://b62urxdsthxqf" path="res://unit/unit_paradis/ange/ange.gd" id="1_mxtfi"]
 [ext_resource type="Texture2D" uid="uid://c6ue2vk7jh8e7" path="res://unit/unit_paradis/ange/angel-f-001.png" id="2_48dlh"]
+
+[sub_resource type="GDScript" id="GDScript_h081i"]
+script/source = "extends Unit
+
+var HEALTH = 1
+
+func take_damage():
+	HEALTH -= 1
+	
+	if HEALTH == 0:
+		queue_free()
+"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jk54y"]
 radius = 14.8661
@@ -104,11 +115,12 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_48dlh"]
 radius = 138.033
 
-[node name="UnitParadis" type="CharacterBody2D"]
+[node name="Ange" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_mxtfi")
+script = SubResource("GDScript_h081i")
 enfer = false
+health = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_48dlh")

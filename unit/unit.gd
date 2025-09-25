@@ -3,6 +3,7 @@ class_name Unit
 
 @export var speed = 100: set = set_speed
 @export var enfer = true: set = set_side
+@export var health = 20: set = set_health
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -10,8 +11,6 @@ var selected = false:
 	set = set_selected
 var target = null:
 	set = set_target
-
-var inRange = []
 
 var arrow = preload("res://unit/unit_paradis/projectile/windcharge.tscn"):
 	set = set_arrow
@@ -41,10 +40,6 @@ func avoid():
 		result /= neighbors.size()
 	return result.normalized()
 
-#func _input(event):
-	#if event.is_action_pressed("set_target"):
-		#target = get_global_mouse_position()
-
 func _physics_process(delta: float) -> void:
 	velocity = Vector2.ZERO
 	if target:
@@ -71,16 +66,29 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("right_mouse") and selected:
 		var ennemies = $Range.get_overlapping_bodies()
 		if ennemies.size() > 1:
-			
-			for ennemy in ennemies:
-				if ennemy == self:
-					continue
-				var ennemy_pos = ennemy.global_position
-				$Marker2D.look_at(ennemy_pos)
-				var arrow_instance = arrow.instantiate()
-				arrow_instance.rotation = $Marker2D.rotation
-				arrow_instance.global_position = $Marker2D.global_position
-				add_child(arrow_instance)
+			if $Timer.is_stopped():
+				for ennemy in ennemies:
+					if ennemy == self or ennemy.get_side() == self.get_side():
+						continue
+					var ennemy_pos = ennemy.global_position
+					$Marker2D.look_at(ennemy_pos)
+					var arrow_instance = arrow.instantiate()
+					arrow_instance.rotation = $Marker2D.rotation
+					arrow_instance.global_position = $Marker2D.global_position
+					add_child(arrow_instance)
+				$Timer.start()
 
 func set_speed(new_value):
 	speed = new_value
+
+func set_health(value):
+	health = value
+	
+	if health == 0:
+		queue_free()
+
+func get_side():
+	return enfer
+
+func get_health():
+	return health

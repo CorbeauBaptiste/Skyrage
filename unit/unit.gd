@@ -7,7 +7,7 @@ class_name Unit
 @export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
-var target_radius = 50
+var target_radius = 5
 var selected = false:
 	set = set_selected
 var target = null:
@@ -69,20 +69,22 @@ func _physics_process(delta: float) -> void:
 		if ennemies.size() > 1:
 			if $Timer.is_stopped():
 				for ennemy in ennemies:
-					if ennemy == self or ennemy.get_side() == self.get_side():
-						continue
-					var ennemy_pos = ennemy.global_position
-					$Marker2D.look_at(ennemy_pos)
-					var arrow_instance = arrow.instantiate()
-					if self.get_side() == true:
-						arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
-						arrow_instance.set_target(false)
-					else:
-						arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
-						arrow_instance.set_target(true)
-					arrow_instance.rotation = $Marker2D.rotation
-					arrow_instance.global_position = $Marker2D.global_position
-					add_child(arrow_instance)
+					if ennemy == self or ennemy.has_method("get_side"):
+						if ennemy.get_side() == self.get_side():
+							continue
+					if ennemy.has_method("set_health"):
+						var ennemy_pos = ennemy.global_position
+						$Marker2D.look_at(ennemy_pos)
+						var arrow_instance = arrow.instantiate()
+						if self.get_side() == true:
+							arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+							arrow_instance.set_target(false)
+						else:
+							arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+							arrow_instance.set_target(true)
+						arrow_instance.rotation = $Marker2D.rotation
+						arrow_instance.global_position = $Marker2D.global_position
+						add_child(arrow_instance)
 				$Timer.start()
 
 func set_speed(new_value):

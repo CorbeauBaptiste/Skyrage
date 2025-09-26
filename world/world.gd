@@ -13,8 +13,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				drag_start = event.position
 			else:
 				for item in selected:
-					item.collider.target = event.position
-					item.collider.selected = false
+					if item.collider.has_method("set_selected"):
+						item.collider.target = event.position
+						item.collider.selected = false
 				selected = []
 		elif dragging:
 			dragging = false
@@ -28,10 +29,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			selected = space.intersect_shape(q)
 			for item in selected:
-				item.collider.selected = true
+				if item.collider.has_method("set_selected"):
+					item.collider.selected = true
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 
 func _draw():
 	if dragging:
-		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.AQUA, false)
+		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.NAVY_BLUE, false)

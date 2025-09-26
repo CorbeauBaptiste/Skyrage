@@ -31,9 +31,10 @@ func set_target(value):
 	targets_enfer = value
 
 func _on_body_entered(body: Node2D) -> void:
-	if targets_enfer and body.get_side() == true:
-		body.set_health(body.get_health() - 1)
-		queue_free()
-	elif not targets_enfer and not body.get_side():
-		body.set_health(body.get_health() - 1)
-		queue_free()
+	if body.has_method("set_health"):
+		if targets_enfer and body.get_side() == true:
+			body.set_health(body.get_health() - 1)
+			queue_free()
+		elif not targets_enfer and not body.get_side():
+			body.set_health(body.get_health() - 1)
+			queue_free()

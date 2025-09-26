@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bgpn5gfgnli8e"
-path="res://.godot/imported/ciel.jpg-20c8a52777cf50b6b34f479f29e61c5c.ctex"
+path="res://.godot/imported/ciel.jpg-e6c364da48be968e75e9d55b06b7820c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Backgrounds/ciel.jpg"
-dest_files=["res://.godot/imported/ciel.jpg-20c8a52777cf50b6b34f479f29e61c5c.ctex"]
+source_file="res://base/Backgrounds/ciel.jpg"
+dest_files=["res://.godot/imported/ciel.jpg-e6c364da48be968e75e9d55b06b7820c.ctex"]
 
 [params]
 

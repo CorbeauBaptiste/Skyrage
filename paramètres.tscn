@@ -7,7 +7,7 @@
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="LabelSettings" id="LabelSettings_uxf0q"]
-font_size = 100
+font_size = 76
 
 [node name="Paramètres" type="Control"]
 layout_mode = 3
@@ -15,7 +15,8 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 1.0
-offset_right = 1.0
+offset_right = 3.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -23,23 +24,32 @@ script = ExtResource("1_twxth")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -192.0
-offset_top = -150.0
-offset_right = 192.0
-offset_bottom = 226.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -768.0
+offset_top = -512.0
+offset_right = 768.0
+offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_ivno5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background"]
-layout_mode = 0
-offset_left = 467.0
-offset_top = 396.0
-offset_right = 1077.0
-offset_bottom = 646.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -305.0
+offset_top = -125.0
+offset_right = 305.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 25
 
 [node name="BRIGHTNESS" type="Label" parent="Background/VBoxContainer"]
@@ -74,22 +84,22 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -327.0
-offset_top = 9.0
-offset_right = 310.0
-offset_bottom = 146.0
+offset_left = -269.0
+offset_top = 7.0
+offset_right = 368.0
+offset_bottom = 144.0
 grow_horizontal = 2
 text = "PARAMÈTRES"
 label_settings = SubResource("LabelSettings_uxf0q")
 
 [node name="exit" type="Button" parent="."]
 layout_mode = 1
-offset_left = -187.0
-offset_top = -149.0
-offset_right = -136.0
-offset_bottom = -53.0
+offset_left = -5.0
+offset_top = -6.0
+offset_right = 56.0
+offset_bottom = 109.0
 theme_override_font_sizes/font_size = 64
 text = "✘"
 
 [connection signal="value_changed" from="Background/VBoxContainer/Brithness" to="Background/VBoxContainer/Brithness" method="_on_value_changed"]
-[connection signal="button_down" from="exit" to="." method="_on_button_exit_down"]
+[connection signal="button_down" from="exit" to="." method="_on_exit_button_down"]

@@ -29,37 +29,37 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -124.0
-offset_top = 80.0
+offset_top = 193.0
 offset_right = 131.0
-offset_bottom = 168.0
+offset_bottom = 281.0
 grow_horizontal = 2
 text = "CRÉDITS"
 label_settings = SubResource("LabelSettings_x2m5c")
 
 [node name="Label2" type="Label" parent="TextureRect"]
 layout_mode = 0
-offset_left = 381.0
-offset_top = 210.0
-offset_right = 764.0
-offset_bottom = 244.0
+offset_left = 590.0
+offset_top = 348.0
+offset_right = 973.0
+offset_bottom = 382.0
 theme_override_font_sizes/font_size = 24
 text = "Chef de projet : Baptiste Corbeau"
 
 [node name="Label3" type="Label" parent="TextureRect"]
 layout_mode = 0
-offset_left = 391.0
-offset_top = 394.0
-offset_right = 887.0
-offset_bottom = 428.0
+offset_left = 590.0
+offset_top = 555.0
+offset_right = 1086.0
+offset_bottom = 589.0
 theme_override_font_sizes/font_size = 24
 text = "Chargé de communication : Corentin Denis"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
 layout_mode = 0
-offset_left = 384.0
-offset_top = 264.0
-offset_right = 721.0
-offset_bottom = 374.0
+offset_left = 592.0
+offset_top = 392.0
+offset_right = 929.0
+offset_bottom = 502.0
 
 [node name="Label2" type="Label" parent="TextureRect/VBoxContainer"]
 layout_mode = 2
@@ -80,16 +80,18 @@ text = "Lucas Debruyne"
 
 [node name="Label" type="Label" parent="TextureRect"]
 layout_mode = 0
-offset_left = 390.0
-offset_top = 440.0
-offset_right = 742.0
-offset_bottom = 474.0
+offset_left = 593.0
+offset_top = 512.0
+offset_right = 945.0
+offset_bottom = 546.0
 theme_override_font_sizes/font_size = 24
-text = "Maître des prods : Anir Karami"
+text = "Sound Designer : Anir Karami"
 
 [node name="exit" type="Button" parent="TextureRect"]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 194.0
+offset_top = 190.0
+offset_right = 245.0
+offset_bottom = 286.0
 theme_override_font_sizes/font_size = 64
 text = "✘"

@@ -21,6 +21,7 @@ GlobalWorldEnvironment="*res://world_environment.tscn"
 [display]
 
 window/size/mode=3
+window/stretch/mode="canvas_items"
 
 [rendering]
 

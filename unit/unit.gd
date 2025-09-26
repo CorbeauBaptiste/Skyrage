@@ -4,6 +4,7 @@ class_name Unit
 @export var speed = 100: set = set_speed
 @export var enfer = true: set = set_side
 @export var health = 20: set = set_health
+@export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -12,7 +13,7 @@ var selected = false:
 var target = null:
 	set = set_target
 
-var arrow = preload("res://unit/unit_paradis/projectile/windcharge.tscn"):
+var arrow = preload("res://projectile.tscn"):
 	set = set_arrow
 
 func set_selected(value):
@@ -73,6 +74,12 @@ func _physics_process(delta: float) -> void:
 					var ennemy_pos = ennemy.global_position
 					$Marker2D.look_at(ennemy_pos)
 					var arrow_instance = arrow.instantiate()
+					if self.get_side() == true:
+						arrow_instance.change_sprite("res://Fire_0_Preview.png")
+						arrow_instance.set_target(false)
+					else:
+						arrow_instance.change_sprite("res://Pure.png")
+						arrow_instance.set_target(true)
 					arrow_instance.rotation = $Marker2D.rotation
 					arrow_instance.global_position = $Marker2D.global_position
 					add_child(arrow_instance)
@@ -86,6 +93,9 @@ func set_health(value):
 	
 	if health == 0:
 		queue_free()
+
+func set_attack_speed(value):
+	attack_speed = value
 
 func get_side():
 	return enfer

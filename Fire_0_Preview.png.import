@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4w71c6u5gjpj"
-path="res://.godot/imported/Pure.png-94071fa9c2c7eb0e789f071855fe4e20.ctex"
+uid="uid://c60cp5kuwk14g"
+path="res://.godot/imported/Fire_0_Preview.png-bcee75586896353cbf32539a2f47b9a4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://unit/unit_paradis/projectile/Pure.png"
-dest_files=["res://.godot/imported/Pure.png-94071fa9c2c7eb0e789f071855fe4e20.ctex"]
+source_file="res://Fire_0_Preview.png"
+dest_files=["res://.godot/imported/Fire_0_Preview.png-bcee75586896353cbf32539a2f47b9a4.ctex"]
 
 [params]
 

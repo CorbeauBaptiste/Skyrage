@@ -14,9 +14,12 @@ func _process(delta):
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 	queue_free()
 
-func change_sprite(sprite_route):
+func change_sprite(sprite_route, hframes, vframes, frame = 0):
 	var texture = load(sprite_route)
 	$Sprite2D.texture = texture
+	$Sprite2D.hframes = hframes
+	$Sprite2D.vframes = vframes
+	$Sprite2D.frame = frame
 
 func set_speed(value):
 	speed = value

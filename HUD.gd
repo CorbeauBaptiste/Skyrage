@@ -44,7 +44,7 @@ func _on_elixir_not_enough(cost: float) -> void:
 
 func _refresh_ui(current: float, max_value: float) -> void:
 	bar.value = current
-	label.text = "Élixir: %.1f / %.0f" % [current, max_value]
+	label.text = "GOLD : %.1f / %.0f" % [current, max_value]
 
 func _pulse_bar() -> void:
 	var tween := create_tween()

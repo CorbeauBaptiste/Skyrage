@@ -9,3 +9,11 @@
 config_version=5
 
 [application]
+
+run/main_scene="uid://ce10vc07drsvy"
+config/features=PackedStringArray("4.4")
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080

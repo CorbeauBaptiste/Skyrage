@@ -88,6 +88,7 @@ theme_override_font_sizes/font_size = 24
 text = "Maître des prods : Anir Karami"
 
 [node name="exit" type="Button" parent="TextureRect"]
+layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 theme_override_font_sizes/font_size = 64

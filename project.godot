@@ -14,6 +14,14 @@ config/name="SAE-jeu-video"
 run/main_scene="uid://3naivixtwygu"
 config/features=PackedStringArray("4.4", "Mobile")
 
+[autoload]
+
+GlobalWorldEnvironment="*res://world_environment.tscn"
+
+[display]
+
+window/size/mode=3
+
 [rendering]
 
 renderer/rendering_method="mobile"

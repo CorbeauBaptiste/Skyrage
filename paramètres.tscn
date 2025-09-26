@@ -1,12 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnpihx4y83tlp"]
+[gd_scene load_steps=5 format=3 uid="uid://cnpihx4y83tlp"]
 
 [ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://paramètres.gd" id="1_twxth"]
+[ext_resource type="Script" uid="uid://c6ndui1gyytfo" path="res://brithness.gd" id="2_twxth"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="LabelSettings" id="LabelSettings_uxf0q"]
-font_size = 64
+font_size = 100
 
 [node name="Paramètres" type="Control"]
 layout_mode = 3
@@ -25,46 +26,70 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -192.0
+offset_top = -150.0
+offset_right = 192.0
+offset_bottom = 226.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_ivno5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+layout_mode = 0
+offset_left = 467.0
+offset_top = 396.0
+offset_right = 1077.0
+offset_bottom = 646.0
+theme_override_constants/separation = 25
+
+[node name="BRIGHTNESS" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "LUMINOSITÉ"
+horizontal_alignment = 1
+
+[node name="Brithness" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
+script = ExtResource("2_twxth")
+
+[node name="SON" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SON"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -215.0
-offset_top = 97.0
-offset_right = 193.0
-offset_bottom = 185.0
+offset_left = -327.0
+offset_top = 9.0
+offset_right = 310.0
+offset_bottom = 146.0
 grow_horizontal = 2
 text = "PARAMÈTRES"
 label_settings = SubResource("LabelSettings_uxf0q")
 
-[node name="BRIGHTNESS" type="Label" parent="."]
-layout_mode = 0
-offset_left = 269.0
-offset_top = 298.0
-offset_right = 451.0
-offset_bottom = 340.0
-theme_override_font_sizes/font_size = 30
-text = "LUMINOSITÉ"
-
-[node name="SON" type="Label" parent="."]
-layout_mode = 0
-offset_left = 322.0
-offset_top = 378.0
-offset_right = 390.0
-offset_bottom = 423.0
-theme_override_font_sizes/font_size = 32
-text = "SON"
-
 [node name="exit" type="Button" parent="."]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+layout_mode = 1
+offset_left = -187.0
+offset_top = -149.0
+offset_right = -136.0
+offset_bottom = -53.0
 theme_override_font_sizes/font_size = 64
 text = "✘"
 
+[connection signal="value_changed" from="Background/VBoxContainer/Brithness" to="Background/VBoxContainer/Brithness" method="_on_value_changed"]
 [connection signal="button_down" from="exit" to="." method="_on_button_exit_down"]

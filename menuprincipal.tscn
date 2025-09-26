@@ -6,13 +6,16 @@
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="LabelSettings" id="LabelSettings_s16su"]
-font_size = 64
+font_size = 100
 
 [node name="MenuPrincipal" type="Control"]
 layout_mode = 3
-anchors_preset = 15
+anchor_left = -0.073
+anchor_top = 0.052
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 0.0960083
+offset_top = 0.304001
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -20,9 +23,15 @@ script = ExtResource("1_s16su")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = -0.167
+anchor_top = -0.29
+anchor_right = 1.167
+anchor_bottom = 1.29
+offset_left = 192.384
+offset_top = 187.92
+offset_right = -192.384
+offset_bottom = -187.92
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_ivno5")
@@ -32,10 +41,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -264.0
-offset_top = 73.0
-offset_right = 271.0
-offset_bottom = 161.0
+offset_left = -411.0
+offset_top = -1.0
+offset_right = 426.0
+offset_bottom = 136.0
 grow_horizontal = 2
 text = "MENU PRINCIPAL"
 label_settings = SubResource("LabelSettings_s16su")
@@ -47,10 +56,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -226.0
-offset_top = -104.0
-offset_right = 224.0
-offset_bottom = 156.0
+offset_left = -472.5
+offset_top = -246.5
+offset_right = 472.5
+offset_bottom = 246.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20

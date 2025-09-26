@@ -116,6 +116,7 @@ _data = {
 radius = 110.023
 
 [node name="AngeDechu" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 3
 script = SubResource("GDScript_6ov51")

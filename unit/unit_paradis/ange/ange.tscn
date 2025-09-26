@@ -113,7 +113,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_48dlh"]
-radius = 138.033
+radius = 286.342
 
 [node name="Ange" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)

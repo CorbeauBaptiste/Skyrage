@@ -1915,4 +1915,3 @@ tile_set = SubResource("TileSet_036b0")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 327)
-zoom = Vector2(2, 2)

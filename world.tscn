@@ -1904,8 +1904,8 @@ sources/0 = SubResource("TileSetAtlasSource_aqk2v")
 sources/1 = SubResource("TileSetAtlasSource_dwbse")
 
 [node name="Level" type="Node2D"]
-position = Vector2(-3053, -960)
-scale = Vector2(3.41061, 5.14643)
+position = Vector2(25, 48)
+scale = Vector2(0.983792, 1.0095)
 script = ExtResource("1_aqk2v")
 
 [node name="TileMap" type="TileMap" parent="."]

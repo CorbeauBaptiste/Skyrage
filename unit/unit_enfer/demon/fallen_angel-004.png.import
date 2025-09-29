@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c60cp5kuwk14g"
-path="res://.godot/imported/Fire_0_Preview.png-bcee75586896353cbf32539a2f47b9a4.ctex"
+uid="uid://b4m3umwl0p2m5"
+path="res://.godot/imported/fallen_angel-004.png-819610ad5f1dac677dbcdf053e1d464d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Fire_0_Preview.png"
-dest_files=["res://.godot/imported/Fire_0_Preview.png-bcee75586896353cbf32539a2f47b9a4.ctex"]
+source_file="res://unit/unit_enfer/demon/fallen_angel-004.png"
+dest_files=["res://.godot/imported/fallen_angel-004.png-819610ad5f1dac677dbcdf053e1d464d.ctex"]
 
 [params]
 

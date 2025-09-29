@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cook0mmo4eup5"
-path="res://.godot/imported/ground.png-19dd19062ae149a099889071e7b87881.ctex"
+uid="uid://c60cp5kuwk14g"
+path="res://.godot/imported/Fire_0_Preview.png-207181f6bbb7253a583ee7a1aac0e8cf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ground.png"
-dest_files=["res://.godot/imported/ground.png-19dd19062ae149a099889071e7b87881.ctex"]
+source_file="res://unit/unit_enfer/Fire_0_Preview.png"
+dest_files=["res://.godot/imported/Fire_0_Preview.png-207181f6bbb7253a583ee7a1aac0e8cf.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4w71c6u5gjpj"
-path="res://.godot/imported/Pure.png-367ed779b6bc48d595cdd3e7a98747e5.ctex"
+uid="uid://dpcld368kcngq"
+path="res://.godot/imported/fallen_angel-001.png-b3c4c53c96410195f77b14e54be9b4e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Pure.png"
-dest_files=["res://.godot/imported/Pure.png-367ed779b6bc48d595cdd3e7a98747e5.ctex"]
+source_file="res://unit/unit_enfer/diablotin/fallen_angel-001.png"
+dest_files=["res://.godot/imported/fallen_angel-001.png-b3c4c53c96410195f77b14e54be9b4e5.ctex"]
 
 [params]
 

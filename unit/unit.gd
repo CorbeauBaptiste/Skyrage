@@ -19,7 +19,7 @@ var arrow = preload("res://projectile.tscn"):
 func set_selected(value):
 	selected = value
 	if selected:
-		$Sprite2D.self_modulate = Color.AQUA
+		$Sprite2D.self_modulate = Color.WHITE
 	else:
 		$Sprite2D.self_modulate = Color.WHITE
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://ce10vc07drsvy"]
+[gd_scene load_steps=21 format=4 uid="uid://ce10vc07drsvy"]
 
 [ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://world/world.gd" id="1_4717r"]
 [ext_resource type="Texture2D" uid="uid://kpqj2xxml7ge" path="res://base/assets/map_sprite/iso_tile_export.png" id="2_sc4t8"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b2bgtts1cq2et" path="res://unit/unit_enfer/diablotin/diablotin.tscn" id="9_ocfjn"]
 [ext_resource type="PackedScene" uid="uid://d225oig5b8qw8" path="res://base/base_paradis.tscn" id="10_fyhu2"]
 [ext_resource type="PackedScene" uid="uid://b1bnwsxgnbo0c" path="res://base/base_enfer.tscn" id="11_ov2xu"]
+[ext_resource type="PackedScene" uid="uid://dfhpe4050iroy" path="res://timer_tour.tscn" id="12_mad0u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fj7yv"]
 texture = ExtResource("2_sc4t8")
@@ -1934,7 +1935,7 @@ position = Vector2(963.044, 550.104)
 scale = Vector2(0.5, 0.476)
 
 [node name="Seraphin" parent="." instance=ExtResource("6_ai45w")]
-position = Vector2(1142.52, 553.739)
+position = Vector2(490.957, 751.857)
 scale = Vector2(0.5, 0.508521)
 
 [node name="Archange" parent="." instance=ExtResource("6_ov2xu")]
@@ -1953,9 +1954,23 @@ position = Vector2(760.323, 604.26)
 scale = Vector2(0.5, 0.5)
 
 [node name="Base_paradis" parent="." instance=ExtResource("10_fyhu2")]
-position = Vector2(1437.3, 315.007)
+position = Vector2(1412.9, 303.12)
 scale = Vector2(0.461938, 0.427419)
+health = 2
 
 [node name="Base_enfer" parent="." instance=ExtResource("11_ov2xu")]
 position = Vector2(408.623, 778.603)
 scale = Vector2(0.548014, 0.463193)
+health = 2
+
+[node name="Label" type="Label" parent="."]
+offset_left = 102.664
+offset_top = -13.8683
+offset_right = 241.664
+offset_bottom = 55.1317
+theme_override_font_sizes/font_size = 50
+text = "Tour :"
+
+[node name="TimerTour" parent="." instance=ExtResource("12_mad0u")]
+
+[connection signal="timer_started" from="TimerTour" to="." method="_on_timer_tour_timer_started"]

@@ -18,8 +18,10 @@ func set_health(value):
 	if health == 0:
 		if enfer:
 			print("Heaven wins")
+			get_tree().change_scene_to_file("res://heaven_wins.tscn")
 		else:
 			print("Hell wins")
+			get_tree().change_scene_to_file("res://hell_wins.tscn")
 
 func get_health():
 	return health

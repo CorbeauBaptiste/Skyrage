@@ -4,6 +4,7 @@ var dragging = false
 var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
+var tour_enfer = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -14,8 +15,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				for item in selected:
 					if item.collider.has_method("set_selected"):
-						item.collider.target = event.position
-						item.collider.selected = false
+						if item.collider.get_side() == tour_enfer:
+							item.collider.target = event.position
+							item.collider.selected = false
 				selected = []
 		elif dragging:
 			dragging = false
@@ -30,10 +32,19 @@ func _unhandled_input(event: InputEvent) -> void:
 			selected = space.intersect_shape(q)
 			for item in selected:
 				if item.collider.has_method("set_selected"):
-					item.collider.selected = true
+					if item.collider.get_side() == tour_enfer:
+						item.collider.selected = true
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 
 func _draw():
 	if dragging:
 		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.NAVY_BLUE, false)
+
+func _on_timer_tour_timer_started() -> void:
+	if tour_enfer:
+		tour_enfer = false
+		$Label.text = "Tour : Paradis"
+	else:
+		tour_enfer = true
+		$Label.text = "Tour : Enfer"

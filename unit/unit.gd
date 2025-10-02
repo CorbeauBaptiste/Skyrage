@@ -67,17 +67,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("right_mouse") and selected:
 		var ennemies = $Range.get_overlapping_bodies()
 		if ennemies.size() > 1:
-			print("detect")
 			if $Timer.is_stopped():
-				print("timer stopped")
 				for ennemy in ennemies:
-					if ennemy.has_method("is_base"):
-						print(ennemy.is_base())
 					if ennemy == self or ennemy.has_method("get_side"):
 						if ennemy.get_side() == self.get_side():
 							continue
 					if ennemy.has_method("set_health"):
-						print("set_health")
 						var ennemy_pos = ennemy.global_position
 						$Marker2D.look_at(ennemy_pos)
 						var arrow_instance = arrow.instantiate()

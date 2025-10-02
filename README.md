@@ -1,10 +1,10 @@
 # Skyrage - L'équilibre éternel brisé
 
 ## Participants : 
-- Leny GUILMIN --> Développeur et gestion du trello
+- Leny GUILMIN --> Développeur et Responsable Git
 - Corentin DENIS --> Développeur et Chargé de communication
 - Baptiste Corbeau --> Développeur et chef de projet
-- Lucas DEBRUYNE --> Développeur
+- Lucas DEBRUYNE --> Développeur et gestion du trello
 - Giovanni LOSAT --> Développeur
 - Anir KARAMI --> Développeur
 

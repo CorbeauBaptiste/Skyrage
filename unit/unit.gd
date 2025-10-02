@@ -82,10 +82,10 @@ func _physics_process(delta: float) -> void:
 						$Marker2D.look_at(ennemy_pos)
 						var arrow_instance = arrow.instantiate()
 						if self.get_side() == true:
-							arrow_instance.change_sprite("res://unit/unit_enfer/Fire_0_Preview.png", 4, 7, 12)
+							arrow_instance.change_sprite("res://unit/feu.png")
 							arrow_instance.set_target(false)
 						else:
-							arrow_instance.change_sprite("res://unit/unit_paradis/Pure.png", 5, 5, 16)
+							arrow_instance.change_sprite("res://unit/vent.png")
 							arrow_instance.set_target(true)
 						arrow_instance.rotation = $Marker2D.rotation
 						arrow_instance.global_position = $Marker2D.global_position

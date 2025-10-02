@@ -1931,7 +1931,6 @@ tile_map_data = PackedByteArray("AAAlAPP/AAADAAQAAAAYAO7/AAAIAAQAAAAWAPD/AAAJAAM
 tile_set = SubResource("TileSet_036b0")
 
 [node name="AngeDechu" parent="." instance=ExtResource("3_tlwt5")]
-visible = false
 position = Vector2(780, 636)
 
 [node name="BaseEnfer" type="StaticBody2D" parent="."]

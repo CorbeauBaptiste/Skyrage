@@ -1,20 +1,20 @@
 [gd_scene load_steps=10 format=3 uid="uid://cebs8u3h3h054"]
 
-[ext_resource type="Script" uid="uid://gltekkusuw53" path="res://HUD.gd" id="1_37p78"]
-[ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://goldManager.gd" id="2_64ctp"]
-[ext_resource type="Texture2D" uid="uid://b2d0m73k5cdg5" path="res://healthbarUnder.png" id="2_640wx"]
-[ext_resource type="Texture2D" uid="uid://cmn0ypwtv56u3" path="res://healthbarProgress.png" id="3_a2258"]
-[ext_resource type="Texture2D" uid="uid://c6d5ghyskatu4" path="res://image1.png" id="5_a2258"]
-[ext_resource type="Texture2D" uid="uid://dyd5jcb8irm3l" path="res://image2.png" id="6_1xsix"]
-[ext_resource type="Texture2D" uid="uid://culbllv32ifhf" path="res://image3.png" id="7_rftc2"]
+[ext_resource type="Script" uid="uid://gltekkusuw53" path="res://script progresse barre paradis/HUD.gd" id="1_071l4"]
+[ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://script progresse barre paradis/goldManager.gd" id="2_t5y5x"]
+[ext_resource type="Texture2D" uid="uid://b2d0m73k5cdg5" path="res://assets/icon goldbarre/healthbarUnder.png" id="3_r23jc"]
+[ext_resource type="Texture2D" uid="uid://cmn0ypwtv56u3" path="res://assets/icon goldbarre/healthbarProgress.png" id="4_ftvae"]
+[ext_resource type="Texture2D" uid="uid://c6d5ghyskatu4" path="res://assets/carte paradis/image1.png" id="5_v2nmm"]
+[ext_resource type="Texture2D" uid="uid://dyd5jcb8irm3l" path="res://assets/carte paradis/image2.png" id="6_kaits"]
+[ext_resource type="Texture2D" uid="uid://culbllv32ifhf" path="res://assets/carte paradis/image3.png" id="7_rotci"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
-texture = ExtResource("2_640wx")
+texture = ExtResource("3_r23jc")
 expand_margin_top = 80.0
 expand_margin_right = 150.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rftc2"]
-texture = ExtResource("3_a2258")
+texture = ExtResource("4_ftvae")
 expand_margin_top = 80.0
 expand_margin_right = 150.0
 
@@ -26,7 +26,7 @@ anchor_bottom = 0.202
 offset_right = -148.608
 offset_bottom = -130.896
 grow_horizontal = 2
-script = ExtResource("1_37p78")
+script = ExtResource("1_071l4")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -44,7 +44,7 @@ localize_numeral_system = false
 
 [node name="GoldManager" type="Node" parent="VBoxContainer2"]
 unique_name_in_owner = true
-script = ExtResource("2_64ctp")
+script = ExtResource("2_t5y5x")
 
 [node name="GoldBar" type="ProgressBar" parent="VBoxContainer2"]
 unique_name_in_owner = true
@@ -75,16 +75,16 @@ localize_numeral_system = false
 [node name="BtnCost5" type="Button" parent="VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_icons/icon = ExtResource("5_a2258")
+theme_override_icons/icon = ExtResource("5_v2nmm")
 
 [node name="BtnCost10" type="Button" parent="VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_icons/icon = ExtResource("6_1xsix")
+theme_override_icons/icon = ExtResource("6_kaits")
 text = "
 "
 
 [node name="BtnCost15" type="Button" parent="VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_icons/icon = ExtResource("7_rftc2")
+theme_override_icons/icon = ExtResource("7_rotci")

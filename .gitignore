@@ -2,10 +2,32 @@
 .godot/
 /android/
 
-.import/
-export.cfg
-export_presets.cfg
-.mono/
-data_*/
-mono_crash.*.json
+*.import
 
+export_presets.cfg
+
+# temp files
+*.tmp
+*.tscn[0-9]*
+*.tres[0-9]*
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# uid
+*.uid
+
+# OS
+.DS_Store
+Thumbs.db
+
+# builds
+builds/
+*.exe
+*.pck
+*.zip
+*.apk
+*.ipa

@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://lhnbirn54rh7"]
+[gd_scene load_steps=8 format=3 uid="uid://n44jylqggxhj"]
 
-[ext_resource type="Texture2D" uid="uid://cmlkbpqhiyy2" path="res://assets/heaven/paradis.png" id="1_a13er"]
-[ext_resource type="Texture2D" uid="uid://dm6g8pwbhqq5e" path="res://assets/hell/coupe.png" id="2_plg05"]
-[ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/heaven/bouton.png" id="3_07ld0"]
+[ext_resource type="Texture2D" uid="uid://b63737mtedmw1" path="res://assets/hell/hell.png" id="1_y8nsl"]
+[ext_resource type="Texture2D" uid="uid://dm6g8pwbhqq5e" path="res://assets/hell/coupe.png" id="2_jh6r4"]
+[ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/heaven/bouton.png" id="3_xl10k"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pw4if"]
 font_size = 300
@@ -10,13 +10,13 @@ font_color = Color(0, 0, 0, 1)
 shadow_size = 38
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o5360"]
-texture = ExtResource("3_07ld0")
+texture = ExtResource("3_xl10k")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uly41"]
-texture = ExtResource("3_07ld0")
+texture = ExtResource("3_xl10k")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rl33w"]
-texture = ExtResource("3_07ld0")
+texture = ExtResource("3_xl10k")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -39,30 +39,31 @@ offset_right = 219.0
 offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_a13er")
+texture = ExtResource("1_y8nsl")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
+modulate = Color(0.973786, 0.985206, 0.998506, 1)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.451
 anchor_top = 0.176
 anchor_right = 1.593
 anchor_bottom = 1.805
-offset_left = -745.552
-offset_top = -239.048
-offset_right = -222.136
-offset_bottom = -885.64
+offset_left = -447.552
+offset_top = -282.048
+offset_right = 75.864
+offset_bottom = -928.64
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 100
-text = "Heaven wins"
+text = "Hell wins"
 label_settings = SubResource("LabelSettings_pw4if")
 
 [node name="Coupe2" type="Sprite2D" parent="."]
 position = Vector2(-1074, -1092)
 scale = Vector2(2.58946, 2.8115)
-texture = ExtResource("2_plg05")
+texture = ExtResource("2_jh6r4")
 centered = false
 offset = Vector2(768.772, 466.221)
 

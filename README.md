@@ -4,8 +4,8 @@
 - Leny GUILMIN --> Développeur et Responsable Git
 - Corentin DENIS --> Développeur et Chargé de communication
 - Baptiste Corbeau --> Développeur et chef de projet
-- Lucas DEBRUYNE --> Développeur et gestion du trello
-- Giovanni LOSAT --> Développeur
+- Giovanni LOSAT --> Développeur et gestion du trello
+- Lucas DEBRUYNE --> Développeur
 - Anir KARAMI --> Développeur
 
 ## Synopsis : 

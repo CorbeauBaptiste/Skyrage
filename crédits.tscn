@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cchd6kcoj8omi"]
+[gd_scene load_steps=4 format=3 uid="uid://duav0ofjejfw8"]
+
+[ext_resource type="Script" uid="uid://bcinpay8ta2nu" path="res://exit.gd" id="1_x2m5c"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
@@ -95,3 +97,6 @@ offset_right = 245.0
 offset_bottom = 286.0
 theme_override_font_sizes/font_size = 64
 text = "✘"
+script = ExtResource("1_x2m5c")
+
+[connection signal="button_down" from="TextureRect/exit" to="TextureRect/exit" method="_on_button_down_exit_credits"]

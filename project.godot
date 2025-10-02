@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.4", "Mobile")
 [autoload]
 
 GlobalWorldEnvironment="*res://world_environment.tscn"
+Globals="*res://globals.gd"
 
 [display]
 

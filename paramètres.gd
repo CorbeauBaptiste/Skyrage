@@ -1,5 +1,14 @@
 extends Control
-@onready var exit =preload("res://menuprincipal.tscn")
+
+@onready var slider: HSlider = $Background/VBoxContainer/HSlider
+
+func _ready():
+	slider.value = Globals.volume
+
+	slider.connect("value_changed", Callable(self, "_on_HSlider_value_changed"))
 
 func _on_exit_button_down() -> void:
-	get_tree().change_scene_to_packed(exit)
+	get_tree().change_scene_to_file("res://menuprincipal.tscn")
+
+func _on_HSlider_value_changed(value: float) -> void:
+	Globals.set_volume(value)

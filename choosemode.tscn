@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://csw5rvqxejroh"]
+[gd_scene load_steps=4 format=3 uid="uid://csw5rvqxejroh"]
+
+[ext_resource type="Script" uid="uid://bcinpay8ta2nu" path="res://exit.gd" id="1_gnp2c"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
@@ -35,49 +37,45 @@ offset_right = 247.0
 offset_bottom = 252.0
 theme_override_font_sizes/font_size = 64
 text = "✘"
+script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 174.0
-offset_top = 115.0
-offset_right = 958.0
-offset_bottom = 203.0
+offset_left = 179.0
+offset_top = 52.0
+offset_right = 963.0
+offset_bottom = 140.0
 text = "SÉLECTIONNEZ UN MODE"
 label_settings = SubResource("LabelSettings_gnp2c")
 
-[node name="mode1" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 77.0
-offset_top = -14.0
-offset_right = 415.0
-offset_bottom = 129.0
+offset_left = -410.0
+offset_top = -83.0
+offset_right = 420.0
+offset_bottom = 120.0
+grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 32
-text = "JOUEURS 
-VS 
-JOUEURS"
+theme_override_constants/separation = 22
 
-[node name="mode2" type="Button" parent="."]
-layout_mode = 0
-offset_left = 523.0
-offset_top = 309.0
-offset_right = 669.0
-offset_bottom = 452.0
+[node name="mode1" type="Button" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "JOUEURS
- VS 
-IA"
+text = "JOUEURS VS JOUEURS"
 
-[node name="mode3" type="Button" parent="."]
-layout_mode = 0
-offset_left = 894.0
-offset_top = 311.0
-offset_right = 940.0
-offset_bottom = 454.0
+[node name="mode2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "IA
-VS
-IA"
+text = "JOUEURS VS IA"
+
+[node name="mode3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "IA VS IA"
+
+[connection signal="button_down" from="Back/exit" to="Back/exit" method="_on_button_down_exit_choose"]

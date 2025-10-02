@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnpihx4y83tlp"]
+[gd_scene load_steps=6 format=3 uid="uid://dov8fiurwdqsl"]
 
 [ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://paramètres.gd" id="1_twxth"]
 [ext_resource type="Script" uid="uid://c6ndui1gyytfo" path="res://brithness.gd" id="2_twxth"]
+[ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="4_bks5x"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
@@ -69,7 +70,7 @@ script = ExtResource("2_twxth")
 [node name="SON" type="Label" parent="Background/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "SON"
+text = "AMBIANCE"
 horizontal_alignment = 1
 
 [node name="HSlider" type="HSlider" parent="Background/VBoxContainer"]
@@ -78,6 +79,24 @@ min_value = 0.01
 max_value = 4.0
 step = 0.01
 value = 1.0
+
+[node name="EFFETS" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "EFFETS SONORES "
+horizontal_alignment = 1
+
+[node name="HSlider2" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Background/VBoxContainer"]
+position = Vector2(-272, -167)
+stream = ExtResource("4_bks5x")
+autoplay = true
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -102,4 +121,5 @@ theme_override_font_sizes/font_size = 64
 text = "✘"
 
 [connection signal="value_changed" from="Background/VBoxContainer/Brithness" to="Background/VBoxContainer/Brithness" method="_on_value_changed"]
+[connection signal="value_changed" from="Background/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="button_down" from="exit" to="." method="_on_exit_button_down"]

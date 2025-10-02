@@ -7,10 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://87hem040vnrn" path="res://unit/unit_paradis/ange/ange.tscn" id="4_h5o24"]
 [ext_resource type="PackedScene" uid="uid://ceb1j2mcdxh7n" path="res://unit/unit_paradis/seraphin/seraphin.tscn" id="6_ai45w"]
 [ext_resource type="PackedScene" uid="uid://bpem4157qmn2d" path="res://unit/unit_paradis/archange/archange.tscn" id="6_ov2xu"]
-[ext_resource type="Texture2D" uid="uid://b2nb66g6u0mg8" path="res://base/Sujet 3.png" id="7_fyhu2"]
 [ext_resource type="PackedScene" uid="uid://dh2knij7weaqs" path="res://unit/unit_enfer/demon/demon.tscn" id="8_mad0u"]
 [ext_resource type="PackedScene" uid="uid://b2bgtts1cq2et" path="res://unit/unit_enfer/diablotin/diablotin.tscn" id="9_ocfjn"]
-[ext_resource type="PackedScene" uid="uid://l6e2vd2yrxth" path="res://base/base.tscn" id="10_fyhu2"]
+[ext_resource type="PackedScene" uid="uid://d225oig5b8qw8" path="res://base/base_paradis.tscn" id="10_fyhu2"]
+[ext_resource type="PackedScene" uid="uid://b1bnwsxgnbo0c" path="res://base/base_enfer.tscn" id="11_ov2xu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fj7yv"]
 texture = ExtResource("2_sc4t8")
@@ -1942,7 +1942,7 @@ position = Vector2(914.828, 443.784)
 scale = Vector2(0.5, 0.5)
 
 [node name="AngeDechu" parent="." instance=ExtResource("3_4717r")]
-position = Vector2(653.594, 581.476)
+position = Vector2(1392.57, 426.944)
 
 [node name="Demon" parent="." instance=ExtResource("8_mad0u")]
 position = Vector2(861.971, 728.083)
@@ -1952,11 +1952,10 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(760.323, 604.26)
 scale = Vector2(0.5, 0.5)
 
-[node name="Base" parent="." instance=ExtResource("10_fyhu2")]
-position = Vector2(372.03, 737.989)
-scale = Vector2(0.520973, 0.554742)
+[node name="Base_paradis" parent="." instance=ExtResource("10_fyhu2")]
+position = Vector2(1437.3, 315.007)
+scale = Vector2(0.461938, 0.427419)
 
-[node name="Base2" parent="." instance=ExtResource("10_fyhu2")]
-position = Vector2(1503.37, 147.598)
-scale = Vector2(0.383244, 0.390594)
-texture = ExtResource("7_fyhu2")
+[node name="Base_enfer" parent="." instance=ExtResource("11_ov2xu")]
+position = Vector2(408.623, 778.603)
+scale = Vector2(0.548014, 0.463193)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyd5jcb8irm3l"
-path="res://.godot/imported/image2.png-a1254ce9dafbee799a33a29469df2c7e.ctex"
+uid="uid://b2d0m73k5cdg5"
+path="res://.godot/imported/healthbarUnder.png-2aac1f90d87c0c0b23ec462aeb7c65c8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/carte paradis/image2.png"
-dest_files=["res://.godot/imported/image2.png-a1254ce9dafbee799a33a29469df2c7e.ctex"]
+source_file="res://assets/icongoldbarre/healthbarUnder.png"
+dest_files=["res://.godot/imported/healthbarUnder.png-2aac1f90d87c0c0b23ec462aeb7c65c8.ctex"]
 
 [params]
 

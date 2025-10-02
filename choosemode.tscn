@@ -1,12 +1,64 @@
-[gd_scene load_steps=4 format=3 uid="uid://csw5rvqxejroh"]
+[gd_scene load_steps=16 format=3 uid="uid://csw5rvqxejroh"]
 
-[ext_resource type="Script" uid="uid://bcinpay8ta2nu" path="res://exit.gd" id="1_gnp2c"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://exit.gd" id="1_gnp2c"]
+[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6nno"]
+texture = ExtResource("2_ub12g")
+expand_margin_left = 100.0
+expand_margin_right = 30.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_gnp2c"]
-font_size = 64
+font_size = 37
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fw63o"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fwqhx"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ub12g"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fjthy"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1aawk"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qn01r"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dpkm3"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgjr2"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_geyd6"]
+texture = ExtResource("2_1iq64")
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
 
 [node name="Choosemode" type="Control"]
 layout_mode = 3
@@ -21,10 +73,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1.0
-offset_top = 34.0
-offset_right = 1.0
-offset_bottom = 34.0
+offset_left = -172.0
+offset_top = -154.0
+offset_right = 212.0
+offset_bottom = 222.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_ivno5")
@@ -41,12 +93,17 @@ script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 179.0
-offset_top = 52.0
-offset_right = 963.0
-offset_bottom = 140.0
+offset_left = 97.0
+offset_top = -8.0
+offset_right = 1083.0
+offset_bottom = 246.0
+theme_override_font_sizes/font_size = 1
+theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
 text = "SÉLECTIONNEZ UN MODE"
 label_settings = SubResource("LabelSettings_gnp2c")
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -55,27 +112,36 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -410.0
-offset_top = -83.0
-offset_right = 420.0
-offset_bottom = 120.0
+offset_left = -318.0
+offset_top = -37.0
+offset_right = 340.0
+offset_bottom = 396.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 54
 
 [node name="mode1" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxTexture_fw63o")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fwqhx")
+theme_override_styles/normal = SubResource("StyleBoxTexture_ub12g")
 text = "JOUEURS VS JOUEURS"
 
 [node name="mode2" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxTexture_fjthy")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1aawk")
+theme_override_styles/normal = SubResource("StyleBoxTexture_qn01r")
 text = "JOUEURS VS IA"
 
 [node name="mode3" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxTexture_dpkm3")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_tgjr2")
+theme_override_styles/normal = SubResource("StyleBoxTexture_geyd6")
 text = "IA VS IA"
 
 [connection signal="button_down" from="Back/exit" to="Back/exit" method="_on_button_down_exit_choose"]

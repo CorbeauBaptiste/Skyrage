@@ -1,9 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://duav0ofjejfw8"]
+[gd_scene load_steps=6 format=3 uid="uid://duav0ofjejfw8"]
 
-[ext_resource type="Script" uid="uid://bcinpay8ta2nu" path="res://exit.gd" id="1_x2m5c"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="1_1xu0v"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://exit.gd" id="1_x2m5c"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]
+texture = ExtResource("1_1xu0v")
+expand_margin_left = 50.0
+expand_margin_right = 15.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_x2m5c"]
 font_size = 64
@@ -21,6 +27,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -232.0
+offset_top = -190.0
+offset_right = 152.0
+offset_bottom = 186.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_ivno5")
@@ -30,38 +40,41 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -124.0
-offset_top = 193.0
-offset_right = 131.0
-offset_bottom = 281.0
+offset_left = -285.0
+offset_top = 178.0
+offset_right = 259.0
+offset_bottom = 394.0
 grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_3dc8n")
 text = "CRÉDITS"
 label_settings = SubResource("LabelSettings_x2m5c")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="TextureRect"]
 layout_mode = 0
 offset_left = 590.0
-offset_top = 348.0
+offset_top = 423.0
 offset_right = 973.0
-offset_bottom = 382.0
+offset_bottom = 457.0
 theme_override_font_sizes/font_size = 24
 text = "Chef de projet : Baptiste Corbeau"
 
 [node name="Label3" type="Label" parent="TextureRect"]
 layout_mode = 0
-offset_left = 590.0
-offset_top = 555.0
-offset_right = 1086.0
-offset_bottom = 589.0
+offset_left = 596.0
+offset_top = 672.0
+offset_right = 1092.0
+offset_bottom = 706.0
 theme_override_font_sizes/font_size = 24
 text = "Chargé de communication : Corentin Denis"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
 layout_mode = 0
 offset_left = 592.0
-offset_top = 392.0
+offset_top = 467.0
 offset_right = 929.0
-offset_bottom = 502.0
+offset_bottom = 615.0
 
 [node name="Label2" type="Label" parent="TextureRect/VBoxContainer"]
 layout_mode = 2
@@ -80,12 +93,18 @@ size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 24
 text = "Lucas Debruyne"
 
+[node name="Label4" type="Label" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 24
+text = "Corentin Denis"
+
 [node name="Label" type="Label" parent="TextureRect"]
 layout_mode = 0
 offset_left = 593.0
-offset_top = 512.0
+offset_top = 623.0
 offset_right = 945.0
-offset_bottom = 546.0
+offset_bottom = 657.0
 theme_override_font_sizes/font_size = 24
 text = "Sound Designer : Anir Karami"
 

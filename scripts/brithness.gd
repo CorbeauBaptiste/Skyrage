@@ -1,8 +1,7 @@
 extends HSlider
 
 func _ready() -> void:
-	value = Globals.brightness
-	GlobalWorldEnvironment.environment.adjustment_brightness = value
+	value = Globals.brightness 
 
 func _on_value_changed(value: float) -> void:
 	GlobalWorldEnvironment.environment.adjustment_brightness = value

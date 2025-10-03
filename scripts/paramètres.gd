@@ -3,8 +3,7 @@ extends Control
 @onready var slider: HSlider = $Background/VBoxContainer/HSlider
 
 func _ready():
-	slider.value = Globals.volume
-
+	
 	slider.connect("value_changed", Callable(self, "_on_HSlider_value_changed"))
 
 func _on_exit_button_down() -> void:

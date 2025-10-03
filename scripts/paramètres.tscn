@@ -1,14 +1,15 @@
-[gd_scene load_steps=25 format=3 uid="uid://dov8fiurwdqsl"]
+[gd_scene load_steps=29 format=3 uid="uid://dov8fiurwdqsl"]
 
 [ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/paramètres.gd" id="1_twxth"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_5mnfy"]
 [ext_resource type="VideoStream" path="res://assets/output_particles.ogv" id="2_phf5m"]
-[ext_resource type="Script" uid="uid://c6ndui1gyytfo" path="res://scripts/brithness.gd" id="2_twxth"]
+[ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/brithness.gd" id="2_twxth"]
 [ext_resource type="Texture2D" uid="uid://qioa71paxu41" path="res://assets/Button4.png" id="3_k1fe6"]
 [ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="4_bks5x"]
 [ext_resource type="Texture2D" uid="uid://bcpqys3x6wyud" path="res://assets/Bar4.png" id="4_phf5m"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="5_87j3o"]
 [ext_resource type="Texture2D" uid="uid://cfoltrc1xl3vw" path="res://assets/Button3.png" id="5_lujcr"]
+[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="10_etcht"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
@@ -95,6 +96,15 @@ expand_margin_right = 30.0
 [sub_resource type="LabelSettings" id="LabelSettings_uxf0q"]
 font_size = 57
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iqfla"]
+texture = ExtResource("10_etcht")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x13cy"]
+texture = ExtResource("10_etcht")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_02ym2"]
+texture = ExtResource("10_etcht")
+
 [node name="Paramètres" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -167,10 +177,10 @@ theme_override_icons/tick = ExtResource("3_k1fe6")
 theme_override_styles/slider = SubResource("StyleBoxTexture_j0evp")
 theme_override_styles/grabber_area = SubResource("StyleBoxTexture_8a503")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_0r4if")
-min_value = 0.01
-max_value = 4.0
-step = 0.01
-value = 1.0
+min_value = 0.1
+max_value = 1.2
+step = 0.1
+value = 1.2
 script = ExtResource("2_twxth")
 
 [node name="SON" type="Label" parent="Background/VBoxContainer"]
@@ -189,10 +199,7 @@ theme_override_icons/grabber_disabled = ExtResource("3_k1fe6")
 theme_override_styles/slider = SubResource("StyleBoxTexture_wpqh2")
 theme_override_styles/grabber_area = SubResource("StyleBoxTexture_83eif")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_jwdsk")
-min_value = 0.01
 max_value = 4.0
-step = 0.01
-value = 1.0
 
 [node name="EFFETS" type="Label" parent="Background/VBoxContainer"]
 layout_mode = 2
@@ -240,10 +247,12 @@ vertical_alignment = 1
 layout_mode = 1
 offset_left = -5.0
 offset_top = -6.0
-offset_right = 56.0
-offset_bottom = 109.0
+offset_right = 89.0
+offset_bottom = 84.0
 theme_override_font_sizes/font_size = 64
-text = "✘"
+theme_override_styles/hover = SubResource("StyleBoxTexture_iqfla")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_x13cy")
+theme_override_styles/normal = SubResource("StyleBoxTexture_02ym2")
 
 [connection signal="value_changed" from="Background/VBoxContainer/Brithness" to="Background/VBoxContainer/Brithness" method="_on_value_changed"]
 [connection signal="value_changed" from="Background/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]

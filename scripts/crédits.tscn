@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://duav0ofjejfw8"]
+[gd_scene load_steps=10 format=3 uid="uid://duav0ofjejfw8"]
 
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="1_1xu0v"]
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_x2m5c"]
+[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="2_l3ipc"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
 load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
@@ -13,6 +14,15 @@ expand_margin_right = 15.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_x2m5c"]
 font_size = 64
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_61erh"]
+texture = ExtResource("2_l3ipc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mltl6"]
+texture = ExtResource("2_l3ipc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5hr54"]
+texture = ExtResource("2_l3ipc")
 
 [node name="Crédits" type="Control"]
 layout_mode = 3
@@ -112,10 +122,12 @@ text = "Sound Designer : Anir Karami"
 layout_mode = 0
 offset_left = 232.0
 offset_top = 191.0
-offset_right = 283.0
+offset_right = 322.0
 offset_bottom = 287.0
 theme_override_font_sizes/font_size = 64
-text = "✘"
+theme_override_styles/hover = SubResource("StyleBoxTexture_61erh")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mltl6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5hr54")
 script = ExtResource("1_x2m5c")
 
 [connection signal="button_down" from="TextureRect/exit" to="TextureRect/exit" method="_on_button_down_exit_credits"]

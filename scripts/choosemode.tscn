@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://csw5rvqxejroh"]
 
-[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://exit.gd" id="1_gnp2c"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_gnp2c"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
 
@@ -9,7 +9,7 @@ load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.cte
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6nno"]
 texture = ExtResource("2_ub12g")
-expand_margin_left = 100.0
+expand_margin_left = 80.0
 expand_margin_right = 30.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_gnp2c"]
@@ -93,10 +93,10 @@ script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 97.0
-offset_top = -8.0
-offset_right = 1083.0
-offset_bottom = 246.0
+offset_left = 136.0
+offset_top = -77.0
+offset_right = 1042.0
+offset_bottom = 327.0
 theme_override_font_sizes/font_size = 1
 theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
 text = "SÉLECTIONNEZ UN MODE"

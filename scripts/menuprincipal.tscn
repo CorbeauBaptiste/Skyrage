@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://3naivixtwygu"]
 
-[ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://menuprincipal.gd" id="1_s16su"]
+[ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/menuprincipal.gd" id="1_s16su"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_js3ya"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_s16su"]
 
@@ -11,7 +11,10 @@ load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.cte
 texture = ExtResource("2_js3ya")
 texture_margin_left = 80.0
 texture_margin_top = 30.0
-texture_margin_bottom = 40.0
+texture_margin_bottom = 100.0
+expand_margin_left = 70.0
+expand_margin_top = 40.0
+expand_margin_bottom = 40.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_s16su"]
 font_size = 100
@@ -110,10 +113,10 @@ anchors_preset = -1
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.053
-offset_left = -362.0
-offset_top = -58.0
-offset_right = 475.0
-offset_bottom = 154.458
+offset_left = -404.0
+offset_top = -104.0
+offset_right = 481.0
+offset_bottom = 264.458
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_0dla8")
 text = "Skyrage "

@@ -1,0 +1,151 @@
+[gd_scene load_steps=12 format=3 uid="uid://bl7go3g78ckpo"]
+
+[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png" id="2_6uqi0"]
+
+[sub_resource type="GDScript" id="GDScript_6ov51"]
+script/source = "extends Unit
+
+var HEALTH = 20
+
+func take_damage():
+	HEALTH -= 1
+	
+	if HEALTH == 0:
+		queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
+radius = 14.8661
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ykrsh"]
+radius = 29.0
+
+[sub_resource type="Animation" id="Animation_yu1y8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_jo6b1"]
+resource_name = "running-down"
+length = 0.55
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 7]
+}
+
+[sub_resource type="Animation" id="Animation_aojks"]
+resource_name = "running-left"
+length = 0.55
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 11, 10]
+}
+
+[sub_resource type="Animation" id="Animation_np8mw"]
+resource_name = "running-right"
+length = 0.55
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_sv62o"]
+resource_name = "running-up"
+length = 0.55
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yu1y8"]
+_data = {
+&"RESET": SubResource("Animation_yu1y8"),
+&"running-down": SubResource("Animation_jo6b1"),
+&"running-left": SubResource("Animation_aojks"),
+&"running-right": SubResource("Animation_np8mw"),
+&"running-up": SubResource("Animation_sv62o")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ipigq"]
+radius = 110.023
+
+[node name="AngeDechu" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = SubResource("GDScript_6ov51")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_6uqi0")
+hframes = 3
+vframes = 4
+frame = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ppyta")
+
+[node name="Detect" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
+shape = SubResource("CircleShape2D_ykrsh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yu1y8")
+}
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="Range" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_ipigq")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

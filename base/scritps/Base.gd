@@ -81,6 +81,7 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		if get_enemy_base():
 			unit.target = get_enemy_base().global_position
 		get_parent().add_child(unit)
+		unit.add_to_group("units")
 		unit_spawned.emit(unit)
 		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize(), " (enfer: ", unit.enfer, ") – Or restant: ", gold_manager.current_gold)
 		return unit

@@ -84,20 +84,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 	
-	# spawn avec keycode numérique (32 = espace Enfer, 4194308 = echap Paradis)
 	if event is InputEventKey and event.pressed:
 		print("Touche pressée : keycode = ", event.keycode)
 		match event.keycode:
-			32:
-				print("Spawn déclenché : Espace (32) – Enfer")
+			KEY_SPACE: 
+				print("Spawn déclenché : Espace – Enfer")
 				if base_enfer:
 					var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
 					if unit:
 						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
 					else:
 						print("Spawn Enfer échoué (or <11 ?)")
-			4194308:
-				print("Spawn déclenché : Échap (4194308) – Paradis")
+			KEY_BACKSPACE:
+				print("Spawn déclenché : Échap – Paradis")
 				if base_paradis:
 					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
 					if unit:
@@ -105,7 +104,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					else:
 						print("Spawn Paradis échoué (or <5 ?)")
 			_:
-				print("Touche non mappée : keycode = ", event.keycode, " (Espace=32, Échap=4194308)")
+				print("Touche non mappée : keycode = ", event.keycode, " (Espace=KEY_SPACE, Échap=KEY_ESCAPE)")
 						
 
 func _draw():

@@ -25,6 +25,19 @@ func _ready() -> void:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
+		
+		
+	var label_or_enfer = Label.new()
+	label_or_enfer.position = Vector2(10, 10)
+	label_or_enfer.text = "Enfer Or: 0"
+	add_child(label_or_enfer)
+	base_enfer.gold_manager.gold_changed.connect(func(c, m): label_or_enfer.text = "Enfer Or: " + str(int(c)))
+
+	var label_or_paradis = Label.new()
+	label_or_paradis.position = Vector2(10, 50)
+	label_or_paradis.text = "Paradis Or: 0"
+	add_child(label_or_paradis)
+	base_paradis.gold_manager.gold_changed.connect(func(c, m): label_or_paradis.text = "Paradis Or: " + str(int(c)))
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

@@ -57,14 +57,28 @@ func get_enemy_base() -> Base:
 func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 	if gold_manager.can_spend(cost):
 		gold_manager.spend(cost)
+		var spawn_pos: Vector2
+		var spawn_node_name = "SpawnPoint"
+		if team == "enfer":
+			spawn_node_name = "SpawnPointEnfer"
+		elif team == "paradis":
+			spawn_node_name = "SpawnPointParadis"
+		
+		if has_node(spawn_node_name):
+			spawn_pos = get_node(spawn_node_name).global_position
+			print("Spawn via ", spawn_node_name, " : Position = ", spawn_pos)
+		else:
+			spawn_pos = global_position + Vector2(50 if team == "enfer" else -50, 0)  # Devant/gauche par camp
+			print("Fallback spawn pour ", team, " à ", spawn_pos)
+		
 		var unit = unit_scene.instantiate() as Unit
-		unit.global_position = $SpawnPoint.global_position if has_node("SpawnPoint") else global_position + Vector2(50, 0)
+		unit.global_position = spawn_pos
 		unit.enfer = (team == "enfer")
 		if get_enemy_base():
 			unit.target = get_enemy_base().global_position
 		get_parent().add_child(unit)
 		unit_spawned.emit(unit)
-		print("Unité spawnée pour ", team, " (coût: ", cost, ")")
+		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize())
 		return unit
 	print("Or insuffisant (besoin: ", cost, ")")
 	return null

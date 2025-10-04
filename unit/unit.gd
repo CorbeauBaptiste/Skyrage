@@ -50,7 +50,6 @@ func _physics_process(delta: float) -> void:
 		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
 		velocity = position.direction_to(target_pos)
 		if position.distance_to(target_pos) < target_radius:
-			
 			target = null
 	av = avoid()
 	velocity = (velocity + av * avoid_weight).normalized() * speed
@@ -71,12 +70,17 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("right_mouse") and selected:
 		var ennemies = $Range.get_overlapping_bodies()
-		if ennemies.size() > 1:
-			if $Timer.is_stopped():
-				for ennemy in ennemies:
-					if ennemy == self or ennemy.get_side() == self.get_side():
-						continue
-					var ennemy_pos = ennemy.global_position
+		print("Ennemies détectées : ", ennemies.size(), " (debug)")
+		if ennemies.size() > 0:
+			var valid_enemies = [] 
+			for ennemy in ennemies:
+				if ennemy is Unit and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
+					valid_enemies.append(ennemy)
+			if valid_enemies.size() > 0:
+				if $Timer.is_stopped():
+					valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
+					var closest = valid_enemies[0]
+					var ennemy_pos = closest.global_position
 					$Marker2D.look_at(ennemy_pos)
 					var arrow_instance = arrow.instantiate()
 					if self.get_side() == true:
@@ -88,7 +92,10 @@ func _physics_process(delta: float) -> void:
 					arrow_instance.rotation = $Marker2D.rotation
 					arrow_instance.global_position = $Marker2D.global_position
 					add_child(arrow_instance)
-				$Timer.start()
+					$Timer.start()
+					print("Tir 1 projectile sur closest ennemy : ", closest.name)
+			else:
+				print("Pas d'ennemi valide dans range")
 
 func set_speed(new_value):
 	speed = new_value

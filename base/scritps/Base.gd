@@ -92,3 +92,6 @@ func _on_enemy_nearby(body: Node2D) -> void:
 	if body is Unit and body.get_side() != (team == "enfer"):
 		body.target = self
 		print("Attaque auto sur base ", team, " !")
+		
+func get_side() -> bool:
+	return team == "enfer"

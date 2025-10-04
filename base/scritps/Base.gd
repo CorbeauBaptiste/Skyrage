@@ -22,7 +22,7 @@ func _ready() -> void:
 		add_child(gm_node)
 		gold_manager = gm_node as goldManager  
 		gold_manager.max_gold = 20.0
-		gold_manager.regen_per_sec = 1.0  # GDD
+		gold_manager.regen_per_sec = 1.0 
 		gold_manager.use_overtime_curve = true
 		gold_manager.set_process(true)  
 	
@@ -68,7 +68,7 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 			spawn_pos = get_node(spawn_node_name).global_position
 			print("Spawn via ", spawn_node_name, " : Position = ", spawn_pos)
 		else:
-			spawn_pos = global_position + Vector2(50 if team == "enfer" else -50, 0)  # Devant/gauche par camp
+			spawn_pos = global_position + Vector2(50 if team == "enfer" else -50, 0)
 			print("Fallback spawn pour ", team, " à ", spawn_pos)
 		
 		var unit = unit_scene.instantiate() as Unit
@@ -83,6 +83,7 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 	print("Or insuffisant (besoin: ", cost, ")")
 	return null
 
+# test attaque
 func _on_enemy_nearby(body: Node2D) -> void:
 	if body is Unit and body.get_side() != (team == "enfer"):
 		body.target = self

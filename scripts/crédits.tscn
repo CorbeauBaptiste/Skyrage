@@ -1,11 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://duav0ofjejfw8"]
 
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="1_1xu0v"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_61erh"]
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_x2m5c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="2_l3ipc"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
-load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]
 texture = ExtResource("1_1xu0v")
@@ -43,7 +41,7 @@ offset_right = 152.0
 offset_bottom = 186.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("CompressedTexture2D_ivno5")
+texture = ExtResource("1_61erh")
 
 [node name="Title" type="Label" parent="TextureRect"]
 layout_mode = 1

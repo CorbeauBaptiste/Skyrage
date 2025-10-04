@@ -2,11 +2,9 @@
 
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_gnp2c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="1_kpgrt"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_w82kn"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ivno5"]
-load_path = "res://.godot/imported/fond.png-8eddac359943349967b27f5e7712d190.ctex"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]
 texture = ExtResource("1_kpgrt")
@@ -89,7 +87,7 @@ offset_right = 212.0
 offset_bottom = 222.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("CompressedTexture2D_ivno5")
+texture = ExtResource("1_w82kn")
 
 [node name="exit" type="Button" parent="Back"]
 layout_mode = 0

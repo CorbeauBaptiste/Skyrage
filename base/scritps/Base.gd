@@ -27,10 +27,11 @@ func _ready() -> void:
 		gold_manager.set_process(true)  
 	
 	# Joueur lié
-	player = Joueur.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize())
+	player = Joueur.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)  # p_camp = team
 	add_child(player)
-	player.set_camp(team)
-	player.base = self
+	player.set_camp(team)  # Fixe camp
+	player.base = self  # Joueur pointe base (sync or)
+	player.modifier_or(0)  # Sync initial
 	
 	if has_node("DetectionArea"):
 		$DetectionArea.body_entered.connect(_on_enemy_nearby)
@@ -75,7 +76,8 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		var unit = unit_scene.instantiate() as Unit
 		unit.global_position = spawn_pos
 		unit.enfer = (team == "enfer")
-		unit.set_side(unit.enfer) 
+		unit.enfer = player.get_side()
+		unit.set_side(unit.enfer)
 		if get_enemy_base():
 			unit.target = get_enemy_base().global_position
 		get_parent().add_child(unit)

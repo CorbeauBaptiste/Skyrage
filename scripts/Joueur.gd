@@ -3,33 +3,38 @@ class_name Joueur
 
 var id: int
 var nom: String = ""
-var camp: String = ""
-var base: Base 
-var _or: int = 0
+var camp: String = "" 
+var base: Base  
+var _or: int = 0 
 
-func _init(p_id: int, p_nom: String):
+func _init(p_id: int, p_nom: String, p_camp: String = ""): 
 	id = p_id
 	nom = p_nom
-	# Camp random par défaut mais set_camp le fixera
-	camp = ["enfer", "paradis"][randi() % 2]
+	if p_camp != "":
+		camp = p_camp
+	else:
+		camp = ["enfer", "paradis"][randi() % 2] 
 
-# Nouvelle func : Fixe camp (appele par Base)
 func set_camp(p_camp: String) -> void:
 	camp = p_camp
-	print("Joueur ", nom, " assigné au camp: ", camp)  # Debug
+	print("Joueur ", nom, " assigné au camp: ", camp)
 
 func modifier_or(quantite: int) -> void:
 	_or += quantite
 	if _or < 0:
 		_or = 0
 	if base and base.gold_manager:
-		base.gold_manager.current_gold = float(_or)
-		print("Or sync avec base: ", _or)  # Debug
+		base.gold_manager.current_gold = float(_or)  # sync auto
+		print("Or joueur ", nom, " sync avec base ", camp, " (", _or, ")")
 
 func get_or() -> int:
 	if base and base.gold_manager:
 		return int(base.gold_manager.current_gold)
 	return _or
 
+func get_side() -> bool:
+	return camp == "enfer"
+
 func afficher_infos() -> void:
-	print("ID: ", id, ", Nom: ", nom, ", Camp: ", camp, ", Or (base): ", get_or())
+	var or_val = get_or()
+	print("ID: ", id, ", Nom: ", nom, ", Camp: ", camp, ", Or (base): ", or_val, ", Side unités: ", get_side())

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=4 uid="uid://dj7qs6gvdsq2n"]
 
 [ext_resource type="Texture2D" uid="uid://cook0mmo4eup5" path="res://ground.png" id="1_6xmxd"]
-[ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://world/world.gd" id="1_4717r"]
+[ext_resource type="Script" uid="uid://cpk2g1n6q2t61" path="res://world/world.gd" id="1_4717r"]
 [ext_resource type="PackedScene" uid="uid://bl7go3g78ckpo" path="res://unit/unit_enfer/ange_dechu/ange_dechu.tscn" id="3_4717r"]
 [ext_resource type="PackedScene" uid="uid://87hem040vnrn" path="res://unit/unit_paradis/ange/ange.tscn" id="4_h5o24"]
 

@@ -6,7 +6,7 @@ class_name Base
 var current_health: int
 
 var gold_manager: goldManager
-var player: Joueur
+var player: Player
 
 signal health_changed(current: int, max: int)
 signal base_destroyed(winning_team: String)
@@ -27,7 +27,7 @@ func _ready() -> void:
 		gold_manager.set_process(true)  
 	
 	# Joueur lié
-	player = Joueur.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)  # p_camp = team
+	player = Player.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)  # p_camp = team
 	add_child(player)
 	player.set_camp(team)  # Fixe camp
 	player.base = self  # Joueur pointe base (sync or)

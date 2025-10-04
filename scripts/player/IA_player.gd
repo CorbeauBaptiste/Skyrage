@@ -1,6 +1,5 @@
-
 class_name IA_player
-extends Joueur
+extends Player
 
 func _init(p_id: int):
 	super(p_id, "IA_Temp")

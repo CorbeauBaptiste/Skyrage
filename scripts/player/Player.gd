@@ -1,5 +1,5 @@
 extends Node
-class_name Joueur  
+class_name Player  
 
 var id: int
 var nom: String = ""

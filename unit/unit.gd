@@ -7,13 +7,13 @@ class_name Unit
 @export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
-var target_radius = 50
+var target_radius = 5
 var selected = false:
 	set = set_selected
 var target = null:
 	set = set_target
 
-var arrow = preload("res://projectile.tscn"):
+var arrow = preload("res://unit/projectile.tscn"):
 	set = set_arrow
 
 func set_selected(value):
@@ -104,8 +104,8 @@ func set_health(value):
 	health = value
 	
 	if health == 0:
-		queue_free()
 		set_selected(false)
+		queue_free()
 
 func set_attack_speed(value):
 	attack_speed = value

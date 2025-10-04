@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfhpe4050iroy"]
+
+[ext_resource type="Script" uid="uid://clqrjbxq7ptvu" path="res://timer_tour.gd" id="1_cg7ls"]
+
+[node name="TimerTour" type="Node"]
+script = ExtResource("1_cg7ls")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 167.0
+offset_top = 106.0
+offset_right = 321.0
+offset_bottom = 175.0
+theme_override_font_sizes/font_size = 50
+text = "00 : 00"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true

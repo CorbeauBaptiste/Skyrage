@@ -4,6 +4,7 @@ var dragging = false
 var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
+var tour_enfer = false
 
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
@@ -48,7 +49,7 @@ func _ready() -> void:
 	
 	var label_help_enfer = Label.new()
 	label_help_enfer.position = Vector2(10, 100)
-	label_help_enfer.text = "cliquer espace pour spawn unite paradis"
+	label_help_enfer.text = "cliquer espace pour spawn unite enfer"
 	add_child(label_help_enfer)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -60,9 +61,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				for item in selected:
 					var collider = item.collider
-					if collider is Unit:  # Fix : Seulement si Unit
-						collider.target = event.position
-						collider.selected = false
+					if collider is Unit:
+						# Système de tours : ne déplace que si c'est ton tour
+						if collider.get_side() == tour_enfer:
+							collider.target = event.position
+							collider.selected = false
 				selected = []
 		elif dragging:
 			dragging = false
@@ -78,7 +81,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			for item in selected:
 				var collider = item.collider
 				if collider is Unit:
-					collider.selected = true
+					# Système de tours : ne sélectionne que si c'est ton tour
+					if collider.get_side() == tour_enfer:
+						collider.selected = true
 				else:
 					print("Ignore collider non-Unit : ", collider.get_class()) 
 	if event is InputEventMouseMotion and dragging:
@@ -96,7 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					else:
 						print("Spawn Enfer échoué (or <11 ?)")
 			KEY_BACKSPACE:
-				print("Spawn déclenché : Échap – Paradis")
+				print("Spawn déclenché : Backspace – Paradis")
 				if base_paradis:
 					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
 					if unit:
@@ -104,12 +109,20 @@ func _unhandled_input(event: InputEvent) -> void:
 					else:
 						print("Spawn Paradis échoué (or <5 ?)")
 			_:
-				print("Touche non mappée : keycode = ", event.keycode, " (Espace=KEY_SPACE, Échap=KEY_ESCAPE)")
+				print("Touche non mappée : keycode = ", event.keycode, " (Espace=KEY_SPACE, Backspace=KEY_BACKSPACE)")
 						
 
 func _draw():
 	if dragging:
-		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.AQUA, false)
+		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.NAVY_BLUE, false)
+
+func _on_timer_tour_timer_started() -> void:
+	if tour_enfer:
+		tour_enfer = false
+		$Label.text = "Tour : Paradis"
+	else:
+		tour_enfer = true
+		$Label.text = "Tour : Enfer"
 
 func _on_victory(winner: String) -> void:
 	print(winner.capitalize() + " gagne ! (Base détruite)")

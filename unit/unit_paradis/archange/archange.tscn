@@ -1,23 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://87hem040vnrn"]
+[gd_scene load_steps=12 format=3 uid="uid://bpem4157qmn2d"]
 
-[ext_resource type="Texture2D" uid="uid://c6ue2vk7jh8e7" path="res://unit/unit_paradis/ange/angel-f-001.png" id="2_48dlh"]
+[ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_5eryp"]
+[ext_resource type="Texture2D" uid="uid://bvr1kkg6tdkhh" path="res://unit/unit_paradis/archange/angel-m-001_2.png" id="2_8upee"]
 
-[sub_resource type="GDScript" id="GDScript_h081i"]
-script/source = "extends Unit
-
-var HEALTH = 1
-
-func take_damage():
-	HEALTH -= 1
-	
-	if HEALTH == 0:
-		queue_free()
-"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jk54y"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qc1b4"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_csuuc"]
 radius = 29.0
 
 [sub_resource type="Animation" id="Animation_yu1y8"]
@@ -112,30 +101,29 @@ _data = {
 &"running-up": SubResource("Animation_sv62o")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h081i"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_rk7dp"]
 radius = 304.007
 
-[node name="Ange" type="CharacterBody2D"]
-scale = Vector2(0.5, 0.5)
+[node name="Archange" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
-script = SubResource("GDScript_h081i")
+script = ExtResource("1_5eryp")
 enfer = false
-health = 3
+metadata/_custom_type_script = "uid://crka5xwh24rix"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_48dlh")
+texture = ExtResource("2_8upee")
 hframes = 3
 vframes = 4
 frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_jk54y")
+shape = SubResource("CircleShape2D_agkxd")
 
 [node name="Detect" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
-shape = SubResource("CircleShape2D_qc1b4")
+shape = SubResource("CircleShape2D_csuuc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -148,10 +136,7 @@ libraries = {
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
-shape = SubResource("CircleShape2D_h081i")
+shape = SubResource("CircleShape2D_rk7dp")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
-
-[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
-[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

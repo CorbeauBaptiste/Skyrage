@@ -24,6 +24,8 @@ func _process(delta: float) -> void:
 	if current_gold < max_gold:
 		current_gold = min(max_gold, current_gold + regen_per_sec * regen_mult * delta)
 		gold_changed.emit(current_gold, max_gold)
+		
+	print("Or regen: ", regen_per_sec * regen_mult, "/sec")
 
 func can_spend(cost: float) -> bool:
 	return current_gold >= cost

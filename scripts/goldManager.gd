@@ -19,14 +19,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	t_elapsed += delta
 	if use_overtime_curve:
-		if t_elapsed >= 20.0:
-			regen_mult = 2.0
-		else:
-			regen_mult = 1.0
+		regen_mult = 2.0 if t_elapsed >= 240.0 else 1.0
 
 	if current_gold < max_gold:
 		current_gold = min(max_gold, current_gold + regen_per_sec * regen_mult * delta)
 		gold_changed.emit(current_gold, max_gold)
+		
+	#print("Or regen: ", regen_per_sec * regen_mult, "/sec")
 
 func can_spend(cost: float) -> bool:
 	return current_gold >= cost

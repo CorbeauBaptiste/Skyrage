@@ -1,9 +1,13 @@
-[gd_scene load_steps=13 format=4 uid="uid://ce10vc07drsvy"]
+[gd_scene load_steps=21 format=4 uid="uid://ce10vc07drsvy"]
 
-[ext_resource type="Script" uid="uid://pa5uyptwta6j" path="res://world/world.gd" id="1_aqk2v"]
+[ext_resource type="Script" uid="uid://bpy1hykqt3q72" path="res://world/world.gd" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://bl7go3g78ckpo" path="res://unit/unit_enfer/ange_dechu/ange_dechu.tscn" id="3_tlwt5"]
 [ext_resource type="Texture2D" uid="uid://dn72l6havsj05" path="res://base/assets/map_sprite/spritesheet.png" id="4_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://c0gmk7s0sxstu" path="res://base/BaseEnfer.png" id="5_dwbse"]
+[ext_resource type="Script" uid="uid://bik3gx5wif0ol" path="res://base/scritps/BaseEnfer.gd" id="5_gbfbk"]
 [ext_resource type="Texture2D" uid="uid://kpqj2xxml7ge" path="res://base/assets/map_sprite/iso_tile_export.png" id="6_ioo17"]
+[ext_resource type="Texture2D" uid="uid://b2nb66g6u0mg8" path="res://base/BaseParadis.png" id="6_pkg7o"]
+[ext_resource type="Script" uid="uid://but8st67qn0hw" path="res://base/scritps/BaseParadis.gd" id="7_ioo17"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fj7yv"]
 texture = ExtResource("6_ioo17")
@@ -1900,6 +1904,20 @@ physics_layer_0/collision_layer = 3
 sources/0 = SubResource("TileSetAtlasSource_aqk2v")
 sources/1 = SubResource("TileSetAtlasSource_dwbse")
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gbfbk"]
+radius = 128.0
+height = 256.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dwbse"]
+radius = 258.00775
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ioo17"]
+radius = 17.399994
+height = 46.39997
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gbfbk"]
+radius = 337.3796
+
 [node name="Level" type="Node2D"]
 script = ExtResource("1_aqk2v")
 
@@ -1919,3 +1937,51 @@ tile_set = SubResource("TileSet_036b0")
 
 [node name="AngeDechu" parent="." instance=ExtResource("3_tlwt5")]
 position = Vector2(780, 636)
+
+[node name="BaseEnfer" type="StaticBody2D" parent="."]
+script = ExtResource("5_gbfbk")
+
+[node name="Sprite2D" type="Sprite2D" parent="BaseEnfer"]
+position = Vector2(527, 699)
+scale = Vector2(-0.32, 0.32)
+texture = ExtResource("5_dwbse")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseEnfer"]
+position = Vector2(527, 691)
+shape = SubResource("CapsuleShape2D_gbfbk")
+debug_color = Color(0.88180524, 0.27955997, 0.48875248, 0.41960785)
+
+[node name="DetectionArea" type="Area2D" parent="BaseEnfer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseEnfer/DetectionArea"]
+position = Vector2(575, 722)
+shape = SubResource("CircleShape2D_dwbse")
+debug_color = Color(0.7426857, 0.4444872, 0.3966836, 0.41960785)
+
+[node name="SpawnPointEnfer" type="Marker2D" parent="BaseEnfer"]
+position = Vector2(625, 708)
+
+[node name="BaseParadis" type="StaticBody2D" parent="."]
+position = Vector2(20, 128)
+script = ExtResource("7_ioo17")
+
+[node name="Sprite2D" type="Sprite2D" parent="BaseParadis"]
+position = Vector2(1369, 106.00001)
+scale = Vector2(-0.2, 0.2)
+texture = ExtResource("6_pkg7o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseParadis"]
+position = Vector2(1368.0001, 103.000015)
+scale = Vector2(5, 5)
+shape = SubResource("CapsuleShape2D_ioo17")
+debug_color = Color(0.9775415, 0, 0.40699473, 0.41960785)
+
+[node name="DetectionArea" type="Area2D" parent="BaseParadis"]
+position = Vector2(1236, 17)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseParadis/DetectionArea"]
+position = Vector2(124, 58)
+shape = SubResource("CircleShape2D_gbfbk")
+
+[node name="SpawnPointParadis" type="Marker2D" parent="BaseParadis"]
+position = Vector2(1281, 223)

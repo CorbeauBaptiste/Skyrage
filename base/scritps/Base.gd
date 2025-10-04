@@ -1,7 +1,7 @@
 extends StaticBody2D
 class_name Base
 
-@export var team: String = "neutral"  # "enfer" ou "paradis"
+@export var team: String = "neutral"
 @export var max_health: int = 2500
 var current_health: int
 
@@ -74,11 +74,14 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		var unit = unit_scene.instantiate() as Unit
 		unit.global_position = spawn_pos
 		unit.enfer = (team == "enfer")
+		# Fix modulate (get_node au lieu de $ pour enfant de unit)
+		if unit.has_node("Sprite2D"):
+			unit.get_node("Sprite2D").modulate = Color.RED if unit.enfer else Color.WHITE
 		if get_enemy_base():
 			unit.target = get_enemy_base().global_position
 		get_parent().add_child(unit)
 		unit_spawned.emit(unit)
-		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize())
+		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize(), " (enfer: ", unit.enfer, ")")
 		return unit
 	print("Or insuffisant (besoin: ", cost, ")")
 	return null

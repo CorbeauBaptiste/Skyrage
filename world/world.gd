@@ -10,28 +10,23 @@ var selected = []
 @onready var match_timer: Timer = $MatchTimer
 
 func _ready() -> void:
-	# Code existant pour drag/select (inchangé)
 	
-	# Intégration bases et match (GDD : 5 min, victoire par PV ou destruction)
 	if match_timer:
-		match_timer.wait_time = 300.0  # 5 min
+		match_timer.wait_time = 300.0 
 		match_timer.timeout.connect(_on_match_end)
 		match_timer.start()
 	
-	# Liens signaux victoire
 	if base_enfer:
 		base_enfer.base_destroyed.connect(_on_victory)
 	if base_paradis:
 		base_paradis.base_destroyed.connect(_on_victory)
 	
-	# Test liens joueurs/bases (console)
 	if base_enfer and base_enfer.player:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Code existant pour drag/select (inchangé)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			if selected.size() == 0:
@@ -39,7 +34,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				drag_start = event.position
 			else:
 				for item in selected:
-					if item.collider is Base:  # Ignore bases pour sélection unités
+					if item.collider is Base:
 						continue
 					item.collider.target = event.position
 					item.collider.selected = false
@@ -56,19 +51,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			selected = space.intersect_shape(q)
 			for item in selected:
-				if item.collider is Base:  # Ignore bases
+				if item.collider is Base:
 					continue
 				item.collider.selected = true
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 	
-	# Test spawn unités (appuie Espace pour Enfer, Échap pour Paradis – assume unit.tscn)
-	if event.is_action_pressed("ui_accept"):  # Espace : Spawn Enfer
+	if event.is_action_pressed("ui_accept"):
 		if base_enfer:
-			base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 5)  # Coût exemple GDD
-	if event.is_action_pressed("ui_cancel"):  # Échap : Spawn Paradis
+			var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+			if unit:
+				print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
+	if event.is_action_pressed("ui_cancel"):
 		if base_paradis:
-			base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+			var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+			if unit:
+				print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer, " (doit être false)")
 
 func _draw():
 	# Code existant (inchangé)

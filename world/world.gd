@@ -38,6 +38,18 @@ func _ready() -> void:
 	label_or_paradis.text = "Paradis Or: 0"
 	add_child(label_or_paradis)
 	base_paradis.gold_manager.gold_changed.connect(func(c, m): label_or_paradis.text = "Paradis Or: " + str(int(c)))
+	
+	
+	var label_help_paradis = Label.new()
+	label_help_paradis.position = Vector2(10, 80)
+	label_help_paradis.text = "cliquer esc pour spawn unite paradis"
+	add_child(label_help_paradis)
+	
+	
+	var label_help_enfer = Label.new()
+	label_help_enfer.position = Vector2(10, 100)
+	label_help_enfer.text = "cliquer espace pour spawn unite paradis"
+	add_child(label_help_enfer)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -47,10 +59,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				drag_start = event.position
 			else:
 				for item in selected:
-					if item.collider is Base:
-						continue
-					item.collider.target = event.position
-					item.collider.selected = false
+					var collider = item.collider
+					if collider is Unit:  # Fix : Seulement si Unit
+						collider.target = event.position
+						collider.selected = false
 				selected = []
 		elif dragging:
 			dragging = false
@@ -60,13 +72,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			var space = get_world_2d().direct_space_state
 			var q = PhysicsShapeQueryParameters2D.new()
 			q.shape = select_rect
-			q.collision_mask = 2
+			q.collision_mask = 2 
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			selected = space.intersect_shape(q)
 			for item in selected:
-				if item.collider is Base:
-					continue
-				item.collider.selected = true
+				var collider = item.collider
+				if collider is Unit:
+					collider.selected = true
+				else:
+					print("Ignore collider non-Unit : ", collider.get_class()) 
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 	

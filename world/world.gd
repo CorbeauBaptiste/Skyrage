@@ -1,34 +1,84 @@
 extends Node2D
 
-# Système de sélection d'unités
 var dragging = false
 var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
 
-# Systèmes
+# Systèmes d'items
 var item_spawn_system: ItemSpawnSystem
 var item_ui_system: ItemUISystem
 
-func _ready():
-	_setup_systems()
+@onready var base_enfer: Base = $BaseEnfer
+@onready var base_paradis: Base = $BaseParadis
+@onready var match_timer: Timer = $MatchTimer
 
-func _setup_systems():
+func _ready() -> void:
+	# Setup systèmes de jeu
+	if match_timer:
+		match_timer.wait_time = 300.0 
+		match_timer.timeout.connect(_on_match_end)
+		match_timer.start()
+	
+	if base_enfer:
+		base_enfer.base_destroyed.connect(_on_victory)
+	if base_paradis:
+		base_paradis.base_destroyed.connect(_on_victory)
+	
+	# Attends que les bases soient prêtes
+	await get_tree().process_frame
+	
+	if base_enfer and base_enfer.player:
+		base_enfer.player.afficher_infos()
+	if base_paradis and base_paradis.player:
+		base_paradis.player.afficher_infos()
+	
+	# Labels d'or
+	var label_or_enfer = Label.new()
+	label_or_enfer.position = Vector2(10, 10)
+	label_or_enfer.text = "Enfer Or: 0"
+	add_child(label_or_enfer)
+	if base_enfer and base_enfer.gold_manager:
+		base_enfer.gold_manager.gold_changed.connect(func(c, m): label_or_enfer.text = "Enfer Or: " + str(int(c)))
+
+	var label_or_paradis = Label.new()
+	label_or_paradis.position = Vector2(10, 50)
+	label_or_paradis.text = "Paradis Or: 0"
+	add_child(label_or_paradis)
+	if base_paradis and base_paradis.gold_manager:
+		base_paradis.gold_manager.gold_changed.connect(func(c, m): label_or_paradis.text = "Paradis Or: " + str(int(c)))
+	
+	var label_help_paradis = Label.new()
+	label_help_paradis.position = Vector2(10, 80)
+	label_help_paradis.text = "cliquer backspace pour spawn unite paradis"
+	add_child(label_help_paradis)
+	
+	var label_help_enfer = Label.new()
+	label_help_enfer.position = Vector2(10, 100)
+	label_help_enfer.text = "cliquer espace pour spawn unite enfer"
+	add_child(label_help_enfer)
+	
+	# Setup systèmes d'items
+	_setup_item_systems()
+
+func _setup_item_systems():
 	# Système de spawn d'items
 	item_spawn_system = ItemSpawnSystem.new()
 	add_child(item_spawn_system)
 	
-	var texture = load("res://assets/sprite/items/light_item.png")
-	item_spawn_system.setup($TileMap/Sol, $TileMap/Decoration, texture)
-	item_spawn_system.item_collected.connect(_on_item_collected)
+	if has_node("TileMap/Sol") and has_node("TileMap/Decoration"):
+		var texture = load("res://assets/sprite/items/light_item.png")
+		item_spawn_system.setup($TileMap/Sol, $TileMap/Decoration, texture)
+		item_spawn_system.item_collected.connect(_on_item_collected)
 	
 	# Système UI pour les items
 	item_ui_system = ItemUISystem.new()
 	add_child(item_ui_system)
 
 func _physics_process(delta):
-	var units = get_tree().get_nodes_in_group("units")
-	item_spawn_system.check_collection(units)
+	if item_spawn_system:
+		var units = get_tree().get_nodes_in_group("units")
+		item_spawn_system.check_collection(units)
 
 func _on_item_collected(item: Item, position: Vector2):
 	"""Callback quand un item est collecté"""
@@ -44,7 +94,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				for item in selected:
 					var collider = item.collider
-					if collider is Unit:  # Fix : Seulement si Unit
+					if collider is Unit:
 						collider.target = event.position
 						collider.selected = false
 				selected = []
@@ -58,38 +108,31 @@ func _unhandled_input(event: InputEvent) -> void:
 			q.shape = select_rect
 			q.collision_mask = 2 
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
-			selected = space.intersect_shape(q)
-			for item in selected:
+			var raw_selection = space.intersect_shape(q)
+			selected = []
+			for item in raw_selection:
 				var collider = item.collider
 				if collider is Unit:
 					collider.selected = true
-				else:
-					print("Ignore collider non-Unit : ", collider.get_class()) 
+					selected.append(item)
+	
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 	
 	if event is InputEventKey and event.pressed:
-		print("Touche pressée : keycode = ", event.keycode)
 		match event.keycode:
 			KEY_SPACE: 
 				print("Spawn déclenché : Espace – Enfer")
 				if base_enfer:
 					var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
 					if unit:
-						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
-					else:
-						print("Spawn Enfer échoué (or <11 ?)")
+						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer)
 			KEY_BACKSPACE:
-				print("Spawn déclenché : Échap – Paradis")
+				print("Spawn déclenché : Backspace – Paradis")
 				if base_paradis:
 					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
 					if unit:
-						print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer, " (doit être false)")
-					else:
-						print("Spawn Paradis échoué (or <5 ?)")
-			_:
-				print("Touche non mappée : keycode = ", event.keycode, " (Espace=KEY_SPACE, Échap=KEY_ESCAPE)")
-						
+						print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer)
 
 func _draw():
 	if dragging:
@@ -99,11 +142,9 @@ func _on_victory(winner: String) -> void:
 	print(winner.capitalize() + " gagne ! (Base détruite)")
 	if match_timer:
 		match_timer.stop()
-	# TODO : fin de match 
 
 func _on_match_end() -> void:
 	var pv_enfer = base_enfer.current_health if base_enfer else 0
 	var pv_paradis = base_paradis.current_health if base_paradis else 0
 	var winner = "enfer" if pv_enfer > pv_paradis else "paradis"
 	print(winner.capitalize() + " gagne par PV restants ! (Enfer: ", pv_enfer, ", Paradis: ", pv_paradis, ")")
-	# TODO : Écran fin

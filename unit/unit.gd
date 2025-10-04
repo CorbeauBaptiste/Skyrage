@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Unit
 
 @export var speed = 100: set = set_speed
-@export var enfer = true: set = set_side
+@export var enfer = false: set = set_side
 @export var health = 20: set = set_health
 @export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
@@ -31,6 +31,9 @@ func set_arrow(value):
 
 func set_side(value):
 	enfer = value
+	if has_node("Sprite2D"):
+		$Sprite2D.modulate = Color.RED if enfer else Color.WHITE
+	print("Unit set_side: ", enfer)
 
 func avoid():
 	var result = Vector2.ZERO
@@ -44,8 +47,9 @@ func avoid():
 func _physics_process(delta: float) -> void:
 	velocity = Vector2.ZERO
 	if target:
-		velocity = position.direction_to(target)
-		if position.distance_to(target) < target_radius:
+		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
+		velocity = position.direction_to(target_pos)
+		if position.distance_to(target_pos) < target_radius:
 			target = null
 	av = avoid()
 	velocity = (velocity + av * avoid_weight).normalized() * speed
@@ -66,26 +70,32 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("right_mouse") and selected:
 		var ennemies = $Range.get_overlapping_bodies()
-		if ennemies.size() > 1:
-			if $Timer.is_stopped():
-				for ennemy in ennemies:
-					if ennemy == self or ennemy.has_method("get_side"):
-						if ennemy.get_side() == self.get_side():
-							continue
-					if ennemy.has_method("set_health"):
-						var ennemy_pos = ennemy.global_position
-						$Marker2D.look_at(ennemy_pos)
-						var arrow_instance = arrow.instantiate()
-						if self.get_side() == true:
-							arrow_instance.change_sprite("res://unit/feu.png")
-							arrow_instance.set_target(false)
-						else:
-							arrow_instance.change_sprite("res://unit/vent.png")
-							arrow_instance.set_target(true)
-						arrow_instance.rotation = $Marker2D.rotation
-						arrow_instance.global_position = $Marker2D.global_position
-						add_child(arrow_instance)
-				$Timer.start()
+		print("Ennemies détectées : ", ennemies.size(), " (debug)")
+		if ennemies.size() > 0:
+			var valid_enemies = [] 
+			for ennemy in ennemies:
+				if ennemy is Unit and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
+					valid_enemies.append(ennemy)
+			if valid_enemies.size() > 0:
+				if $Timer.is_stopped():
+					valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
+					var closest = valid_enemies[0]
+					var ennemy_pos = closest.global_position
+					$Marker2D.look_at(ennemy_pos)
+					var arrow_instance = arrow.instantiate()
+					if self.get_side() == true:
+						arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+						arrow_instance.set_target(false)
+					else:
+						arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+						arrow_instance.set_target(true)
+					arrow_instance.rotation = $Marker2D.rotation
+					arrow_instance.global_position = $Marker2D.global_position
+					add_child(arrow_instance)
+					$Timer.start()
+					print("Tir 1 projectile sur closest ennemy : ", closest.name)
+			else:
+				print("Pas d'ennemi valide dans range")
 
 func set_speed(new_value):
 	speed = new_value

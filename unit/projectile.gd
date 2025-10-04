@@ -7,6 +7,7 @@ class_name Projectile
 
 func _ready():
 	set_as_top_level(true)
+	collision_mask = 2
 
 func _process(delta):
 	position += (Vector2.RIGHT*speed).rotated(rotation) * delta
@@ -31,10 +32,16 @@ func set_target(value):
 	targets_enfer = value
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.has_method("set_health"):
-		if targets_enfer and body.get_side() == true:
-			body.set_health(body.get_health() - 1)
-			queue_free()
-		elif not targets_enfer and not body.get_side():
-			body.set_health(body.get_health() - 1)
-			queue_free()
+	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
+	if body is Unit:
+		if body.has_method("get_side"): 
+			if targets_enfer and body.get_side() == true:
+				body.set_health(body.get_health() - damage)
+				queue_free()
+				print("Dmg infligé à unité")
+			elif not targets_enfer and not body.get_side():
+				body.set_health(body.get_health() - damage)
+				queue_free()
+				print("Dmg infligé à unité")
+	else:
+		print("Projectile ignore non-Unit : ", body.get_class())

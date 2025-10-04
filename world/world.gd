@@ -57,19 +57,31 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 	
-	if event.is_action_pressed("ui_accept"):
-		if base_enfer:
-			var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-			if unit:
-				print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
-	if event.is_action_pressed("ui_cancel"):
-		if base_paradis:
-			var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-			if unit:
-				print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer, " (doit être false)")
+	# spawn avec keycode numérique (32 = espace Enfer, 4194308 = echap Paradis)
+	if event is InputEventKey and event.pressed:
+		print("Touche pressée : keycode = ", event.keycode)
+		match event.keycode:
+			32:
+				print("Spawn déclenché : Espace (32) – Enfer")
+				if base_enfer:
+					var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+					if unit:
+						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
+					else:
+						print("Spawn Enfer échoué (or <11 ?)")
+			4194308:
+				print("Spawn déclenché : Échap (4194308) – Paradis")
+				if base_paradis:
+					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+					if unit:
+						print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer, " (doit être false)")
+					else:
+						print("Spawn Paradis échoué (or <5 ?)")
+			_:
+				print("Touche non mappée : keycode = ", event.keycode, " (Espace=32, Échap=4194308)")
+						
 
 func _draw():
-	# Code existant (inchangé)
 	if dragging:
 		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.AQUA, false)
 
@@ -77,7 +89,7 @@ func _on_victory(winner: String) -> void:
 	print(winner.capitalize() + " gagne ! (Base détruite)")
 	if match_timer:
 		match_timer.stop()
-	# TODO : Écran fin de match (GDD)
+	# TODO : fin de match 
 
 func _on_match_end() -> void:
 	var pv_enfer = base_enfer.current_health if base_enfer else 0

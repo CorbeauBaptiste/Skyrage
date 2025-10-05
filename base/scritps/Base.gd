@@ -96,3 +96,15 @@ func _on_enemy_nearby(body: Node2D) -> void:
 		
 func get_side() -> bool:
 	return team == "enfer"
+
+func get_health():
+	return current_health
+
+func set_health(value):
+	current_health = value
+	
+	if current_health <= 0:
+		if team == "enfer":
+			get_tree().change_scene_to_file("res://heaven_wins.tscn")
+		if team == "paradis":
+			get_tree().change_scene_to_file("res://hell_wins.tscn")

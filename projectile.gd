@@ -5,7 +5,7 @@ class_name Projectile
 @export var damage = 1: set = set_damage
 @export var targets_enfer = true: set = set_target
 
-var source_unit: Unit = null  # Unité qui a tiré le projectile (pour multiplicateur de dégâts)
+var source_unit: Unit = null # Unité qui a tiré le projectile (pour multiplicateur de dégâts)
 
 # Flèche de Cupidon (dégâts de zone)
 var is_cupidon_arrow: bool = false
@@ -20,12 +20,12 @@ func _ready():
 	collision_mask = 2
 
 func _process(delta):
-	position += (Vector2.RIGHT*speed).rotated(rotation) * delta
+	position += (Vector2.RIGHT * speed).rotated(rotation) * delta
 
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 	queue_free()
 
-func change_sprite(sprite_route, hframes, vframes, frame = 0):
+func change_sprite(sprite_route, hframes = 0, vframes = 0, frame = 0):
 	var texture = load(sprite_route)
 	$Sprite2D.texture = texture
 	$Sprite2D.hframes = hframes
@@ -89,7 +89,7 @@ func _explode_area_damage(explosion_pos: Vector2) -> void:
 	query.transform = Transform2D(0, explosion_pos)
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
-	query.collision_mask = 2  # Layer des unités
+	query.collision_mask = 2 # Layer des unités
 	
 	var hits = space.intersect_shape(query, 32)
 	var damaged_count = 0
@@ -131,7 +131,7 @@ func _explode_michael_glaive(explosion_pos: Vector2) -> void:
 	query.transform = Transform2D(0, explosion_pos)
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
-	query.collision_mask = 2  # Layer des unités
+	query.collision_mask = 2 # Layer des unités
 	
 	var hits = space.intersect_shape(query, 32)
 	var damaged_count = 0
@@ -164,20 +164,20 @@ func _calculate_michael_damage(unit: Unit) -> int:
 	Returns: Montant de dégâts à infliger
 	"""
 	if not unit.has("unit_size") or not unit.has("max_health"):
-		return 50  # Dégâts par défaut
+		return 50 # Dégâts par défaut
 	
 	var size = unit.unit_size
 	var max_hp = unit.max_health
 	
 	match size:
-		"S":  # Small - One shot complet
-			return max_hp  # 100% des PV
-		"M":  # Medium - 3/4 des PV
-			return int(max_hp * 0.75)  # 75%
-		"L":  # Large - Moitié des PV
-			return int(max_hp * 0.5)   # 50%
+		"S": # Small - One shot complet
+			return max_hp # 100% des PV
+		"M": # Medium - 3/4 des PV
+			return int(max_hp * 0.75) # 75%
+		"L": # Large - Moitié des PV
+			return int(max_hp * 0.5) # 50%
 		_:
-			return int(max_hp * 0.75)  # Par défaut: 75%
+			return int(max_hp * 0.75) # Par défaut: 75%
 
 func _create_explosion_visual(pos: Vector2, color: Color = Color(1.5, 0.3, 1.0, 0.7), scale_mult: float = 3.0, duration: float = 0.4) -> void:
 	"""Crée un effet visuel d'explosion personnalisable"""

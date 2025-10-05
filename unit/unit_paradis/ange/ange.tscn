@@ -116,10 +116,10 @@ _data = {
 radius = 138.033
 
 [node name="Ange" type="CharacterBody2D"]
+scale = Vector2(0.626168, 0.603604)
 collision_layer = 2
 collision_mask = 3
 script = SubResource("GDScript_h081i")
-enfer = false
 health = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -132,6 +132,8 @@ frame = 6
 shape = SubResource("CircleShape2D_jk54y")
 
 [node name="Detect" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
 shape = SubResource("CircleShape2D_qc1b4")
@@ -144,6 +146,7 @@ libraries = {
 [node name="Marker2D" type="Marker2D" parent="."]
 
 [node name="Range" type="Area2D" parent="."]
+collision_layer = 2
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]

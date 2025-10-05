@@ -1,18 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bl7go3g78ckpo"]
 
+[ext_resource type="Script" uid="uid://bpl4qjnk0vw4y" path="res://unit/unit_enfer/ange_dechu/ange_dechu.gd" id="1_ipigq"]
 [ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png" id="2_6uqi0"]
-
-[sub_resource type="GDScript" id="GDScript_6ov51"]
-script/source = "extends Unit
-
-var HEALTH = 20
-
-func take_damage():
-	HEALTH -= 1
-	
-	if HEALTH == 0:
-		queue_free()
-"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
 radius = 14.8661
@@ -119,8 +108,7 @@ radius = 180.278
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 3
-script = SubResource("GDScript_6ov51")
-enfer = true
+script = ExtResource("1_ipigq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_6uqi0")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://ceb1j2mcdxh7n"]
 
-[ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_4dlos"]
+[ext_resource type="Script" uid="uid://4c8calelr8ci" path="res://unit/unit_paradis/seraphin/seraphin.gd" id="1_4dlos"]
 [ext_resource type="Texture2D" uid="uid://ifuxs0x63sqn" path="res://unit/unit_paradis/seraphin/angel-f-002.png" id="2_swywn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]

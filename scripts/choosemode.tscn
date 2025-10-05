@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://csw5rvqxejroh"]
+[gd_scene load_steps=21 format=3 uid="uid://csw5rvqxejroh"]
 
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_gnp2c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="1_kpgrt"]
 [ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_w82kn"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
+[ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/jvj.gd" id="6_rlcv8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]
 texture = ExtResource("1_kpgrt")
@@ -137,6 +138,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_fw63o")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fwqhx")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ub12g")
 text = "JOUEURS VS JOUEURS"
+script = ExtResource("6_rlcv8")
 
 [node name="mode2" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -155,3 +157,5 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_geyd6")
 text = "IA VS IA"
 
 [connection signal="button_down" from="Back/exit" to="Back/exit" method="_on_button_down_exit_choose"]
+[connection signal="button_down" from="VBoxContainer/mode1" to="Back/exit" method="_on_mode_1_button_down"]
+[connection signal="button_down" from="VBoxContainer/mode1" to="VBoxContainer/mode1" method="_on_button_down"]

@@ -44,31 +44,28 @@ func set_target(value):
 func _on_body_entered(body: Node2D) -> void:
 	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
 	
-	if body is Unit:
-		if body.has_method("get_side"):
-			# Vérifier si c'est une cible valide
-			var is_valid_target = (targets_enfer and body.get_side() == true) or (not targets_enfer and not body.get_side())
+	if body.has_method("get_side"):
+		# Vérifier si c'est une cible valide
+		var is_valid_target = (targets_enfer and body.get_side() == true) or (not targets_enfer and not body.get_side())
 			
-			if is_valid_target:
-				if is_michael_glaive:
-					# Glaive de Michaël : dégâts massifs adaptatifs
-					print("⚔️ Explosion du Glaive de Michaël !")
-					_explode_michael_glaive(body.global_position)
-				elif is_cupidon_arrow:
-					# Flèche de Cupidon : dégâts de zone
-					print("💘 Explosion de flèche de Cupidon !")
-					_explode_area_damage(body.global_position)
-				else:
-					# Flèche normale : dégâts directs
-					var final_damage = damage
-					if source_unit and source_unit.has("damage_multiplier"):
-						final_damage *= source_unit.damage_multiplier
-					body.set_health(body.get_health() - final_damage)
-					print("Dmg infligé à unité: ", final_damage)
+		if is_valid_target:
+			if is_michael_glaive:
+				# Glaive de Michaël : dégâts massifs adaptatifs
+				print("⚔️ Explosion du Glaive de Michaël !")
+				_explode_michael_glaive(body.global_position)
+			elif is_cupidon_arrow:
+				# Flèche de Cupidon : dégâts de zone
+				print("💘 Explosion de flèche de Cupidon !")
+				_explode_area_damage(body.global_position)
+			else:
+				# Flèche normale : dégâts directs
+				var final_damage = damage
+				if source_unit and source_unit.has("damage_multiplier"):
+					final_damage *= source_unit.damage_multiplier
+				body.set_health(body.get_health() - final_damage)
+				print("Dmg infligé à unité: ", final_damage)
 				
-				queue_free()
-	else:
-		print("Projectile ignore non-Unit : ", body.get_class())
+			queue_free()
 
 func _explode_area_damage(explosion_pos: Vector2) -> void:
 	"""

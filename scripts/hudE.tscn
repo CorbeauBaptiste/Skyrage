@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://chpqlr81pjt78"]
 
-[ext_resource type="Script" uid="uid://bn1f514m35hbe" path="res://scripts/HUDE.gd" id="1_stusj"]
+[ext_resource type="Script" path="res://scripts/HUDE.gd" id="1_stusj"]
 [ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/goldManager.gd" id="2_ny3ot"]
 [ext_resource type="Texture2D" uid="uid://ytsirjl8cfll" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_0wv27"]
 [ext_resource type="Texture2D" uid="uid://fcguvc680g6" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_dfxcj"]

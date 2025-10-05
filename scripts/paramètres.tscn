@@ -1,9 +1,9 @@
 [gd_scene load_steps=28 format=3 uid="uid://dov8fiurwdqsl"]
 
-[ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/paramètres.gd" id="1_twxth"]
+[ext_resource type="Script" path="res://scripts/paramètres.gd" id="1_twxth"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_5mnfy"]
 [ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="2_etcht"]
-[ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/brithness.gd" id="2_twxth"]
+[ext_resource type="Script" path="res://scripts/brithness.gd" id="2_twxth"]
 [ext_resource type="Texture2D" uid="uid://qioa71paxu41" path="res://assets/Button4.png" id="3_k1fe6"]
 [ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="4_bks5x"]
 [ext_resource type="Texture2D" uid="uid://bcpqys3x6wyud" path="res://assets/Bar4.png" id="4_phf5m"]
@@ -137,10 +137,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -184.0
-offset_top = -100.0
-offset_right = 166.0
-offset_bottom = 307.0
+offset_left = -215.0
+offset_top = -219.5
+offset_right = 199.0
+offset_bottom = 277.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 31
@@ -218,9 +218,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -400.0
-offset_top = -64.0
+offset_top = -13.0
 offset_right = 395.0
-offset_bottom = 246.0
+offset_bottom = 297.0
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_lujcr")
 text = "PARAMÈTRES"

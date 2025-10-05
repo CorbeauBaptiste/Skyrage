@@ -24,9 +24,6 @@ const PLAYABLE_TILE_COORDS := [
 	Vector2i(12, 2),  # Sol
 ]
 
-# ==============================
-# 🧩 VARIABLES INTERNES
-# ==============================
 var item_manager: ItemManager
 var spawned_items: Dictionary = {}  # position -> item
 var spawn_timer: Timer

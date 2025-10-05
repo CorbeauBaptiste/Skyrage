@@ -12,13 +12,14 @@ var item_effect_manager: ItemEffectManager
 
 # Pour le champ de sélection
 var selection_overlay: Control
+var canvas_layer: CanvasLayer
 
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
 @onready var match_timer: Timer = $MatchTimer
 
 func _ready() -> void:
-	var canvas_layer = CanvasLayer.new()
+	canvas_layer = CanvasLayer.new()
 	canvas_layer.layer = 101
 	add_child(canvas_layer)
 	

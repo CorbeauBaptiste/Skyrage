@@ -8,6 +8,7 @@ var selected = []
 # Systèmes d'items
 var item_spawn_system: ItemSpawnSystem
 var item_ui_system: ItemUISystem
+var item_effect_manager: ItemEffectManager
 
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
@@ -74,6 +75,12 @@ func _setup_item_systems():
 	# Système UI pour les items
 	item_ui_system = ItemUISystem.new()
 	add_child(item_ui_system)
+	
+	# Système d'effets d'items
+	item_effect_manager = ItemEffectManager.new()
+	add_child(item_effect_manager)
+	item_effect_manager.setup(self)
+	print("✅ Tous les systèmes d'items sont prêts !")
 
 func _physics_process(delta):
 	if item_spawn_system:
@@ -82,8 +89,40 @@ func _physics_process(delta):
 
 func _on_item_collected(item: Item, position: Vector2):
 	"""Callback quand un item est collecté"""
+	# Afficher l'UI de collecte
 	item_ui_system.show_item_collected(item, position, self)
-	# TODO: Appliquer les effets de l'item
+	
+	# Trouver l'unité qui a collecté l'item
+	var collector_unit = _find_collector_unit(position)
+	
+	if collector_unit and item_effect_manager:
+		# Appliquer l'effet de l'item
+		item_effect_manager.apply_item_effect(item, collector_unit, self)
+	else:
+		if not collector_unit:
+			push_warning("Impossible de trouver l'unité collectrice à la position: ", position)
+		if not item_effect_manager:
+			push_error("ItemEffectManager non initialisé !")
+
+func _find_collector_unit(item_position: Vector2) -> Unit:
+	"""
+	Trouve l'unité la plus proche de la position de l'item
+	Args:
+		item_position: Position où l'item a été collecté
+	Returns: L'unité collectrice ou null
+	"""
+	var units = get_tree().get_nodes_in_group("units")
+	var closest_unit: Unit = null
+	var closest_distance: float = 50.0  # Distance maximum de collection
+	
+	for unit in units:
+		if unit is Unit and not unit.is_queued_for_deletion():
+			var distance = unit.global_position.distance_to(item_position)
+			if distance < closest_distance:
+				closest_distance = distance
+				closest_unit = unit
+	
+	return closest_unit
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

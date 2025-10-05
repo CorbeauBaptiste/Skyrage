@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bpem4157qmn2d"]
 
-[ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_5eryp"]
+[ext_resource type="Script" uid="uid://dsvabggskaf10" path="res://unit/unit_paradis/archange/archange.gd" id="1_rk7dp"]
 [ext_resource type="Texture2D" uid="uid://iqxvxcqxcxfs" path="res://unit/unit_paradis/archange/angel-m-001_2.png" id="2_8upee"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
@@ -108,7 +108,7 @@ radius = 270.252
 scale = Vector2(0.463542, 0.448529)
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_5eryp")
+script = ExtResource("1_rk7dp")
 metadata/_custom_type_script = "uid://crka5xwh24rix"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

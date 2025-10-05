@@ -3,7 +3,7 @@ class_name Unit
 
 @export var speed = 100: set = set_speed
 @export var enfer = false: set = set_side
-@export var health = 20: set = set_health
+@export var health = 4: set = set_health
 @export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1

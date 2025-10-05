@@ -120,6 +120,22 @@ func _apply_benediction_ploutos(team: bool, world: Node) -> void:
 	Multiplie l'or actuel par 1.5
 	Effet immédiat
 	"""
+	var base = _get_base_for_team(team, world)
+	if not base or not base.gold_manager:
+		push_error("Impossible d'appliquer Ploutos : base ou gold_manager null")
+		return
+	
+	var old_gold = base.gold_manager.current_gold
+	var new_gold = min(old_gold * 1.5, base.gold_manager.max_gold)
+	base.gold_manager.current_gold = new_gold
+	
+	print("💰 Bénédiction de Ploutos appliquée !")
+	print("   Camp: ", "Enfer" if team else "Paradis")
+	print("   Or avant: %.1f" % old_gold)
+	print("   Or après: %.1f (+%.1f)" % [new_gold, new_gold - old_gold])
+	
+	# Émettre le signal de changement d'or pour mettre à jour l'UI
+	base.gold_manager.gold_changed.emit(new_gold, base.gold_manager.max_gold)
 
 
 func _apply_fleche_cupidon(collector_unit: Unit) -> void:
@@ -164,6 +180,22 @@ func _apply_fourberie_scapin(team: bool, world: Node) -> void:
 	La base perd 100 PV
 	Effet immédiat
 	"""
+	var base = _get_base_for_team(team, world)
+	if not base:
+		push_error("Impossible d'appliquer Scapin : base null")
+		return
+	
+	var old_health = base.current_health
+	var damage = 100
+	var destroyed = base.take_damage(damage)
+	
+	print("💀 Fourberie de Scapin appliquée !")
+	print("   Camp affecté: ", "Enfer" if team else "Paradis")
+	print("   PV avant: ", old_health)
+	print("   PV après: ", base.current_health if not destroyed else 0, " (-", damage, ")")
+	
+	if destroyed:
+		print("   ⚠️ LA BASE A ÉTÉ DÉTRUITE !")
 
 func _apply_intervention_chronos(team: bool, world: Node, duration: int) -> void:
 	"""

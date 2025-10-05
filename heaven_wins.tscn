@@ -1,8 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyk5cu86jnda"]
-
-[ext_resource type="Texture2D" uid="uid://cmlkbpqhiyy2" path="res://assets/heaven/paradis.png" id="1_pw4if"]
-[ext_resource type="Texture2D" uid="uid://dm6g8pwbhqq5e" path="res://assets/hell/coupe.png" id="2_o5360"]
-[ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/heaven/bouton.png" id="3_uly41"]
+[gd_scene load_steps=5 format=3 uid="uid://cyk5cu86jnda"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pw4if"]
 font_size = 300
@@ -10,13 +6,10 @@ font_color = Color(0, 0, 0, 1)
 shadow_size = 38
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o5360"]
-texture = ExtResource("3_uly41")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uly41"]
-texture = ExtResource("3_uly41")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rl33w"]
-texture = ExtResource("3_uly41")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -39,7 +32,6 @@ offset_right = 219.0
 offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_pw4if")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
@@ -62,7 +54,6 @@ label_settings = SubResource("LabelSettings_pw4if")
 [node name="Coupe2" type="Sprite2D" parent="."]
 position = Vector2(-1074, -1092)
 scale = Vector2(2.58946, 2.8115)
-texture = ExtResource("2_o5360")
 centered = false
 offset = Vector2(768.772, 466.221)
 

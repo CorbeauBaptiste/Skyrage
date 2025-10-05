@@ -33,15 +33,12 @@ func set_target(value):
 
 func _on_body_entered(body: Node2D) -> void:
 	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
-	if body is Unit:
-		if body.has_method("get_side"): 
-			if targets_enfer and body.get_side() == true:
-				body.set_health(body.get_health() - damage)
-				queue_free()
-				print("Dmg infligé à unité")
-			elif not targets_enfer and not body.get_side():
-				body.set_health(body.get_health() - damage)
-				queue_free()
-				print("Dmg infligé à unité")
-	else:
-		print("Projectile ignore non-Unit : ", body.get_class())
+	if body.has_method("get_side"): 
+		if targets_enfer and body.get_side() == true:
+			body.set_health(body.get_health() - damage)
+			queue_free()
+			print("Dmg infligé à unité")
+		elif not targets_enfer and not body.get_side():
+			body.set_health(body.get_health() - damage)
+			queue_free()
+			print("Dmg infligé à unité")

@@ -13,6 +13,11 @@ var speed_multiplier: float = 1.0  # Multiplicateur de vitesse
 var damage_multiplier: float = 1.0  # Multiplicateur de dégâts
 var attack_cooldown_modifier: float = 0.0  # Modificateur de cooldown en secondes
 
+# Flèches de Cupidon (item spécial)
+var cupidon_arrows: int = 0  # Nombre de flèches spéciales restantes
+var cupidon_arrow_damage: int = 35  # Dégâts par flèche de Cupidon
+var cupidon_area_radius: float = 80.0  # Rayon de la zone d'explosion
+
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -92,17 +97,41 @@ func _physics_process(delta: float) -> void:
 					var closest = valid_enemies[0]
 					var ennemy_pos = closest.global_position
 					$Marker2D.look_at(ennemy_pos)
+					
 					var arrow_instance = arrow.instantiate()
-					if self.get_side() == true:
-						arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
-						arrow_instance.set_target(false)
+					
+					# Vérifier si on a des flèches de Cupidon
+					if cupidon_arrows > 0:
+						# Utiliser une flèche de Cupidon (avec explosion de zone)
+						arrow_instance.is_cupidon_arrow = true
+						arrow_instance.area_damage = cupidon_arrow_damage
+						arrow_instance.area_radius = cupidon_area_radius
+						cupidon_arrows -= 1
+						print("💘 Tir flèche de Cupidon ! (", cupidon_arrows, " restantes)")
+						
+						# Sprite spécial pour flèche de Cupidon (rose/coeur)
+						if self.get_side() == true:
+							arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+							arrow_instance.set_target(false)
+						else:
+							arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+							arrow_instance.set_target(true)
+						# Teinte rose pour distinguer
+						arrow_instance.modulate = Color(1.5, 0.5, 1.0)  # Rose vif
 					else:
-						arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
-						arrow_instance.set_target(true)
+						# Flèche normale
+						if self.get_side() == true:
+							arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+							arrow_instance.set_target(false)
+						else:
+							arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+							arrow_instance.set_target(true)
+					
 					arrow_instance.rotation = $Marker2D.rotation
 					arrow_instance.global_position = $Marker2D.global_position
 					arrow_instance.source_unit = self  # Passer la référence pour multiplicateur de dégâts
 					add_child(arrow_instance)
+					
 					# Appliquer le modificateur de cooldown
 					var base_timer = attack_speed
 					var modified_timer = base_timer + attack_cooldown_modifier

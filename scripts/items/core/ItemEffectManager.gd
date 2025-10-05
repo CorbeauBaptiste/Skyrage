@@ -143,6 +143,31 @@ func _apply_fleche_cupidon(collector_unit: Unit) -> void:
 	La flèche de cupidon (15% drop)
 	3 flèches avec dégâts de zone (-35 PV)
 	"""
+	if not collector_unit:
+		push_error("Impossible d'appliquer Flèche de Cupidon : unité null")
+		return
+	
+	print("💘 Flèche de Cupidon appliquée !")
+	print("   Unité: ", collector_unit.name)
+	print("   Camp: ", "Enfer" if collector_unit.get_side() else "Paradis")
+	print("   3 flèches spéciales ajoutées (35 dégâts de zone chacune)")
+	
+	# Donner 3 flèches de Cupidon à l'unité
+	if collector_unit.has("cupidon_arrows"):
+		collector_unit.cupidon_arrows += 3
+		print("   Total flèches Cupidon: ", collector_unit.cupidon_arrows)
+		
+		# Effet visuel sur l'unité (aura rose)
+		if collector_unit.has_node("Sprite2D"):
+			var sprite = collector_unit.get_node("Sprite2D")
+			var original_color = sprite.modulate
+			
+			# Pulser en rose pendant 0.5 sec pour indiquer le bonus
+			var tween = collector_unit.create_tween()
+			tween.tween_property(sprite, "modulate", Color(1.5, 0.5, 1.0), 0.25)
+			tween.tween_property(sprite, "modulate", original_color, 0.25)
+	else:
+		push_warning("L'unité n'a pas la propriété cupidon_arrows")
 
 
 func _apply_remede_divin(team: bool, world: Node) -> void:

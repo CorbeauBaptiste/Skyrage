@@ -113,13 +113,14 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ipigq"]
-radius = 110.023
+radius = 180.278
 
 [node name="AngeDechu" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 3
 script = SubResource("GDScript_6ov51")
+enfer = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_6uqi0")
@@ -131,6 +132,8 @@ frame = 6
 shape = SubResource("CircleShape2D_ppyta")
 
 [node name="Detect" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
 shape = SubResource("CircleShape2D_ykrsh")
@@ -143,6 +146,7 @@ libraries = {
 [node name="Marker2D" type="Marker2D" parent="."]
 
 [node name="Range" type="Area2D" parent="."]
+collision_layer = 2
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]

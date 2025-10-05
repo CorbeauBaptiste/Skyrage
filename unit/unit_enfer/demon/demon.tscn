@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://dh2knij7weaqs"]
 
 [ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_ixyw5"]
-[ext_resource type="Texture2D" uid="uid://b4m3umwl0p2m5" path="res://unit/unit_enfer/demon/fallen_angel-004.png" id="2_rot22"]
+[ext_resource type="Texture2D" uid="uid://bx4dmh58w0nxo" path="res://unit/unit_enfer/demon/fallen_angel-004.png" id="2_rot22"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661
@@ -105,6 +105,7 @@ _data = {
 radius = 304.007
 
 [node name="Demon" type="CharacterBody2D"]
+scale = Vector2(0.525979, 0.555515)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_ixyw5")
@@ -135,6 +136,7 @@ libraries = {
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+scale = Vector2(0.688306, 0.645362)
 shape = SubResource("CircleShape2D_ixyw5")
 
 [node name="Timer" type="Timer" parent="."]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://b2bgtts1cq2et"]
 
 [ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_awgai"]
-[ext_resource type="Texture2D" uid="uid://dpcld368kcngq" path="res://unit/unit_enfer/diablotin/fallen_angel-001.png" id="2_kriiy"]
+[ext_resource type="Texture2D" uid="uid://b5xf0fduci0wp" path="res://unit/unit_enfer/diablotin/fallen_angel-001.png" id="2_kriiy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661
@@ -105,6 +105,7 @@ _data = {
 radius = 304.007
 
 [node name="Diablotin" type="CharacterBody2D"]
+scale = Vector2(0.548544, 0.547619)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_awgai")
@@ -137,6 +138,7 @@ libraries = {
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+scale = Vector2(0.693227, 0.672956)
 shape = SubResource("CircleShape2D_awgai")
 
 [node name="Timer" type="Timer" parent="."]

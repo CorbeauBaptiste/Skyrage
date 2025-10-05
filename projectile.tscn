@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgq7dpks01eyu"]
+[gd_scene load_steps=4 format=3 uid="uid://dgq7dpks01eyu"]
 
 [ext_resource type="Script" uid="uid://kmsum7wdp5k0" path="res://projectile.gd" id="1_qxf0c"]
+[ext_resource type="Texture2D" uid="uid://6byxc73ochre" path="res://unit/unit_enfer/Fire_0_Preview.png" id="2_qxf0c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxmqc"]
 radius = 7.0
@@ -12,6 +13,9 @@ script = ExtResource("1_qxf0c")
 targets_enfer = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 31
+visibility_layer = 31
+texture = ExtResource("2_qxf0c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708

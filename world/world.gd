@@ -8,16 +8,18 @@ var selected = []
 # Systèmes d'items
 var item_spawn_system: ItemSpawnSystem
 var item_ui_system: ItemUISystem
+var item_effect_manager: ItemEffectManager
 
 # Pour le champ de sélection
 var selection_overlay: Control
+var canvas_layer: CanvasLayer
 
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
 @onready var match_timer: Timer = $MatchTimer
 
 func _ready() -> void:
-	var canvas_layer = CanvasLayer.new()
+	canvas_layer = CanvasLayer.new()
 	canvas_layer.layer = 101
 	add_child(canvas_layer)
 	
@@ -38,7 +40,6 @@ func _ready() -> void:
 	if base_paradis:
 		base_paradis.base_destroyed.connect(_on_victory)
 	
-	# Attends que les bases soient prêtes
 	await get_tree().process_frame
 	
 	if base_enfer and base_enfer.player:
@@ -46,13 +47,21 @@ func _ready() -> void:
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
 	
-	# Labels d'or
+	# Labels UI
+	_setup_ui_labels()
+	
+	# Setup systèmes d'items
+	_setup_item_systems()
+
+func _setup_ui_labels():
 	var label_or_enfer = Label.new()
 	label_or_enfer.position = Vector2(10, 10)
 	label_or_enfer.text = "Enfer Or: 0"
 	canvas_layer.add_child(label_or_enfer)
 	if base_enfer and base_enfer.gold_manager:
-		base_enfer.gold_manager.gold_changed.connect(func(c, m): label_or_enfer.text = "Enfer Or: " + str(int(c)))
+		base_enfer.gold_manager.gold_changed.connect(
+			func(c, m): label_or_enfer.text = "Enfer Or: " + str(int(c))
+		)
 
 	var label_or_paradis = Label.new()
 	label_or_paradis.position = Vector2(10, 50)
@@ -75,7 +84,7 @@ func _ready() -> void:
 	_setup_item_systems()
 
 func _setup_item_systems():
-	# Système de spawn d'items
+	# Spawn system
 	item_spawn_system = ItemSpawnSystem.new()
 	add_child(item_spawn_system)
 	
@@ -84,9 +93,15 @@ func _setup_item_systems():
 		item_spawn_system.setup($TileMap/Sol, $TileMap/Decoration, texture)
 		item_spawn_system.item_collected.connect(_on_item_collected)
 	
-	# Système UI pour les items
+	# UI system
 	item_ui_system = ItemUISystem.new()
 	add_child(item_ui_system)
+	
+	# Effect manager - PAS DE SETUP !
+	item_effect_manager = ItemEffectManager.new()
+	add_child(item_effect_manager)
+	
+	print("✅ Systèmes d'items initialisés")
 
 func _physics_process(delta):
 	# Nettoie les sélections invalides
@@ -100,8 +115,31 @@ func _physics_process(delta):
 
 func _on_item_collected(item: Item, position: Vector2):
 	"""Callback quand un item est collecté"""
+	# UI
 	item_ui_system.show_item_collected(item, position, self)
-	# TODO: Appliquer les effets de l'item
+	
+	# Trouver le collecteur
+	var collector = _find_collector_unit(position)
+	if not collector:
+		push_warning("Collecteur introuvable à ", position)
+		return
+	
+	# Appliquer effet
+	item_effect_manager.apply_item_effect(item, collector, self)
+
+func _find_collector_unit(item_pos: Vector2) -> Unit:
+	"""Trouve l'unité la plus proche de l'item"""
+	var closest: Unit = null
+	var closest_dist: float = 30.0  # Distance max de collection
+	
+	for u in get_tree().get_nodes_in_group("units"):
+		if u is Unit and not u.is_queued_for_deletion():
+			var dist = u.global_position.distance_to(item_pos)
+			if dist < closest_dist:
+				closest_dist = dist
+				closest = u
+	
+	return closest
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -143,17 +181,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
 			KEY_SPACE: 
-				print("Spawn déclenché : Espace – Enfer")
 				if base_enfer:
-					var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-					if unit:
-						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer)
+					base_enfer.spawn_unit(
+						preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11
+					)
 			KEY_BACKSPACE:
-				print("Spawn déclenché : Backspace – Paradis")
 				if base_paradis:
-					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-					if unit:
-						print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer)
+					base_paradis.spawn_unit(
+						preload("res://unit/unit_paradis/ange/ange.tscn"), 5
+					)
 
 func _draw_selection():
 	if dragging:
@@ -162,7 +198,7 @@ func _draw_selection():
 		selection_overlay.draw_rect(rect, Color.AQUA, false, 2.0)
 
 func _on_victory(winner: String) -> void:
-	print(winner.capitalize() + " gagne ! (Base détruite)")
+	print(winner.capitalize() + " gagne !")
 	if match_timer:
 		match_timer.stop()
 
@@ -170,4 +206,4 @@ func _on_match_end() -> void:
 	var pv_enfer = base_enfer.current_health if base_enfer else 0
 	var pv_paradis = base_paradis.current_health if base_paradis else 0
 	var winner = "enfer" if pv_enfer > pv_paradis else "paradis"
-	print(winner.capitalize() + " gagne par PV restants ! (Enfer: ", pv_enfer, ", Paradis: ", pv_paradis, ")")
+	print(winner.capitalize() + " gagne par PV !")

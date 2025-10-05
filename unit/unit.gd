@@ -45,6 +45,7 @@ func avoid():
 	return result.normalized()
 
 func _physics_process(delta: float) -> void:
+	self.z_index = 900
 	velocity = Vector2.ZERO
 	if target:
 		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
@@ -74,7 +75,7 @@ func _physics_process(delta: float) -> void:
 		if ennemies.size() > 0:
 			var valid_enemies = [] 
 			for ennemy in ennemies:
-				if ennemy is Unit and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
+				if ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
 					valid_enemies.append(ennemy)
 			if valid_enemies.size() > 0:
 				if $Timer.is_stopped():
@@ -84,10 +85,10 @@ func _physics_process(delta: float) -> void:
 					$Marker2D.look_at(ennemy_pos)
 					var arrow_instance = arrow.instantiate()
 					if self.get_side() == true:
-						arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+						arrow_instance.change_sprite("res://unit/feu.png")
 						arrow_instance.set_target(false)
 					else:
-						arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+						arrow_instance.change_sprite("res://unit/vent.png")
 						arrow_instance.set_target(true)
 					arrow_instance.rotation = $Marker2D.rotation
 					arrow_instance.global_position = $Marker2D.global_position

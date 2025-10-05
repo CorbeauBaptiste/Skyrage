@@ -1,13 +1,13 @@
 extends CharacterBody2D
 class_name Unit
 
-@export var speed = 100: set = set_speed
+@export var speed = 50: set = set_speed
 @export var enfer = false: set = set_side
 @export var health = 4: set = set_health
 @export var attack_speed = 1: set = set_attack_speed
 var av = Vector2.ZERO
 var avoid_weight = 0.1
-var target_radius = 50
+var target_radius = 20
 var selected = false:
 	set = set_selected
 var target = null:
@@ -45,7 +45,6 @@ func avoid():
 	return result.normalized()
 
 func _physics_process(delta: float) -> void:
-	self.z_index = 900
 	velocity = Vector2.ZERO
 	if target:
 		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO

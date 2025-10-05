@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dn72l6havsj05" path="res://base/assets/map_sprite/spritesheet.png" id="4_pkg7o"]
 [ext_resource type="Texture2D" uid="uid://m4vl5vbu0vwm" path="res://base/BaseEnfer.png" id="5_dwbse"]
 [ext_resource type="Script" uid="uid://bdnrhxa45axyp" path="res://base/scritps/BaseEnfer.gd" id="5_gbfbk"]
-[ext_resource type="Texture2D" uid="uid://kpqj2xxml7ge" path="res://assets/map_sprite/iso_tile_export.png" id="6_ioo17"]
+[ext_resource type="Texture2D" uid="uid://kpqj2xxml7ge" path="res://base/assets/map_sprite/iso_tile_export.png" id="6_ioo17"]
 [ext_resource type="Texture2D" uid="uid://d3nxnu1ywayrc" path="res://base/BaseParadis.png" id="6_pkg7o"]
 [ext_resource type="Script" uid="uid://bhpxx8e3ub6vm" path="res://base/scritps/BaseParadis.gd" id="7_ioo17"]
 

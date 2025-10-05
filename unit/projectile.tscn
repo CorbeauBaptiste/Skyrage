@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgq7dpks01eyu"]
+[gd_scene load_steps=3 format=3 uid="uid://dxd4ltg8iars7"]
 
-[ext_resource type="Script" uid="uid://kmsum7wdp5k0" path="res://unit/projectile.gd" id="1_qxf0c"]
+[ext_resource type="Script" uid="uid://kmsum7wdp5k0" path="res://projectile.gd" id="1_qxf0c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxmqc"]
 radius = 7.0

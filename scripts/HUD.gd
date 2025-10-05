@@ -15,6 +15,10 @@ const PHASE_DURATION := 30.0
 var is_phase_on: bool = true
 var buttons_forced_disabled: bool = false
 
+signal btn2_pressed
+signal btn4_pressed
+signal btn6_pressed
+
 func _ready() -> void:
 	bar.min_value = 0.0
 	bar.max_value = gold_manager.max_gold
@@ -24,8 +28,11 @@ func _ready() -> void:
 	gold_manager.gold_spent.connect(_on_gold_spent)
 
 	btn2.pressed.connect(func(): _try_spend(Cout_5))
+	btn2.pressed.connect(func(): emit_signal("btn2_pressed"))
 	btn4.pressed.connect(func(): _try_spend(Cout_10))
+	btn4.pressed.connect(func(): emit_signal("btn4_pressed"))
 	btn6.pressed.connect(func(): _try_spend(Cout_15))
+	btn2.pressed.connect(func(): emit_signal("btn6_pressed"))
 
 	_enter_phase(true)
 	_run_cycle()

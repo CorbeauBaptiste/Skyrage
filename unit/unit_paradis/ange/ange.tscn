@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://87hem040vnrn"]
 
-[ext_resource type="Texture2D" uid="uid://c6ue2vk7jh8e7" path="res://unit/unit_paradis/ange/angel-f-001.png" id="2_48dlh"]
+[ext_resource type="Texture2D" uid="uid://6g188yq3i33k" path="res://unit/unit_paradis/ange/angel-f-001.png" id="2_48dlh"]
 
 [sub_resource type="GDScript" id="GDScript_h081i"]
 script/source = "extends Unit
@@ -119,7 +119,6 @@ radius = 138.033
 collision_layer = 2
 collision_mask = 3
 script = SubResource("GDScript_h081i")
-enfer = false
 health = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

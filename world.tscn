@@ -1989,12 +1989,14 @@ shape = SubResource("CircleShape2D_gbfbk")
 position = Vector2(1281, 223)
 
 [node name="HUD" parent="." instance=ExtResource("9_ioo17")]
+visible = false
 offset_left = 988.0
 offset_top = 42.0
 offset_right = 988.0
 offset_bottom = 42.0
 
 [node name="HUD2" parent="." instance=ExtResource("10_wse8f")]
+visible = false
 offset_left = 1022.0
 offset_top = 44.0
 offset_right = 1022.0

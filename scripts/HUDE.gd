@@ -7,13 +7,19 @@ extends Control
 @onready var btn6: Button               = %BtnCost16
 @onready var gold_manager: goldManager = %GoldManagerE
 
-const Cout_5  := 6.0
-const Cout_10 := 11.0
-const Cout_15 := 16.0
+
+
+const Cout_6  := 6.0
+const Cout_11 := 11.0
+const Cout_16 := 16.0
 
 const PHASE_DURATION := 30.0
 var is_phase_on: bool = false
 var buttons_forced_disabled: bool = false
+
+signal btn2_pressed
+signal btn4_pressed
+signal btn6_pressed
 
 func _ready() -> void:
 	bar.min_value = 0.0
@@ -23,9 +29,12 @@ func _ready() -> void:
 	gold_manager.gold_changed.connect(_on_gold_changed)
 	gold_manager.gold_spent.connect(_on_gold_spent)
 
-	btn2.pressed.connect(func(): _try_spend(Cout_5))
-	btn4.pressed.connect(func(): _try_spend(Cout_10))
-	btn6.pressed.connect(func(): _try_spend(Cout_15))
+	btn2.pressed.connect(func(): _try_spend(Cout_6))
+	btn2.pressed.connect(func(): emit_signal("btn2_pressed"))
+	btn4.pressed.connect(func(): _try_spend(Cout_11))
+	btn4.pressed.connect(func(): emit_signal("btn4_pressed"))
+	btn6.pressed.connect(func(): _try_spend(Cout_16))
+	btn2.pressed.connect(func(): emit_signal("btn6_pressed"))
 
 	_enter_phase(false)
 	_run_cycle()
@@ -37,9 +46,10 @@ func _process(_delta: float) -> void:
 		btn6.disabled = true
 	else:
 		var e = gold_manager.current_gold
-		btn2.disabled = e < Cout_5
-		btn4.disabled = e < Cout_10
-		btn6.disabled = e < Cout_15
+		btn2.disabled = e < Cout_6
+		btn4.disabled = e < Cout_11
+		btn6.disabled = e < Cout_16
+		
 
 func _try_spend(cost: float) -> void:
 	if not is_phase_on:

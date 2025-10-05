@@ -9,6 +9,10 @@ var selected = []
 @onready var base_paradis: Base = $BaseParadis
 @onready var match_timer: Timer = $MatchTimer
 
+var ui_layer: CanvasLayer
+var hud_enfer
+var hud_paradis
+
 func _ready() -> void:
 	
 	if match_timer:
@@ -25,31 +29,27 @@ func _ready() -> void:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
-		
-		
-	var label_or_enfer = Label.new()
-	label_or_enfer.position = Vector2(10, 10)
-	label_or_enfer.text = "Enfer Or: 0"
-	add_child(label_or_enfer)
-	base_enfer.gold_manager.gold_changed.connect(func(c, m): label_or_enfer.text = "Enfer Or: " + str(int(c)))
 
-	var label_or_paradis = Label.new()
-	label_or_paradis.position = Vector2(10, 50)
-	label_or_paradis.text = "Paradis Or: 0"
-	add_child(label_or_paradis)
-	base_paradis.gold_manager.gold_changed.connect(func(c, m): label_or_paradis.text = "Paradis Or: " + str(int(c)))
-	
-	
-	var label_help_paradis = Label.new()
-	label_help_paradis.position = Vector2(10, 80)
-	label_help_paradis.text = "cliquer esc pour spawn unite paradis"
-	add_child(label_help_paradis)
-	
-	
-	var label_help_enfer = Label.new()
-	label_help_enfer.position = Vector2(10, 100)
-	label_help_enfer.text = "cliquer espace pour spawn unite paradis"
-	add_child(label_help_enfer)
+
+	ui_layer = CanvasLayer.new()
+	add_child(ui_layer)
+	hud_enfer = preload("res://scripts/hudE.tscn").instantiate()
+	ui_layer.add_child(hud_enfer)
+	if hud_enfer and hud_enfer.has_signal("btn4_pressed"):
+		hud_enfer.btn4_pressed.connect(_on_btn4_pressed)
+	if hud_enfer and hud_enfer.has_signal("btn2_pressed"):
+		hud_enfer.btn2_pressed.connect(_on_btn2_pressed)
+	if hud_enfer and hud_enfer.has_signal("btn6_pressed"):
+		hud_enfer.btn6_pressed.connect(_on_btn6_pressed)
+
+	hud_paradis = preload("res://scripts/hud.tscn").instantiate()
+	ui_layer.add_child(hud_paradis)
+	if hud_paradis and hud_paradis.has_signal("btn2_pressed"):
+		hud_paradis.btn2_pressed.connect(_on_p_btn2_pressed)
+	if hud_paradis and hud_paradis.has_signal("btn4_pressed"):
+		hud_paradis.btn4_pressed.connect(_on_p_btn4_pressed)
+	if hud_paradis and hud_paradis.has_signal("btn6_pressed"):
+		hud_paradis.btn6_pressed.connect(_on_p_btn6_pressed)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -82,30 +82,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				else:
 					print("Ignore collider non-Unit : ", collider.get_class()) 
 	if event is InputEventMouseMotion and dragging:
-		queue_redraw()
-	
-	if event is InputEventKey and event.pressed:
-		print("Touche pressée : keycode = ", event.keycode)
-		match event.keycode:
-			KEY_SPACE: 
-				print("Spawn déclenché : Espace – Enfer")
-				if base_enfer:
-					var unit = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-					if unit:
-						print("DEBUG SPAWN ENFER : unit.enfer = ", unit.enfer, " (doit être true)")
-					else:
-						print("Spawn Enfer échoué (or <11 ?)")
-			KEY_BACKSPACE:
-				print("Spawn déclenché : Échap – Paradis")
-				if base_paradis:
-					var unit = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-					if unit:
-						print("DEBUG SPAWN PARADIS : unit.enfer = ", unit.enfer, " (doit être false)")
-					else:
-						print("Spawn Paradis échoué (or <5 ?)")
-			_:
-				print("Touche non mappée : keycode = ", event.keycode, " (Espace=KEY_SPACE, Échap=KEY_ESCAPE)")
-						
+		queue_redraw()		
 
 func _draw():
 	if dragging:
@@ -123,3 +100,57 @@ func _on_match_end() -> void:
 	var winner = "enfer" if pv_enfer > pv_paradis else "paradis"
 	print(winner.capitalize() + " gagne par PV restants ! (Enfer: ", pv_enfer, ", Paradis: ", pv_paradis, ")")
 	# TODO : Écran fin
+
+func _on_btn4_pressed() -> void:
+	if base_enfer:
+		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		if unit1 and unit2:
+			print("DEBUG SPAWN ENFER : 2 unités ange déchu créées (enfer = true)")
+		else:
+			print("Spawn Enfer échoué (or <11 ?)")
+
+func _on_btn2_pressed() -> void:
+	if base_enfer:
+		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		var unit3 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		if unit1 and unit2 and unit3:
+			print("DEBUG SPAWN ENFER : 3 unités ange déchu créées (enfer = true)")
+		else:
+			print("Spawn Enfer échoué (or <11 ?)")
+
+func _on_btn6_pressed() -> void:
+	if base_enfer:
+		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		if unit1:
+			print("DEBUG SPAWN ENFER : 1 unité ange déchu créée (enfer = true)")
+		else:
+			print("Spawn Enfer échoué (or <11 ?)")
+
+func _on_p_btn2_pressed() -> void:
+	if base_paradis:
+		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		var unit3 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		if unit1 and unit2 and unit3:
+			print("DEBUG SPAWN PARADIS : 3 unités ange créées (enfer = false)")
+		else:
+			print("Spawn Paradis échoué (or <5 ?)")
+
+func _on_p_btn4_pressed() -> void:
+	if base_paradis:
+		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		if unit1 and unit2:
+			print("DEBUG SPAWN PARADIS : 2 unités ange créées (enfer = false)")
+		else:
+			print("Spawn Paradis échoué (or <5 ?)")
+
+func _on_p_btn6_pressed() -> void:
+	if base_paradis:
+		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		if unit1:
+			print("DEBUG SPAWN PARADIS : 1 unité ange créée (enfer = false)")
+		else:
+			print("Spawn Paradis échoué (or <5 ?)")

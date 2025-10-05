@@ -226,6 +226,52 @@ func _apply_rage_ares(team: bool, world: Node, duration: int) -> void:
 	Réduit le temps d'attaque de moitié
 	Durée: 5 secondes
 	"""
+	var units = _get_units_for_team(team, world)
+	if units.is_empty():
+		print("⚠️ Aucune unité trouvée pour Rage d'Arès")
+		return
+	
+	print("⚔️ Rage d'Arès appliquée !")
+	print("   Camp: ", "Enfer" if team else "Paradis")
+	print("   Unités boostées: ", units.size())
+	print("   Cooldown réduit de 50% pendant ", duration, " secondes")
+	
+	# Appliquer le boost à toutes les unités
+	for unit in units:
+		if unit and unit.has("attack_cooldown_modifier"):
+			# Réduire le cooldown de 50% (multiplicateur négatif)
+			unit.attack_cooldown_modifier = -0.5
+			
+			# Si l'unité a un Timer d'attaque en cours, l'ajuster immédiatement
+			if unit.has_node("Timer") and not unit.get_node("Timer").is_stopped():
+				var timer = unit.get_node("Timer")
+				var new_time = max(0.1, unit.attack_speed * 0.5)
+				timer.wait_time = new_time
+			
+			# Effet visuel (aura rouge/dorée)
+			if unit.has_node("Sprite2D"):
+				var original_color = unit.get_node("Sprite2D").modulate
+				unit.get_node("Sprite2D").modulate = Color(1.5, 1.2, 0.8)  # Teinte dorée/orange
+	
+	# Timer pour restaurer après durée
+	var timer = Timer.new()
+	timer.wait_time = duration
+	timer.one_shot = true
+	timer.timeout.connect(func():
+		for unit in units:
+			if unit and not unit.is_queued_for_deletion():
+				unit.attack_cooldown_modifier = 0.0
+				
+				# Restaurer couleur
+				if unit.has_node("Sprite2D"):
+					unit.get_node("Sprite2D").modulate = Color.RED if unit.get_side() else Color.WHITE
+		
+		print("⚔️ Rage d'Arès expiré pour ", "Enfer" if team else "Paradis")
+		effect_expired.emit("La rage d'ares", team)
+		timer.queue_free()
+	)
+	world.add_child(timer)
+	timer.start()
 
 
 func _apply_pomme_adam(team: bool, world: Node, duration: int) -> void:

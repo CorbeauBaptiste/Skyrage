@@ -105,6 +105,7 @@ func avoid() -> Vector2:
 	return result.normalized()
 
 func _physics_process(delta: float) -> void:
+	self.z_index = 900
 	velocity = Vector2.ZERO
 	if target:
 		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
@@ -141,7 +142,7 @@ func _physics_process(delta: float) -> void:
 		if ennemies.size() > 0:
 			var valid_enemies = [] 
 			for ennemy in ennemies:
-				if ennemy is Unit and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
+				if ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
 					valid_enemies.append(ennemy)
 			if valid_enemies.size() > 0:
 				if $Timer.is_stopped():

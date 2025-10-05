@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://ceb1j2mcdxh7n"]
 
 [ext_resource type="Script" uid="uid://crka5xwh24rix" path="res://unit/unit.gd" id="1_4dlos"]
-[ext_resource type="Texture2D" uid="uid://dbacaq66ksxsa" path="res://unit/unit_paradis/seraphin/angel-f-002.png" id="2_swywn"]
+[ext_resource type="Texture2D" uid="uid://ifuxs0x63sqn" path="res://unit/unit_paradis/seraphin/angel-f-002.png" id="2_swywn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661
@@ -102,13 +102,13 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4dlos"]
-radius = 304.007
+radius = 207.67
 
 [node name="Seraphin" type="CharacterBody2D"]
+scale = Vector2(0.472851, 0.456522)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_4dlos")
-enfer = false
 metadata/_custom_type_script = "uid://crka5xwh24rix"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

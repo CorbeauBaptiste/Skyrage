@@ -2,21 +2,20 @@
 
 [ext_resource type="Script" uid="uid://gltekkusuw53" path="res://scripts/HUD.gd" id="1_fathq"]
 [ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/goldManager.gd" id="2_k0442"]
-[ext_resource type="Texture2D" uid="uid://uhg8oeye26uc" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_pktxi"]
-[ext_resource type="Texture2D" uid="uid://cekng7quygvch" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_haoln"]
-[ext_resource type="Texture2D" uid="uid://dwwvd8cbbitnt" path="res://assets/carteparadis/image1.png" id="5_7fr2o"]
-[ext_resource type="Texture2D" uid="uid://s8bvs2xp367b" path="res://assets/carteparadis/image2.png" id="6_raddi"]
-[ext_resource type="Texture2D" uid="uid://bijclw06od8c0" path="res://assets/carteparadis/image3.png" id="7_tv32i"]
+[ext_resource type="Texture2D" uid="uid://ytsirjl8cfll" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_pktxi"]
+[ext_resource type="Texture2D" uid="uid://fcguvc680g6" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_haoln"]
+[ext_resource type="Texture2D" uid="uid://c8wby2ycfibfy" path="res://assets/carteparadis/image1.png" id="5_7fr2o"]
+[ext_resource type="Texture2D" uid="uid://75alkbibdxjq" path="res://assets/carteparadis/image2.jpg" id="6_7lo1c"]
+[ext_resource type="Texture2D" uid="uid://b51qyc2ksvqs8" path="res://assets/carteparadis/image3.png" id="7_tv32i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("3_pktxi")
-expand_margin_top = 80.0
-expand_margin_right = 150.0
+expand_margin_left = 20.0
+expand_margin_top = 40.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rftc2"]
 texture = ExtResource("4_haoln")
-expand_margin_top = 80.0
-expand_margin_right = 150.0
+expand_margin_top = 40.0
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -34,10 +33,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -520.768
-offset_top = 475.184
-offset_right = 201.232
-offset_bottom = 808.184
+offset_left = 406.464
+offset_top = 807.368
+offset_right = 892.464
+offset_bottom = 1020.37
 grow_horizontal = 2
 grow_vertical = 2
 localize_numeral_system = false
@@ -59,12 +58,12 @@ show_percentage = false
 [node name="GoldLabel" type="Label" parent="VBoxContainer2/GoldBar"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 189.0
-offset_top = -65.0
-offset_right = 418.0
-offset_bottom = -4.0
+offset_left = 159.0
+offset_top = -37.0
+offset_right = 388.0
+offset_bottom = 24.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 24
 text = "GOLD : "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
@@ -80,7 +79,7 @@ theme_override_icons/icon = ExtResource("5_7fr2o")
 [node name="BtnCost10" type="Button" parent="VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_icons/icon = ExtResource("6_raddi")
+theme_override_icons/icon = ExtResource("6_7lo1c")
 text = "
 "
 

@@ -4,6 +4,7 @@ class_name Unit
 @export var speed = 100: set = set_speed
 @export var enfer = false: set = set_side
 @export var health = 20: set = set_health
+@export var max_health = 20  # PV maximum pour soin
 @export var attack_speed = 1: set = set_attack_speed
 
 # Modificateurs d'effets d'items
@@ -130,3 +131,49 @@ func get_side():
 
 func get_health():
 	return health
+
+func heal(amount: int) -> int:
+	"""
+	Soigne l'unité d'un certain montant
+	Args:
+		amount: Montant de PV à restaurer
+	Returns: Montant réellement soigné (en cas de cap)
+	"""
+	var old_health = health
+	health = min(health + amount, max_health)
+	var actual_heal = health - old_health
+	
+	if actual_heal > 0:
+		print("💚 Unité ", name, " soignée: +", actual_heal, " PV (", old_health, " → ", health, ")")
+		_show_heal_feedback(actual_heal)
+	
+	return actual_heal
+
+func _show_heal_feedback(amount: int) -> void:
+	"""Affiche un label de feedback visuel pour le soin"""
+	var label = Label.new()
+	label.text = "+%d PV" % amount
+	label.modulate = Color.GREEN
+	label.position = Vector2(-20, -40)
+	label.z_index = 100
+	
+	# Style
+	label.add_theme_color_override("font_outline_color", Color.BLACK)
+	label.add_theme_constant_override("outline_size", 2)
+	label.add_theme_font_size_override("font_size", 16)
+	
+	add_child(label)
+	
+	# Animation
+	var tween = create_tween()
+	tween.parallel().tween_property(label, "position:y", -60, 1.0)
+	tween.parallel().tween_property(label, "modulate:a", 0.0, 1.0)
+	tween.tween_callback(label.queue_free)
+
+func get_missing_health() -> int:
+	"""Retourne le nombre de PV manquants"""
+	return max_health - health
+
+func is_wounded() -> bool:
+	"""Retourne true si l'unité n'est pas à pleine santé"""
+	return health < max_health

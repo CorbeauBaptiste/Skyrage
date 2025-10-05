@@ -151,6 +151,74 @@ func _apply_remede_divin(team: bool, world: Node) -> void:
 	Soigne 200 PV au total sur les unités alliées
 	Effet immédiat
 	"""
+	var units = _get_units_for_team(team, world)
+	if units.is_empty():
+		print("⚠️ Aucune unité trouvée pour Remède Divin")
+		return
+	
+	print("💊 Remède Divin appliqué !")
+	print("   Camp: ", "Enfer" if team else "Paradis")
+	print("   Unités totales: ", units.size())
+	
+	# Distribuer 200 PV de soin
+	var total_heal = 200
+	var actual_healed = _heal_units(units, total_heal)
+	
+	print("   Soin total: ", actual_healed, " / ", total_heal, " PV distribués")
+
+func _heal_units(units: Array, total_heal: int) -> int:
+	"""
+	Distribue intelligemment des PV de soin sur plusieurs unités
+	Priorité aux unités les plus blessées
+	Args:
+		units: Array des unités à potentiellement soigner
+		total_heal: Montant total de PV à distribuer
+	Returns: Montant réellement soigné
+	"""
+	# Filtrer uniquement les unités blessées
+	var wounded_units: Array = []
+	for unit in units:
+		if unit and unit.has_method("is_wounded") and unit.is_wounded():
+			wounded_units.append(unit)
+	
+	if wounded_units.is_empty():
+		print("   Aucune unité blessée à soigner")
+		return 0
+	
+	# Trier par PV manquants (les plus blessées en premier)
+	wounded_units.sort_custom(func(a, b):
+		return a.get_missing_health() > b.get_missing_health()
+	)
+	
+	var remaining_heal = total_heal
+	var total_healed = 0
+	
+	# Stratégie: Distribuer équitablement mais en priorisant les plus blessées
+	for unit in wounded_units:
+		if remaining_heal <= 0:
+			break
+		
+		var missing = unit.get_missing_health()
+		if missing > 0:
+			# Donner au moins la moitié des PV restants ou ce qui manque
+			var heal_amount = min(missing, max(1, remaining_heal / 2))
+			var actual = unit.heal(heal_amount)
+			remaining_heal -= actual
+			total_healed += actual
+	
+	# S'il reste du soin, faire un second passage
+	if remaining_heal > 0:
+		for unit in wounded_units:
+			if remaining_heal <= 0:
+				break
+			
+			var missing = unit.get_missing_health()
+			if missing > 0:
+				var actual = unit.heal(min(missing, remaining_heal))
+				remaining_heal -= actual
+				total_healed += actual
+	
+	return total_healed
 
 func _apply_rage_ares(team: bool, world: Node, duration: int) -> void:
 	"""

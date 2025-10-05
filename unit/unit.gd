@@ -6,6 +6,7 @@ class_name Unit
 @export var health = 20: set = set_health
 @export var max_health = 20  # PV maximum pour soin
 @export var attack_speed = 1: set = set_attack_speed
+@export var unit_size: String = "S"  # Taille: S (Small), M (Medium), L (Large)
 
 # Modificateurs d'effets d'items
 var base_speed: float = 100.0  # Vitesse de base pour restauration
@@ -17,6 +18,10 @@ var attack_cooldown_modifier: float = 0.0  # Modificateur de cooldown en seconde
 var cupidon_arrows: int = 0  # Nombre de flèches spéciales restantes
 var cupidon_arrow_damage: int = 35  # Dégâts par flèche de Cupidon
 var cupidon_area_radius: float = 80.0  # Rayon de la zone d'explosion
+
+# Glaive de Michaël (item légendaire)
+var michael_charges: int = 0  # Nombre d'utilisations du glaive
+var michael_area_radius: float = 120.0  # Rayon plus grand que Cupidon
 
 var av = Vector2.ZERO
 var avoid_weight = 0.1
@@ -100,8 +105,26 @@ func _physics_process(delta: float) -> void:
 					
 					var arrow_instance = arrow.instantiate()
 					
+					# Vérifier si on a le Glaive de Michaël (priorité sur Cupidon)
+					if michael_charges > 0:
+						# Utiliser le Glaive de Michaël (dégâts massifs adaptatifs)
+						arrow_instance.is_michael_glaive = true
+						arrow_instance.area_radius = michael_area_radius
+						michael_charges -= 1
+						print("⚔️ Tir Glaive de Michaël ! (", michael_charges, " restantes)")
+						
+						# Sprite légendaire (or/divin)
+						if self.get_side() == true:
+							arrow_instance.change_sprite("res://Fire_0_Preview.png", 4, 7, 12)
+							arrow_instance.set_target(false)
+						else:
+							arrow_instance.change_sprite("res://Pure.png", 5, 5, 16)
+							arrow_instance.set_target(true)
+						# Teinte or divin
+						arrow_instance.modulate = Color(1.8, 1.5, 0.3)  # Or brillant
+					
 					# Vérifier si on a des flèches de Cupidon
-					if cupidon_arrows > 0:
+					elif cupidon_arrows > 0:
 						# Utiliser une flèche de Cupidon (avec explosion de zone)
 						arrow_instance.is_cupidon_arrow = true
 						arrow_instance.area_damage = cupidon_arrow_damage

@@ -112,6 +112,37 @@ func _apply_glaive_michael(collector_unit: Unit) -> void:
 	Dégât de zone : one shot les S, 3/4 les M, midlife les L
 	2 utilisations
 	"""
+	if not collector_unit:
+		push_error("Impossible d'appliquer Glaive de Michaël : unité null")
+		return
+	
+	print("⚔️ Glaive de Michaël appliqué !")
+	print("   Unité: ", collector_unit.name)
+	print("   Camp: ", "Enfer" if collector_unit.get_side() else "Paradis")
+	print("   2 attaques légendaires ajoutées")
+	print("   Dégâts adaptatifs:")
+	print("     - S (Small, ~20 PV): One-shot (100%)")
+	print("     - M (Medium, ~50 PV): 3/4 des PV (75%)")
+	print("     - L (Large, ~80 PV): Moitié des PV (50%)")
+	
+	# Donner 2 charges du Glaive de Michaël
+	if collector_unit.has("michael_charges"):
+		collector_unit.michael_charges += 2
+		print("   Total charges Glaive: ", collector_unit.michael_charges)
+		
+		# Effet visuel spectaculaire (aura divine dorée)
+		if collector_unit.has_node("Sprite2D"):
+			var sprite = collector_unit.get_node("Sprite2D")
+			var original_color = sprite.modulate
+			
+			# Animation plus longue et impressionnante (1 sec)
+			var tween = collector_unit.create_tween()
+			tween.tween_property(sprite, "modulate", Color(2.0, 1.8, 0.5), 0.3)  # Or divin brillant
+			tween.tween_property(sprite, "modulate", Color(1.5, 1.3, 0.3), 0.2)  # Pulsation
+			tween.tween_property(sprite, "modulate", Color(2.0, 1.8, 0.5), 0.3)  # Repulse
+			tween.tween_property(sprite, "modulate", original_color, 0.2)  # Retour
+	else:
+		push_warning("L'unité n'a pas la propriété michael_charges")
 
 
 func _apply_benediction_ploutos(team: bool, world: Node) -> void:

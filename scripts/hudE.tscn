@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://chpqlr81pjt78"]
 
-[ext_resource type="Script" uid="uid://bn1f514m35hbe" path="res://scripts/HUDE.gd" id="1_stusj"]
+[ext_resource type="Script" path="res://scripts/HUDE.gd" id="1_stusj"]
 [ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/goldManager.gd" id="2_ny3ot"]
-[ext_resource type="Texture2D" uid="uid://ytsirjl8cfll" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_0wv27"]
-[ext_resource type="Texture2D" uid="uid://fcguvc680g6" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_dfxcj"]
-[ext_resource type="Texture2D" uid="uid://pvfuxoc6d6iq" path="res://assets/carteenfers/image1.png" id="5_stusj"]
-[ext_resource type="Texture2D" uid="uid://ylq32xr6gbj2" path="res://assets/carteenfers/image2.jpg" id="6_0wv27"]
-[ext_resource type="Texture2D" uid="uid://b2q03gipwxveq" path="res://assets/carteenfers/image3.png" id="7_dfxcj"]
+[ext_resource type="Texture2D" uid="uid://uhg8oeye26uc" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_0wv27"]
+[ext_resource type="Texture2D" uid="uid://cekng7quygvch" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_dfxcj"]
+[ext_resource type="Texture2D" uid="uid://do4y2x2fy8f6d" path="res://assets/carteenfers/image1.png" id="5_stusj"]
+[ext_resource type="Texture2D" uid="uid://clhbutiad03pg" path="res://assets/carteenfers/image2.jpg" id="6_0wv27"]
+[ext_resource type="Texture2D" uid="uid://bqiuu8oe00u3i" path="res://assets/carteenfers/image3.png" id="7_dfxcj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("3_0wv27")

@@ -112,9 +112,9 @@ func _on_btn4_pressed() -> void:
 
 func _on_btn2_pressed() -> void:
 	if base_enfer:
-		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-		var unit3 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		var unit3 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
 		if unit1 and unit2 and unit3:
 			print("DEBUG SPAWN ENFER : 3 unités ange déchu créées (enfer = true)")
 		else:
@@ -122,7 +122,7 @@ func _on_btn2_pressed() -> void:
 
 func _on_btn6_pressed() -> void:
 	if base_enfer:
-		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/demon/demon.tscn"), 11)
 		if unit1:
 			print("DEBUG SPAWN ENFER : 1 unité ange déchu créée (enfer = true)")
 		else:
@@ -140,8 +140,8 @@ func _on_p_btn2_pressed() -> void:
 
 func _on_p_btn4_pressed() -> void:
 	if base_paradis:
-		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
+		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
 		if unit1 and unit2:
 			print("DEBUG SPAWN PARADIS : 2 unités ange créées (enfer = false)")
 		else:
@@ -149,7 +149,7 @@ func _on_p_btn4_pressed() -> void:
 
 func _on_p_btn6_pressed() -> void:
 	if base_paradis:
-		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/seraphin/seraphin.tscn"), 5)
 		if unit1:
 			print("DEBUG SPAWN PARADIS : 1 unité ange créée (enfer = false)")
 		else:

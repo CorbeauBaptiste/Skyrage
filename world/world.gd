@@ -104,8 +104,7 @@ func _on_match_end() -> void:
 func _on_btn4_pressed() -> void:
 	if base_enfer:
 		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-		if unit1 and unit2:
+		if unit1:
 			print("DEBUG SPAWN ENFER : 2 unités ange déchu créées (enfer = true)")
 		else:
 			print("Spawn Enfer échoué (or <11 ?)")
@@ -113,9 +112,7 @@ func _on_btn4_pressed() -> void:
 func _on_btn2_pressed() -> void:
 	if base_enfer:
 		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
-		var unit2 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
-		var unit3 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
-		if unit1 and unit2 and unit3:
+		if unit1:
 			print("DEBUG SPAWN ENFER : 3 unités ange déchu créées (enfer = true)")
 		else:
 			print("Spawn Enfer échoué (or <11 ?)")
@@ -131,9 +128,7 @@ func _on_btn6_pressed() -> void:
 func _on_p_btn2_pressed() -> void:
 	if base_paradis:
 		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-		var unit3 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-		if unit1 and unit2 and unit3:
+		if unit1:
 			print("DEBUG SPAWN PARADIS : 3 unités ange créées (enfer = false)")
 		else:
 			print("Spawn Paradis échoué (or <5 ?)")
@@ -141,8 +136,7 @@ func _on_p_btn2_pressed() -> void:
 func _on_p_btn4_pressed() -> void:
 	if base_paradis:
 		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
-		var unit2 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
-		if unit1 and unit2:
+		if unit1:
 			print("DEBUG SPAWN PARADIS : 2 unités ange créées (enfer = false)")
 		else:
 			print("Spawn Paradis échoué (or <5 ?)")

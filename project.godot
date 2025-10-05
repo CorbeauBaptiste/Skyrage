@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="SAE-jeu-video"
-run/main_scene="uid://ce10vc07drsvy"
+run/main_scene="uid://dov8fiurwdqsl"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Globals="*res://scripts/globals.gd"
+GlobalWorldEnvironment="*res://scripts/world_environment.tscn"
 
 [display]
 

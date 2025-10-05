@@ -166,6 +166,41 @@ func _apply_pomme_adam(team: bool, world: Node, duration: int) -> void:
 	Ralentit les unités de 50%
 	Durée: 4 secondes
 	"""
+	var units = _get_units_for_team(team, world)
+	if units.is_empty():
+		print("⚠️ Aucune unité trouvée pour Pomme d'Adam")
+		return
+	
+	print("🍎 Pomme d'Adam appliquée !")
+	print("   Camp affecté: ", "Enfer" if team else "Paradis")
+	print("   Unités affectées: ", units.size())
+	print("   Réduction vitesse: -50% pendant ", duration, " secondes")
+	
+	# Appliquer le malus à toutes les unités
+	for unit in units:
+		if unit and unit.has("speed_multiplier"):
+			unit.speed_multiplier = 0.5  # -50% vitesse
+			# Effet visuel (teinte)
+			if unit.has_node("Sprite2D"):
+				unit.get_node("Sprite2D").modulate = Color(0.6, 0.4, 0.4)  # Teinte marron
+	
+	# Timer pour restaurer après durée
+	var timer = Timer.new()
+	timer.wait_time = duration
+	timer.one_shot = true
+	timer.timeout.connect(func():
+		for unit in units:
+			if unit and not unit.is_queued_for_deletion():
+				unit.speed_multiplier = 1.0
+				if unit.has_node("Sprite2D"):
+					# Restaurer couleur selon camp
+					unit.get_node("Sprite2D").modulate = Color.RED if unit.get_side() else Color.WHITE
+		print("🍎 Pomme d'Adam expiré pour ", "Enfer" if team else "Paradis")
+		effect_expired.emit("La pomme d'adam", team)
+		timer.queue_free()
+	)
+	world.add_child(timer)
+	timer.start()
 
 func _apply_rage_fourbe(team: bool, world: Node, duration: int) -> void:
 	"""
@@ -173,6 +208,35 @@ func _apply_rage_fourbe(team: bool, world: Node, duration: int) -> void:
 	Réduit les dégâts de 10%
 	Durée: 5 secondes
 	"""
+	var units = _get_units_for_team(team, world)
+	if units.is_empty():
+		print("⚠️ Aucune unité trouvée pour Rage Fourbe")
+		return
+	
+	print("😠 Rage Fourbe appliquée !")
+	print("   Camp affecté: ", "Enfer" if team else "Paradis")
+	print("   Unités affectées: ", units.size())
+	print("   Réduction dégâts: -10% pendant ", duration, " secondes")
+	
+	# Appliquer le malus à toutes les unités
+	for unit in units:
+		if unit and unit.has("damage_multiplier"):
+			unit.damage_multiplier = 0.9  # -10% dégâts
+	
+	# Timer pour restaurer après durée
+	var timer = Timer.new()
+	timer.wait_time = duration
+	timer.one_shot = true
+	timer.timeout.connect(func():
+		for unit in units:
+			if unit and not unit.is_queued_for_deletion():
+				unit.damage_multiplier = 1.0
+		print("😠 Rage Fourbe expiré pour ", "Enfer" if team else "Paradis")
+		effect_expired.emit("La rage fourbe", team)
+		timer.queue_free()
+	)
+	world.add_child(timer)
+	timer.start()
 
 func _apply_fourberie_scapin(team: bool, world: Node) -> void:
 	"""
@@ -203,6 +267,35 @@ func _apply_intervention_chronos(team: bool, world: Node, duration: int) -> void
 	Augmente le cooldown d'attaque de 1 seconde
 	Durée: 6 secondes
 	"""
+	var units = _get_units_for_team(team, world)
+	if units.is_empty():
+		print("⚠️ Aucune unité trouvée pour Chronos")
+		return
+	
+	print("⏰ Intervention de Chronos appliquée !")
+	print("   Camp affecté: ", "Enfer" if team else "Paradis")
+	print("   Unités affectées: ", units.size())
+	print("   Augmentation cooldown: +1 sec pendant ", duration, " secondes")
+	
+	# Appliquer le malus à toutes les unités
+	for unit in units:
+		if unit and unit.has("attack_cooldown_modifier"):
+			unit.attack_cooldown_modifier = 1.0  # +1 seconde de cooldown
+	
+	# Timer pour restaurer après durée
+	var timer = Timer.new()
+	timer.wait_time = duration
+	timer.one_shot = true
+	timer.timeout.connect(func():
+		for unit in units:
+			if unit and not unit.is_queued_for_deletion():
+				unit.attack_cooldown_modifier = 0.0
+		print("⏰ Chronos expiré pour ", "Enfer" if team else "Paradis")
+		effect_expired.emit("L'intervention de Chronos", team)
+		timer.queue_free()
+	)
+	world.add_child(timer)
+	timer.start()
 
 func _apply_revolte_sombre(collector_unit: Unit, duration: int) -> void:
 	"""
@@ -211,3 +304,35 @@ func _apply_revolte_sombre(collector_unit: Unit, duration: int) -> void:
 	Durée: 4 secondes
 	Target: SINGLE (unité qui ramasse)
 	"""
+	if not collector_unit or not collector_unit.has("damage_multiplier"):
+		push_error("Impossible d'appliquer Révolte Sombre : unité invalide")
+		return
+	
+	print("🌑 Révolte Sombre appliquée !")
+	print("   Unité affectée: ", collector_unit.name)
+	print("   Camp: ", "Enfer" if collector_unit.get_side() else "Paradis")
+	print("   Dégâts annulés pendant ", duration, " secondes")
+	
+	# Appliquer le malus à l'unité (0 dégâts)
+	collector_unit.damage_multiplier = 0.0
+	
+	# Effet visuel pour marquer l'unité
+	if collector_unit.has_node("Sprite2D"):
+		collector_unit.get_node("Sprite2D").modulate = Color(0.2, 0.2, 0.2)  # Très sombre
+	
+	# Timer pour restaurer après durée
+	var timer = Timer.new()
+	timer.wait_time = duration
+	timer.one_shot = true
+	timer.timeout.connect(func():
+		if collector_unit and not collector_unit.is_queued_for_deletion():
+			collector_unit.damage_multiplier = 1.0
+			if collector_unit.has_node("Sprite2D"):
+				# Restaurer couleur selon camp
+				collector_unit.get_node("Sprite2D").modulate = Color.RED if collector_unit.get_side() else Color.WHITE
+		print("🌑 Révolte Sombre expiré")
+		effect_expired.emit("La révolte sombre", collector_unit.get_side())
+		timer.queue_free()
+	)
+	world_ref.add_child(timer)
+	timer.start()

@@ -5,6 +5,13 @@ class_name Unit
 @export var enfer = false: set = set_side
 @export var health = 20: set = set_health
 @export var attack_speed = 1: set = set_attack_speed
+
+# Modificateurs d'effets d'items
+var base_speed: float = 100.0  # Vitesse de base pour restauration
+var speed_multiplier: float = 1.0  # Multiplicateur de vitesse
+var damage_multiplier: float = 1.0  # Multiplicateur de dégâts
+var attack_cooldown_modifier: float = 0.0  # Modificateur de cooldown en secondes
+
 var av = Vector2.ZERO
 var avoid_weight = 0.1
 var target_radius = 50
@@ -52,7 +59,9 @@ func _physics_process(delta: float) -> void:
 		if position.distance_to(target_pos) < target_radius:
 			target = null
 	av = avoid()
-	velocity = (velocity + av * avoid_weight).normalized() * speed
+	# Appliquer le multiplicateur de vitesse
+	var effective_speed = speed * speed_multiplier
+	velocity = (velocity + av * avoid_weight).normalized() * effective_speed
 	move_and_collide(velocity * delta)
 	if velocity != Vector2.ZERO:
 		if abs(velocity.x) > abs(velocity.y):
@@ -91,7 +100,12 @@ func _physics_process(delta: float) -> void:
 						arrow_instance.set_target(true)
 					arrow_instance.rotation = $Marker2D.rotation
 					arrow_instance.global_position = $Marker2D.global_position
+					arrow_instance.source_unit = self  # Passer la référence pour multiplicateur de dégâts
 					add_child(arrow_instance)
+					# Appliquer le modificateur de cooldown
+					var base_timer = attack_speed
+					var modified_timer = base_timer + attack_cooldown_modifier
+					$Timer.wait_time = max(0.1, modified_timer)  # Minimum 0.1 sec
 					$Timer.start()
 					print("Tir 1 projectile sur closest ennemy : ", closest.name)
 			else:
@@ -99,6 +113,7 @@ func _physics_process(delta: float) -> void:
 
 func set_speed(new_value):
 	speed = new_value
+	base_speed = new_value  # Sauvegarder la vitesse de base
 
 func set_health(value):
 	health = value

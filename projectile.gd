@@ -5,6 +5,8 @@ class_name Projectile
 @export var damage = 1: set = set_damage
 @export var targets_enfer = true: set = set_target
 
+var source_unit: Unit = null  # Unité qui a tiré le projectile (pour multiplicateur de dégâts)
+
 func _ready():
 	set_as_top_level(true)
 	collision_mask = 2
@@ -34,14 +36,22 @@ func set_target(value):
 func _on_body_entered(body: Node2D) -> void:
 	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
 	if body is Unit:
-		if body.has_method("get_side"): 
+		if body.has_method("get_side"):
 			if targets_enfer and body.get_side() == true:
-				body.set_health(body.get_health() - damage)
+				var final_damage = damage
+				# Appliquer le multiplicateur de dégâts si l'unité source existe
+				if source_unit and source_unit.has("damage_multiplier"):
+					final_damage *= source_unit.damage_multiplier
+				body.set_health(body.get_health() - final_damage)
 				queue_free()
-				print("Dmg infligé à unité")
+				print("Dmg infligé à unité: ", final_damage)
 			elif not targets_enfer and not body.get_side():
-				body.set_health(body.get_health() - damage)
+				var final_damage = damage
+				# Appliquer le multiplicateur de dégâts si l'unité source existe
+				if source_unit and source_unit.has("damage_multiplier"):
+					final_damage *= source_unit.damage_multiplier
+				body.set_health(body.get_health() - final_damage)
 				queue_free()
-				print("Dmg infligé à unité")
+				print("Dmg infligé à unité: ", final_damage)
 	else:
 		print("Projectile ignore non-Unit : ", body.get_class())

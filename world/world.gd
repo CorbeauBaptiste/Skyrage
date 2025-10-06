@@ -13,6 +13,8 @@ var ui_layer: CanvasLayer
 var hud_enfer
 var hud_paradis
 
+var current_phase_is_enfer: bool = false # true = phase enfer, false = phase paradis
+
 func _ready() -> void:
 	
 	if match_timer:
@@ -30,26 +32,47 @@ func _ready() -> void:
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
 
-
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
+	
+	# Setup HUD Enfer
 	hud_enfer = preload("res://scripts/hudE.tscn").instantiate()
 	ui_layer.add_child(hud_enfer)
-	if hud_enfer and hud_enfer.has_signal("btn4_pressed"):
-		hud_enfer.btn4_pressed.connect(_on_btn4_pressed)
-	if hud_enfer and hud_enfer.has_signal("btn2_pressed"):
+	if hud_enfer:
 		hud_enfer.btn2_pressed.connect(_on_btn2_pressed)
-	if hud_enfer and hud_enfer.has_signal("btn6_pressed"):
+		hud_enfer.btn4_pressed.connect(_on_btn4_pressed)
 		hud_enfer.btn6_pressed.connect(_on_btn6_pressed)
+		# ✅ Connecter au signal de changement de phase
+		hud_enfer.phase_changed.connect(func(is_active): 
+			if is_active:
+				_on_phase_changed(true)
+		)
 
+	# Setup HUD Paradis
 	hud_paradis = preload("res://scripts/hud.tscn").instantiate()
 	ui_layer.add_child(hud_paradis)
-	if hud_paradis and hud_paradis.has_signal("btn2_pressed"):
+	if hud_paradis:
 		hud_paradis.btn2_pressed.connect(_on_p_btn2_pressed)
-	if hud_paradis and hud_paradis.has_signal("btn4_pressed"):
 		hud_paradis.btn4_pressed.connect(_on_p_btn4_pressed)
-	if hud_paradis and hud_paradis.has_signal("btn6_pressed"):
 		hud_paradis.btn6_pressed.connect(_on_p_btn6_pressed)
+		# ✅ Connecter au signal de changement de phase
+		hud_paradis.phase_changed.connect(func(is_active): 
+			if is_active:
+				_on_phase_changed(false)
+		)
+
+# ✅ Fonction appelée quand la phase change
+func _on_phase_changed(is_enfer_phase: bool) -> void:
+	current_phase_is_enfer = is_enfer_phase
+	print("🔄 Phase changée : ", "ENFER" if is_enfer_phase else "PARADIS")
+	
+	# Déselectionner toutes les unités au changement de phase
+	for item in selected:
+		if item.has("collider"):
+			var collider = item.collider
+			if is_instance_valid(collider) and collider is Unit:
+				collider.selected = false
+	selected = []
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -59,8 +82,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				drag_start = event.position
 			else:
 				for item in selected:
+					if not item.has("collider"):
+						continue
 					var collider = item.collider
-					if collider is Unit:  # Fix : Seulement si Unit
+					if is_instance_valid(collider) and collider is Unit:
 						collider.target = event.position
 						collider.selected = false
 				selected = []
@@ -75,14 +100,27 @@ func _unhandled_input(event: InputEvent) -> void:
 			q.collision_mask = 2 
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			selected = space.intersect_shape(q)
+			
+			# ✅ Filtrer selon la phase active
+			var valid_selected = []
 			for item in selected:
+				if not item.has("collider"):
+					continue
 				var collider = item.collider
-				if collider is Unit:
-					collider.selected = true
+				if is_instance_valid(collider) and collider is Unit:
+					# ✅ Vérifier que l'unité appartient au camp de la phase active
+					var unit_is_enfer = collider.get_side()
+					if unit_is_enfer == current_phase_is_enfer:
+						collider.selected = true
+						valid_selected.append(item)
+					else:
+						print("❌ Cannot select enemy unit during ", "ENFER" if current_phase_is_enfer else "PARADIS", " phase")
 				else:
-					print("Ignore collider non-Unit : ", collider.get_class()) 
+					print("Ignore collider non-Unit ou invalide")
+			selected = valid_selected
+			
 	if event is InputEventMouseMotion and dragging:
-		queue_redraw()		
+		queue_redraw()
 
 func _draw():
 	if dragging:
@@ -92,59 +130,51 @@ func _on_victory(winner: String) -> void:
 	print(winner.capitalize() + " gagne ! (Base détruite)")
 	if match_timer:
 		match_timer.stop()
-	# TODO : fin de match 
 
 func _on_match_end() -> void:
 	var pv_enfer = base_enfer.current_health if base_enfer else 0
 	var pv_paradis = base_paradis.current_health if base_paradis else 0
 	var winner = "enfer" if pv_enfer > pv_paradis else "paradis"
 	print(winner.capitalize() + " gagne par PV restants ! (Enfer: ", pv_enfer, ", Paradis: ", pv_paradis, ")")
-	# TODO : Écran fin
-
-func _on_btn4_pressed() -> void:
-	if base_enfer:
-		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
-		if unit1:
-			print("DEBUG SPAWN ENFER : 2 unités ange déchu créées (enfer = true)")
-		else:
-			print("Spawn Enfer échoué (or <11 ?)")
 
 func _on_btn2_pressed() -> void:
 	if base_enfer:
-		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
-		if unit1:
-			print("DEBUG SPAWN ENFER : 3 unités ange déchu créées (enfer = true)")
-		else:
-			print("Spawn Enfer échoué (or <11 ?)")
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		await get_tree().create_timer(0.5).timeout
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		await get_tree().create_timer(0.5).timeout
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		print("DEBUG SPAWN ENFER : 3 unités diablotin créées (enfer = true)")
+
+func _on_btn4_pressed() -> void:
+	if base_enfer:
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		await get_tree().create_timer(0.5).timeout
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/ange_dechu/ange_dechu.tscn"), 11)
+		print("DEBUG SPAWN ENFER : 2 unités ange déchu créées (enfer = true)")
 
 func _on_btn6_pressed() -> void:
 	if base_enfer:
-		var unit1 = base_enfer.spawn_unit(preload("res://unit/unit_enfer/demon/demon.tscn"), 11)
-		if unit1:
-			print("DEBUG SPAWN ENFER : 1 unité ange déchu créée (enfer = true)")
-		else:
-			print("Spawn Enfer échoué (or <11 ?)")
+		base_enfer.spawn_unit(preload("res://unit/unit_enfer/demon/demon.tscn"), 11)
+		print("DEBUG SPAWN ENFER : 1 unité démon créée (enfer = true)")
 
 func _on_p_btn2_pressed() -> void:
 	if base_paradis:
-		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
-		if unit1:
-			print("DEBUG SPAWN PARADIS : 3 unités ange créées (enfer = false)")
-		else:
-			print("Spawn Paradis échoué (or <5 ?)")
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		await get_tree().create_timer(0.5).timeout
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		await get_tree().create_timer(0.5).timeout
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/ange/ange.tscn"), 5)
+		print("DEBUG SPAWN PARADIS : 3 unités ange créées (enfer = false)")
 
 func _on_p_btn4_pressed() -> void:
 	if base_paradis:
-		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
-		if unit1:
-			print("DEBUG SPAWN PARADIS : 2 unités ange créées (enfer = false)")
-		else:
-			print("Spawn Paradis échoué (or <5 ?)")
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/seraphin/seraphin.tscn"), 5)
+		await get_tree().create_timer(0.5).timeout
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/seraphin/seraphin.tscn"), 5)
+		print("DEBUG SPAWN PARADIS : 2 unités séraphin créées (enfer = false)")
 
 func _on_p_btn6_pressed() -> void:
 	if base_paradis:
-		var unit1 = base_paradis.spawn_unit(preload("res://unit/unit_paradis/seraphin/seraphin.tscn"), 5)
-		if unit1:
-			print("DEBUG SPAWN PARADIS : 1 unité ange créée (enfer = false)")
-		else:
-			print("Spawn Paradis échoué (or <5 ?)")
+		base_paradis.spawn_unit(preload("res://unit/unit_paradis/archange/archange.tscn"), 5)
+		print("DEBUG SPAWN PARADIS : 1 unité archange créée (enfer = false)")

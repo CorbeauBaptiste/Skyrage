@@ -42,11 +42,29 @@ func set_target(value):
 	targets_enfer = value
 
 func _on_body_entered(body: Node2D) -> void:
+	if not is_instance_valid(body):  # ✅ Sécurité
+		return
+		
 	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
 	
-	if body.has_method("get_side"):
+	# ✅ Vérifier si c'est une Base en premier
+	if body is Base:
+		var is_valid_target = (targets_enfer and body.team == "enfer") or (not targets_enfer and body.team == "paradis")
+		
+		if is_valid_target:
+			var final_damage = damage
+			if source_unit and source_unit.has("damage_multiplier"):
+				final_damage = int(damage * source_unit.damage_multiplier)
+			
+			print("💥 Projectile attaque BASE ", body.team, " avec ", final_damage, " dégâts")
+			body.take_damage(final_damage)  # ✅ Utiliser take_damage() pour les bases
+			queue_free()
+		return
+	
+	# ✅ Sinon vérifier si c'est une Unit
+	if body is Unit and body.has_method("get_side"):
 		# Vérifier si c'est une cible valide
-		var is_valid_target = (targets_enfer and body.get_side() == true) or (not targets_enfer and not body.get_side())
+		var is_valid_target = (targets_enfer and body.get_side() == true) or (not targets_enfer and body.get_side() == false)
 			
 		if is_valid_target:
 			if is_michael_glaive:
@@ -61,7 +79,9 @@ func _on_body_entered(body: Node2D) -> void:
 				# Flèche normale : dégâts directs
 				var final_damage = damage
 				if source_unit and source_unit.has("damage_multiplier"):
-					final_damage *= source_unit.damage_multiplier
+					final_damage = int(damage * source_unit.damage_multiplier)
+				
+				# ✅ Utiliser set_health pour les unités
 				body.set_health(body.get_health() - final_damage)
 				print("Dmg infligé à unité: ", final_damage)
 				
@@ -93,14 +113,17 @@ func _explode_area_damage(explosion_pos: Vector2) -> void:
 	
 	for hit in hits:
 		var unit = hit.collider
+		if not is_instance_valid(unit):  # ✅ Sécurité
+			continue
+			
 		if unit is Unit and unit.has_method("get_side"):
 			# Vérifier si c'est une cible valide (camp ennemi)
-			var is_valid_target = (targets_enfer and unit.get_side() == true) or (not targets_enfer and not unit.get_side())
+			var is_valid_target = (targets_enfer and unit.get_side() == true) or (not targets_enfer and unit.get_side() == false)
 			
 			if is_valid_target:
 				var final_damage = area_damage
 				if source_unit and source_unit.has("damage_multiplier"):
-					final_damage *= source_unit.damage_multiplier
+					final_damage = int(area_damage * source_unit.damage_multiplier)
 				
 				unit.set_health(unit.get_health() - final_damage)
 				damaged_count += 1
@@ -135,9 +158,12 @@ func _explode_michael_glaive(explosion_pos: Vector2) -> void:
 	
 	for hit in hits:
 		var unit = hit.collider
+		if not is_instance_valid(unit):  # ✅ Sécurité
+			continue
+			
 		if unit is Unit and unit.has_method("get_side"):
 			# Vérifier si c'est une cible valide (camp ennemi)
-			var is_valid_target = (targets_enfer and unit.get_side() == true) or (not targets_enfer and not unit.get_side())
+			var is_valid_target = (targets_enfer and unit.get_side() == true) or (not targets_enfer and unit.get_side() == false)
 			
 			if is_valid_target:
 				# Calculer dégâts selon taille
@@ -145,7 +171,7 @@ func _explode_michael_glaive(explosion_pos: Vector2) -> void:
 				
 				# Appliquer multiplicateur si actif
 				if source_unit and source_unit.has("damage_multiplier"):
-					damage_value *= source_unit.damage_multiplier
+					damage_value = int(damage_value * source_unit.damage_multiplier)
 				
 				var old_health = unit.get_health()
 				unit.set_health(unit.get_health() - damage_value)

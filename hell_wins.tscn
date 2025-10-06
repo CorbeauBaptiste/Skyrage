@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://nsloahqnlbgc"]
 
-[ext_resource type="Texture2D" uid="uid://cmlkbpqhiyy2" path="res://assets/heaven/paradis.png" id="1_a13er"]
+[ext_resource type="Texture2D" uid="uid://b63737mtedmw1" path="res://assets/hell/hell.png" id="1_plg05"]
 [ext_resource type="Texture2D" uid="uid://dm6g8pwbhqq5e" path="res://assets/hell/coupe.png" id="2_plg05"]
 [ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/heaven/bouton.png" id="3_07ld0"]
 [ext_resource type="Script" uid="uid://cqx38is68ydgl" path="res://retour_menu.gd" id="4_plg05"]
@@ -40,7 +40,7 @@ offset_right = 219.0
 offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_a13er")
+texture = ExtResource("1_plg05")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
@@ -50,19 +50,19 @@ anchor_left = 0.451
 anchor_top = 0.176
 anchor_right = 1.593
 anchor_bottom = 1.805
-offset_left = -745.552
-offset_top = -239.048
-offset_right = -222.136
-offset_bottom = -885.64
+offset_left = -473.92
+offset_top = -239.08
+offset_right = 49.4961
+offset_bottom = -885.672
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 100
-text = "Heaven wins"
+text = "Hell wins"
 label_settings = SubResource("LabelSettings_pw4if")
 
 [node name="Coupe2" type="Sprite2D" parent="."]
-position = Vector2(-1074, -1092)
-scale = Vector2(2.58946, 2.8115)
+position = Vector2(-322, -438)
+scale = Vector2(1.20919, 1.33664)
 texture = ExtResource("2_plg05")
 centered = false
 offset = Vector2(768.772, 466.221)
@@ -70,10 +70,10 @@ offset = Vector2(768.772, 466.221)
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.414
-anchor_top = 0.8
-anchor_right = 0.623
-anchor_bottom = 0.952
+anchor_left = 0.365067
+anchor_top = 0.765185
+anchor_right = 0.702967
+anchor_bottom = 1.01009
 offset_left = 40.072
 offset_top = 43.6
 offset_right = -69.6961

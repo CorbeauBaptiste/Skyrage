@@ -11,13 +11,14 @@ const Cout_5  := 5.0
 const Cout_10 := 10.0
 const Cout_15 := 15.0
 
-const PHASE_DURATION := 30.0
+const PHASE_DURATION := 12.0
 var is_phase_on: bool = true
 var buttons_forced_disabled: bool = false
 
 signal btn2_pressed
 signal btn4_pressed
 signal btn6_pressed
+signal phase_changed(is_active: bool)
 
 func _ready() -> void:
 	bar.min_value = 0.0
@@ -32,7 +33,7 @@ func _ready() -> void:
 	btn4.pressed.connect(func(): _try_spend(Cout_10))
 	btn4.pressed.connect(func(): emit_signal("btn4_pressed"))
 	btn6.pressed.connect(func(): _try_spend(Cout_15))
-	btn2.pressed.connect(func(): emit_signal("btn6_pressed"))
+	btn6.pressed.connect(func(): emit_signal("btn6_pressed"))
 
 	_enter_phase(true)
 	_run_cycle()
@@ -78,6 +79,7 @@ func _run_cycle() -> void:
 
 func _enter_phase(phase_on: bool) -> void:
 	is_phase_on = phase_on
+	emit_signal("phase_changed", phase_on)
 	if is_phase_on:
 		buttons_forced_disabled = false
 		gold_manager.set_process(true)

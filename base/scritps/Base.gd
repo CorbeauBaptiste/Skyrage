@@ -3,8 +3,7 @@ class_name Base
 
 @export var team: String = "neutral"
 @export var max_health: int = 2500
-var current_health: int
-
+var current_health: int = 2500
 var gold_manager: goldManager
 var player: Player
 
@@ -26,12 +25,11 @@ func _ready() -> void:
 		gold_manager.use_overtime_curve = true
 		gold_manager.set_process(true)  
 	
-	# Joueur lié
-	player = Player.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)  # p_camp = team
+	player = Player.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)
 	add_child(player)
-	player.set_camp(team)  # Fixe camp
-	player.base = self  # Joueur pointe base (sync or)
-	player.modifier_or(0)  # Sync initial
+	player.set_camp(team)
+	player.base = self
+	player.modifier_or(0)
 	
 	if has_node("DetectionArea"):
 		$DetectionArea.body_entered.connect(_on_enemy_nearby)
@@ -40,11 +38,20 @@ func _ready() -> void:
 	print("Base ", team, " ready (PV: ", current_health, ", Or: ", gold_manager.current_gold, ")")
 
 func take_damage(amount: int) -> bool:
+	print("💥 BASE ", team, " prend ", amount, " dégâts ! PV: ", current_health, " → ", current_health - amount)
 	current_health = max(0, current_health - amount)
 	health_changed.emit(current_health, max_health)
+	
 	if current_health <= 0:
+		print("💀 BASE ", team, " DÉTRUITE !")
 		var winner = "paradis" if team == "enfer" else "enfer"
 		base_destroyed.emit(winner)
+		
+		if team == "enfer":
+			get_tree().change_scene_to_file("res://heaven_wins.tscn")
+		elif team == "paradis":
+			get_tree().change_scene_to_file("res://hell_wins.tscn")
+		
 		queue_free()
 		return true
 	return false
@@ -76,24 +83,31 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		var unit = unit_scene.instantiate() as Unit
 		unit.global_position = spawn_pos
 		unit.enfer = (team == "enfer")
-		unit.enfer = player.get_side()
 		unit.set_side(unit.enfer)
+		
 		if get_enemy_base():
 			unit.target = get_enemy_base().global_position
+		
 		get_parent().add_child(unit)
 		unit.add_to_group("units")
 		unit_spawned.emit(unit)
+		
+		await get_tree().create_timer(0.5).timeout
+		if is_instance_valid(unit):
+			unit.target = null
+		
 		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize(), " (enfer: ", unit.enfer, ") – Or restant: ", gold_manager.current_gold)
+		
 		return unit
-	print("Or insuffisant pour ", team, " (besoin: ", cost, ") – Attends regen 1/sec")
+	print("Or insuffisant pour ", team, " (besoin: ", cost, ") – Attends regen")
 	return null
 
-# test attaque
+
 func _on_enemy_nearby(body: Node2D) -> void:
 	if body is Unit and body.get_side() != (team == "enfer"):
-		body.target = self
+		body.target = self.global_position
 		print("Attaque auto sur base ", team, " !")
-		
+
 func get_side() -> bool:
 	return team == "enfer"
 
@@ -102,9 +116,5 @@ func get_health():
 
 func set_health(value):
 	current_health = value
-	
 	if current_health <= 0:
-		if team == "enfer":
-			get_tree().change_scene_to_file("res://heaven_wins.tscn")
-		if team == "paradis":
-			get_tree().change_scene_to_file("res://hell_wins.tscn")
+		take_damage(0)

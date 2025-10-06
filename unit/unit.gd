@@ -10,7 +10,7 @@ var avoid_weight = 0.1
 var target_radius = 20
 var selected = false:
 	set = set_selected
-var target = null:
+var target: Variant = null:
 	set = set_target
 
 var arrow = preload("res://projectile.tscn"):
@@ -18,6 +18,8 @@ var arrow = preload("res://projectile.tscn"):
 
 func set_selected(value):
 	selected = value
+	if not is_inside_tree():
+		return
 	if selected:
 		$Sprite2D.self_modulate = Color.AQUA
 	else:
@@ -40,8 +42,10 @@ func avoid():
 	var neighbors = $Detect.get_overlapping_bodies()
 	if neighbors:
 		for i in neighbors:
-			result += i.position.direction_to(position)
-		result /= neighbors.size()
+			if is_instance_valid(i):
+				result += i.position.direction_to(position)
+		if neighbors.size() > 0:
+			result /= neighbors.size()
 	return result.normalized()
 
 func _physics_process(delta: float) -> void:
@@ -74,8 +78,9 @@ func _physics_process(delta: float) -> void:
 		if ennemies.size() > 0:
 			var valid_enemies = [] 
 			for ennemy in ennemies:
-				if ennemy.has_method("get_side") and ennemy.get_side() != self.get_side() and ennemy != self:
+				if is_instance_valid(ennemy) and ennemy != self and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side():
 					valid_enemies.append(ennemy)
+			
 			if valid_enemies.size() > 0:
 				if $Timer.is_stopped():
 					valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
@@ -103,9 +108,10 @@ func set_speed(new_value):
 func set_health(value):
 	health = value
 	
-	if health == 0:
+	if health <= 0:
 		queue_free()
-		set_selected(false)
+		if selected:
+			set_selected(false)
 
 func set_attack_speed(value):
 	attack_speed = value

@@ -7,3 +7,17 @@ nav:
 
 theme:
   name: material
+
+plugins:
+  # Extensions pour le thème Material
+  - search
+
+  # Extensions pour le Markdown
+  - mkdocs_pymdownx_material_extras
+
+  # Extension pour exporter le site en PDF
+  - exporter
+
+  # Minification du code HTML, CSS et JavaScript
+  - minify:
+      minify_html: true

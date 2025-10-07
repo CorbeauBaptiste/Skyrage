@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://dov8fiurwdqsl"]
 
-[ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/paramètres.gd" id="1_twxth"]
+[ext_resource type="Script" path="res://scripts/paramètres.gd" id="1_twxth"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_5mnfy"]
 [ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="2_etcht"]
 [ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/brithness.gd" id="2_twxth"]
@@ -122,10 +122,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1022.0
-offset_top = -594.5
-offset_right = 1003.0
-offset_bottom = 601.5
+offset_left = -768.0
+offset_top = -512.0
+offset_right = 768.0
+offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_etcht")
@@ -137,10 +137,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -177.5
-offset_top = -222.5
-offset_right = 172.5
-offset_bottom = 184.5
+offset_left = -184.0
+offset_top = -100.0
+offset_right = 166.0
+offset_bottom = 307.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 31
@@ -217,10 +217,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -397.0
-offset_top = -14.0
-offset_right = 398.0
-offset_bottom = 296.0
+offset_left = -400.0
+offset_top = -64.0
+offset_right = 395.0
+offset_bottom = 246.0
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_lujcr")
 text = "PARAMÈTRES"
@@ -230,10 +230,10 @@ vertical_alignment = 1
 
 [node name="exit" type="Button" parent="."]
 layout_mode = 1
-offset_left = 5.0
-offset_top = 6.0
-offset_right = 99.0
-offset_bottom = 96.0
+offset_left = -5.0
+offset_top = -6.0
+offset_right = 89.0
+offset_bottom = 84.0
 theme_override_font_sizes/font_size = 64
 theme_override_styles/hover = SubResource("StyleBoxTexture_iqfla")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_x13cy")

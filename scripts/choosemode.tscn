@@ -1,11 +1,11 @@
 [gd_scene load_steps=21 format=3 uid="uid://csw5rvqxejroh"]
 
-[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_gnp2c"]
+[ext_resource type="Script" path="res://scripts/exit.gd" id="1_gnp2c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="1_kpgrt"]
 [ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_w82kn"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
-[ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/jvj.gd" id="6_rlcv8"]
+[ext_resource type="Script" path="res://scripts/jvj.gd" id="6_rlcv8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]
 texture = ExtResource("1_kpgrt")
@@ -104,10 +104,10 @@ script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 531.0
-offset_top = -50.0
-offset_right = 1437.0
-offset_bottom = 354.0
+offset_left = 136.0
+offset_top = -77.0
+offset_right = 1042.0
+offset_bottom = 327.0
 theme_override_font_sizes/font_size = 1
 theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
 text = "SÉLECTIONNEZ UN MODE"
@@ -123,10 +123,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -314.0
-offset_top = -174.0
-offset_right = 344.0
-offset_bottom = 259.0
+offset_left = -318.0
+offset_top = -37.0
+offset_right = 340.0
+offset_bottom = 396.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 54

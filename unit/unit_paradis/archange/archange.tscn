@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bpem4157qmn2d"]
 
 [ext_resource type="Script" uid="uid://dsvabggskaf10" path="res://unit/unit_paradis/archange/archange.gd" id="1_rk7dp"]
-[ext_resource type="Texture2D" uid="uid://iqxvxcqxcxfs" path="res://unit/unit_paradis/archange/angel-m-001_2.png" id="2_8upee"]
+[ext_resource type="Texture2D" uid="uid://d4momsgplg418" path="res://unit/unit_paradis/archange/angel-m-001_2.png" id="2_8upee"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661

@@ -1,11 +1,11 @@
 [gd_scene load_steps=21 format=3 uid="uid://csw5rvqxejroh"]
 
-[ext_resource type="Script" path="res://scripts/exit.gd" id="1_gnp2c"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="1_kpgrt"]
-[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_w82kn"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_1iq64"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_ub12g"]
-[ext_resource type="Script" path="res://scripts/jvj.gd" id="6_rlcv8"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_gnp2c"]
+[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
+[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
+[ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/jvj.gd" id="6_rlcv8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]
 texture = ExtResource("1_kpgrt")
@@ -104,10 +104,10 @@ script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 136.0
-offset_top = -77.0
-offset_right = 1042.0
-offset_bottom = 327.0
+offset_left = 516.0
+offset_top = -23.0
+offset_right = 1422.0
+offset_bottom = 381.0
 theme_override_font_sizes/font_size = 1
 theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
 text = "SÉLECTIONNEZ UN MODE"

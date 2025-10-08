@@ -42,7 +42,6 @@ func _ready() -> void:
 		hud_enfer.btn2_pressed.connect(_on_btn2_pressed)
 		hud_enfer.btn4_pressed.connect(_on_btn4_pressed)
 		hud_enfer.btn6_pressed.connect(_on_btn6_pressed)
-		# ✅ Connecter au signal de changement de phase
 		hud_enfer.phase_changed.connect(func(is_active): 
 			if is_active:
 				_on_phase_changed(true)
@@ -55,13 +54,11 @@ func _ready() -> void:
 		hud_paradis.btn2_pressed.connect(_on_p_btn2_pressed)
 		hud_paradis.btn4_pressed.connect(_on_p_btn4_pressed)
 		hud_paradis.btn6_pressed.connect(_on_p_btn6_pressed)
-		# ✅ Connecter au signal de changement de phase
 		hud_paradis.phase_changed.connect(func(is_active): 
 			if is_active:
 				_on_phase_changed(false)
 		)
 
-# ✅ Fonction appelée quand la phase change
 func _on_phase_changed(is_enfer_phase: bool) -> void:
 	current_phase_is_enfer = is_enfer_phase
 	print("🔄 Phase changée : ", "ENFER" if is_enfer_phase else "PARADIS")
@@ -101,14 +98,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			selected = space.intersect_shape(q)
 			
-			# ✅ Filtrer selon la phase active
 			var valid_selected = []
 			for item in selected:
 				if not item.has("collider"):
 					continue
 				var collider = item.collider
 				if is_instance_valid(collider) and collider is Unit:
-					# ✅ Vérifier que l'unité appartient au camp de la phase active
 					var unit_is_enfer = collider.get_side()
 					if unit_is_enfer == current_phase_is_enfer:
 						collider.selected = true

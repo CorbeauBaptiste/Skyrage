@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://gltekkusuw53" path="res://scripts/HUD.gd" id="1_fathq"]
 [ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/goldManager.gd" id="2_k0442"]
-[ext_resource type="Texture2D" uid="uid://ytsirjl8cfll" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_pktxi"]
-[ext_resource type="Texture2D" uid="uid://fcguvc680g6" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_haoln"]
-[ext_resource type="Texture2D" uid="uid://c8wby2ycfibfy" path="res://assets/carteparadis/image1.png" id="5_7fr2o"]
-[ext_resource type="Texture2D" uid="uid://75alkbibdxjq" path="res://assets/carteparadis/image2.jpg" id="6_7lo1c"]
-[ext_resource type="Texture2D" uid="uid://b51qyc2ksvqs8" path="res://assets/carteparadis/image3.png" id="7_tv32i"]
+[ext_resource type="Texture2D" uid="uid://cmn0ypwtv56u3" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="3_pktxi"]
+[ext_resource type="Texture2D" uid="uid://b2d0m73k5cdg5" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="4_haoln"]
+[ext_resource type="Texture2D" uid="uid://c6d5ghyskatu4" path="res://assets/sprites/ui/cards/paradise/ange.png" id="5_7fr2o"]
+[ext_resource type="Texture2D" uid="uid://uctorpatojs0" path="res://assets/sprites/ui/cards/paradise/seraphin.jpg" id="6_7lo1c"]
+[ext_resource type="Texture2D" uid="uid://culbllv32ifhf" path="res://assets/sprites/ui/cards/paradise/archange.png" id="7_tv32i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("3_pktxi")

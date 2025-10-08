@@ -8,7 +8,7 @@ var music_player: AudioStreamPlayer2D
 func _ready():
 	if music_player == null:
 		music_player = AudioStreamPlayer2D.new()
-		music_player.stream = preload("res://audio/menu/musique_menu_principal_orchestrale_epique.mp3")
+		music_player.stream = preload("res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3")
 		music_player.volume_db = lerp(-5, 0, volume)
 		add_child(music_player)
 		music_player.play()

@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dr2n70wgn4xvu" path="res://scripts/HUDE.gd" id="1_stusj"]
 [ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/goldManager.gd" id="2_ny3ot"]
-[ext_resource type="Texture2D" uid="uid://ytsirjl8cfll" path="res://assets/icongoldbarre/healthbarUnder.png" id="3_0wv27"]
-[ext_resource type="Texture2D" uid="uid://fcguvc680g6" path="res://assets/icongoldbarre/healthbarProgress.png" id="4_dfxcj"]
-[ext_resource type="Texture2D" uid="uid://pvfuxoc6d6iq" path="res://assets/carteenfers/image1.png" id="5_stusj"]
-[ext_resource type="Texture2D" uid="uid://ylq32xr6gbj2" path="res://assets/carteenfers/image2.jpg" id="6_0wv27"]
-[ext_resource type="Texture2D" uid="uid://b2q03gipwxveq" path="res://assets/carteenfers/image3.png" id="7_dfxcj"]
+[ext_resource type="Texture2D" uid="uid://b2d0m73k5cdg5" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="3_0wv27"]
+[ext_resource type="Texture2D" uid="uid://cmn0ypwtv56u3" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="4_dfxcj"]
+[ext_resource type="Texture2D" uid="uid://ofjlfmtrpiq7" path="res://assets/sprites/ui/cards/hell/diablotin.png" id="5_stusj"]
+[ext_resource type="Texture2D" uid="uid://csncbsppg76ri" path="res://assets/sprites/ui/cards/hell/ange_dechu.jpg" id="6_0wv27"]
+[ext_resource type="Texture2D" uid="uid://bsb7lavm4o6gd" path="res://assets/sprites/ui/cards/hell/demon.png" id="7_dfxcj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("3_0wv27")

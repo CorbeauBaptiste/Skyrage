@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://b2bgtts1cq2et"]
 
 [ext_resource type="Script" uid="uid://d3bv4pohe3qik" path="res://unit/unit_enfer/diablotin/diablotin.gd" id="1_awgai"]
-[ext_resource type="Texture2D" uid="uid://b5xf0fduci0wp" path="res://unit/unit_enfer/diablotin/fallen_angel-001.png" id="2_kriiy"]
+[ext_resource type="Texture2D" uid="uid://cybq8r71iw1uh" path="res://assets/sprites/units/hell/diablotin.png" id="2_kriiy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661

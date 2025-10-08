@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://duav0ofjejfw8"]
 
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="1_1xu0v"]
-[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="1_61erh"]
-[ext_resource type="Script" path="res://scripts/exit.gd" id="1_x2m5c"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/croix.png" id="2_l3ipc"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="1_1xu0v"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="1_61erh"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/exit.gd" id="1_x2m5c"]
+[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="2_l3ipc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]
 texture = ExtResource("1_1xu0v")

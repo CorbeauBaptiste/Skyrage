@@ -7,9 +7,9 @@ extends Control
 @onready var btn6: Button                  = %BtnCost15
 @onready var gold_manager: goldManager     = %GoldManager
 
-const Cout_5  := 5.0
-const Cout_10 := 10.0
-const Cout_15 := 15.0
+const Cout_5  := 0.0 #5.0
+const Cout_10 := 0.0 #10.0
+const Cout_15 := 0.0 #15.0
 
 const PHASE_DURATION := 12.0
 var is_phase_on: bool = true

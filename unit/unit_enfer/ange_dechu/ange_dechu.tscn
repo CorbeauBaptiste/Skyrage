@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bl7go3g78ckpo"]
 
 [ext_resource type="Script" uid="uid://bpl4qjnk0vw4y" path="res://unit/unit_enfer/ange_dechu/ange_dechu.gd" id="1_ipigq"]
-[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://unit/unit_enfer/ange_dechu/dark_angel-m-001_2.png" id="2_6uqi0"]
+[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://assets/sprites/units/hell/ange_dechu.png" id="2_6uqi0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
 radius = 14.8661

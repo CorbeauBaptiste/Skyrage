@@ -1,9 +1,9 @@
 [gd_scene load_steps=19 format=3 uid="uid://3naivixtwygu"]
 
-[ext_resource type="Script" path="res://scripts/menuprincipal.gd" id="1_s16su"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/fondtitre.png" id="2_js3ya"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/bouton.png" id="2_s16su"]
-[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/fond.png" id="2_ukart"]
+[ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/menuprincipal.gd" id="1_s16su"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_js3ya"]
+[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="2_s16su"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="2_ukart"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0dla8"]
 texture = ExtResource("2_js3ya")

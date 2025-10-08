@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Globals="*res://scripts/globals.gd"
-GlobalWorldEnvironment="*res://scripts/world_environment.tscn"
+Globals="*res://scripts/core/globals.gd"
+GlobalWorldEnvironment="*res://scenes/environment/world_environment.tscn"
 
 [display]
 

@@ -1,0 +1,244 @@
+[gd_scene load_steps=28 format=3 uid="uid://dov8fiurwdqsl"]
+
+[ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/ui/parametre.gd" id="1_g20ld"]
+[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="2_vy0v6"]
+[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="3_qn5cf"]
+[ext_resource type="Texture2D" uid="uid://qioa71paxu41" path="res://assets/sprites/menu/bars/progress_bar_end_point.png" id="4_3y87n"]
+[ext_resource type="Texture2D" uid="uid://bcpqys3x6wyud" path="res://assets/sprites/menu/bars/progress_bar_empty.png" id="5_fwc1c"]
+[ext_resource type="Texture2D" uid="uid://cfoltrc1xl3vw" path="res://assets/sprites/menu/bars/progress_bar_full.png" id="6_cp0ru"]
+[ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/ui/brithness.gd" id="7_w6kfw"]
+[ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="8_1voy7"]
+[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="9_m51i1"]
+[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="10_x8v71"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jhvt5"]
+texture = ExtResource("3_qn5cf")
+expand_margin_top = 15.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j0evp"]
+texture = ExtResource("5_fwc1c")
+expand_margin_left = 87.0
+expand_margin_top = 10.0
+expand_margin_right = 80.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8a503"]
+texture = ExtResource("6_cp0ru")
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0r4if"]
+texture = ExtResource("6_cp0ru")
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k1fe6"]
+texture = ExtResource("3_qn5cf")
+expand_margin_top = 15.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wpqh2"]
+texture = ExtResource("5_fwc1c")
+expand_margin_left = 87.0
+expand_margin_top = 10.0
+expand_margin_right = 80.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_83eif"]
+texture = ExtResource("6_cp0ru")
+texture_margin_left = 10.0
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jwdsk"]
+texture = ExtResource("6_cp0ru")
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_phf5m"]
+texture = ExtResource("3_qn5cf")
+expand_margin_top = 15.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6872e"]
+texture = ExtResource("5_fwc1c")
+expand_margin_left = 87.0
+expand_margin_top = 10.0
+expand_margin_right = 80.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ibext"]
+texture = ExtResource("6_cp0ru")
+texture_margin_left = 10.0
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nski6"]
+texture = ExtResource("6_cp0ru")
+expand_margin_left = 80.0
+expand_margin_top = 7.0
+expand_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lujcr"]
+texture = ExtResource("9_m51i1")
+expand_margin_left = 80.0
+expand_margin_right = 30.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_uxf0q"]
+font_size = 57
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iqfla"]
+texture = ExtResource("10_x8v71")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x13cy"]
+texture = ExtResource("10_x8v71")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_02ym2"]
+texture = ExtResource("10_x8v71")
+
+[node name="Paramètres" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 3.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_g20ld")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -768.0
+offset_top = -512.0
+offset_right = 768.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vy0v6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -184.0
+offset_top = -100.0
+offset_right = 166.0
+offset_bottom = 307.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 31
+
+[node name="BRIGHTNESS" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_jhvt5")
+text = "LUMINOSITÉ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Brithness" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("4_3y87n")
+theme_override_icons/grabber_highlight = ExtResource("4_3y87n")
+theme_override_icons/grabber_disabled = ExtResource("4_3y87n")
+theme_override_icons/tick = ExtResource("4_3y87n")
+theme_override_styles/slider = SubResource("StyleBoxTexture_j0evp")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_8a503")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_0r4if")
+min_value = 0.1
+max_value = 1.2
+step = 0.1
+value = 1.2
+script = ExtResource("7_w6kfw")
+
+[node name="SON" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_k1fe6")
+text = "AMBIANCE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("4_3y87n")
+theme_override_icons/grabber_highlight = ExtResource("4_3y87n")
+theme_override_icons/grabber_disabled = ExtResource("4_3y87n")
+theme_override_styles/slider = SubResource("StyleBoxTexture_wpqh2")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_83eif")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_jwdsk")
+max_value = 4.0
+
+[node name="EFFETS" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_phf5m")
+text = "EFFETS SONORES "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSlider2" type="HSlider" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_icons/grabber = ExtResource("4_3y87n")
+theme_override_icons/grabber_highlight = ExtResource("4_3y87n")
+theme_override_icons/grabber_disabled = ExtResource("4_3y87n")
+theme_override_styles/slider = SubResource("StyleBoxTexture_6872e")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_ibext")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_nski6")
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Background/VBoxContainer"]
+position = Vector2(-272, -167)
+stream = ExtResource("8_1voy7")
+autoplay = true
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = -64.0
+offset_right = 395.0
+offset_bottom = 246.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_lujcr")
+text = "PARAMÈTRES"
+label_settings = SubResource("LabelSettings_uxf0q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="exit" type="Button" parent="."]
+layout_mode = 1
+offset_left = -5.0
+offset_top = -6.0
+offset_right = 89.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 64
+theme_override_styles/hover = SubResource("StyleBoxTexture_iqfla")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_x13cy")
+theme_override_styles/normal = SubResource("StyleBoxTexture_02ym2")
+
+[connection signal="value_changed" from="Background/VBoxContainer/Brithness" to="Background/VBoxContainer/Brithness" method="_on_value_changed"]
+[connection signal="value_changed" from="Background/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="button_down" from="exit" to="." method="_on_exit_button_down"]

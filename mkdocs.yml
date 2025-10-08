@@ -5,6 +5,7 @@ repo_name: CorbeauBaptiste/Skyrage
 nav:
   - Accueil: index.md
   - Lore : Lore.md
+  - Règles : rules.md
 
 theme:
   name: material

@@ -13,7 +13,7 @@ var selected = false:
 var target: Variant = null:
 	set = set_target
 
-var arrow = preload("res://projectile.tscn"):
+var arrow = preload("res://unit/projectile.tscn"):
 	set = set_arrow
 
 func set_selected(value):

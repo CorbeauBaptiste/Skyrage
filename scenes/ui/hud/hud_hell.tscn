@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://chpqlr81pjt78"]
+
+[ext_resource type="Script" uid="uid://dr2n70wgn4xvu" path="res://scripts/ui/hud_hell.gd" id="1_rwdrd"]
+[ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/managers/GoldManagerParadise.gd" id="2_vs2k7"]
+[ext_resource type="Texture2D" uid="uid://b2g06cx0p61c3" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="3_e57d0"]
+[ext_resource type="Texture2D" uid="uid://c12puqncfmi0m" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="4_ew0i0"]
+[ext_resource type="Texture2D" uid="uid://c8almtu5xd3w2" path="res://assets/sprites/ui/cards/hell/diablotin.png" id="5_3ljc2"]
+[ext_resource type="Texture2D" uid="uid://dimgviqllds2t" path="res://assets/sprites/ui/cards/hell/ange_dechu.jpg" id="6_4hrxl"]
+[ext_resource type="Texture2D" uid="uid://cuf4j28woem4o" path="res://assets/sprites/ui/cards/hell/demon.png" id="7_vt1ly"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
+texture = ExtResource("3_e57d0")
+expand_margin_left = 20.0
+expand_margin_top = 40.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rftc2"]
+texture = ExtResource("4_ew0i0")
+expand_margin_top = 40.0
+
+[node name="HUDE" type="Control"]
+layout_mode = 3
+anchor_left = 0.5
+anchor_right = 0.629
+anchor_bottom = 0.202
+offset_right = -148.608
+offset_bottom = -130.896
+grow_horizontal = 2
+script = ExtResource("1_rwdrd")
+
+[node name="VBoxContainer2E" type="VBoxContainer" parent="."]
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -991.536
+offset_top = 807.368
+offset_right = -505.536
+offset_bottom = 1020.37
+grow_horizontal = 2
+grow_vertical = 2
+localize_numeral_system = false
+
+[node name="GoldManagerE" type="Node" parent="VBoxContainer2E"]
+unique_name_in_owner = true
+script = ExtResource("2_vs2k7")
+
+[node name="GoldBarE" type="ProgressBar" parent="VBoxContainer2E"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxTexture_1xsix")
+theme_override_styles/fill = SubResource("StyleBoxTexture_rftc2")
+max_value = 10.0
+step = 0.0
+value = 10.0
+show_percentage = false
+
+[node name="GoldLabelE" type="Label" parent="VBoxContainer2E/GoldBarE"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 90.0
+offset_top = -37.0
+offset_right = 319.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "GOLD : "
+
+[node name="HBoxContainerE" type="HBoxContainer" parent="VBoxContainer2E"]
+unique_name_in_owner = true
+layout_mode = 2
+localize_numeral_system = false
+
+[node name="BtnCost6" type="Button" parent="VBoxContainer2E/HBoxContainerE"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_icons/icon = ExtResource("5_3ljc2")
+
+[node name="BtnCost11" type="Button" parent="VBoxContainer2E/HBoxContainerE"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_icons/icon = ExtResource("6_4hrxl")
+text = "
+"
+
+[node name="BtnCost16" type="Button" parent="VBoxContainer2E/HBoxContainerE"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_icons/icon = ExtResource("7_vt1ly")

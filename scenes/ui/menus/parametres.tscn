@@ -213,15 +213,10 @@ stream = ExtResource("8_1voy7")
 autoplay = true
 
 [node name="Title" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -403.0
-offset_top = 84.0
-offset_right = 392.0
-offset_bottom = 394.0
-grow_horizontal = 2
+layout_mode = 0
+offset_left = 240.0
+offset_right = 1640.0
+offset_bottom = 450.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_lujcr")
 text = "PARAMÈTRES"
 label_settings = SubResource("LabelSettings_uxf0q")

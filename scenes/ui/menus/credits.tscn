@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://duav0ofjejfw8"]
+[gd_scene load_steps=11 format=3 uid="uid://duav0ofjejfw8"]
 
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="1_1xu0v"]
-[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="1_61erh"]
+[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="1_61erh"]
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_x2m5c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="2_l3ipc"]
+[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_hyvu0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]
 texture = ExtResource("1_1xu0v")
@@ -11,7 +12,8 @@ expand_margin_left = 50.0
 expand_margin_right = 15.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_x2m5c"]
-font_size = 64
+font = ExtResource("3_hyvu0")
+font_size = 48
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_61erh"]
 texture = ExtResource("2_l3ipc")
@@ -35,10 +37,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -232.0
-offset_top = -190.0
-offset_right = 152.0
-offset_bottom = 186.0
+offset_top = -91.0
+offset_bottom = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_61erh")
@@ -48,10 +48,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -277.0
-offset_top = 140.0
-offset_right = 267.0
-offset_bottom = 452.0
+offset_left = -283.0
+offset_top = 129.0
+offset_right = 261.0
+offset_bottom = 441.0
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_3dc8n")
 text = "CRÉDITS"
@@ -118,10 +118,10 @@ text = "Sound Designer : Anir Karami"
 
 [node name="exit" type="Button" parent="TextureRect"]
 layout_mode = 0
-offset_left = 232.0
-offset_top = 191.0
-offset_right = 322.0
-offset_bottom = 287.0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 140.0
+offset_bottom = 230.0
 theme_override_font_sizes/font_size = 64
 theme_override_styles/hover = SubResource("StyleBoxTexture_61erh")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_mltl6")

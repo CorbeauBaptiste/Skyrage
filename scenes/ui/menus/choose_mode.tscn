@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_gnp2c"]
 [ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
-[ext_resource type="Texture2D" uid="uid://crw7ixu666b7p" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
+[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
 [ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
 [ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/ui/joueur_contre_joueur.gd" id="6_rlcv8"]
@@ -82,20 +82,18 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -172.0
-offset_top = -154.0
-offset_right = 212.0
-offset_bottom = 222.0
+offset_top = -90.0
+offset_bottom = 110.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_w82kn")
 
 [node name="exit" type="Button" parent="Back"]
 layout_mode = 0
-offset_left = 192.0
-offset_top = 169.0
-offset_right = 283.0
-offset_bottom = 263.0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 140.0
+offset_bottom = 230.0
 theme_override_font_sizes/font_size = 64
 theme_override_styles/hover = SubResource("StyleBoxTexture_w82kn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rlcv8")
@@ -104,10 +102,10 @@ script = ExtResource("1_gnp2c")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 516.0
-offset_top = -23.0
-offset_right = 1422.0
-offset_bottom = 381.0
+offset_left = 507.0
+offset_top = 20.0
+offset_right = 1413.0
+offset_bottom = 424.0
 theme_override_font_sizes/font_size = 1
 theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
 text = "SÉLECTIONNEZ UN MODE"

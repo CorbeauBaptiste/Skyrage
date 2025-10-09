@@ -4,20 +4,41 @@ repo_name: CorbeauBaptiste/Skyrage
 
 nav:
   - Accueil: index.md
+  - Lore : Lore.md
+  - Règles : rules.md
 
 theme:
   name: material
 
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: red
+      background: "#0d0d0d"
+
+  font:
+    text: "Cinzel Decorative"
+    code: "Fira Code"
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - content.code.copy
+    - header.autohide
+    - navigation.instant
+    - navigation.top
+  
+  icon:
+    logo: material/sword-cross
+    repo: fontawesome/brands/github
+
+extra_css:
+  - styles/page.css
+
 plugins:
-  # Extensions pour le thème Material
   - search
-
-  # Extensions pour le Markdown
   - mkdocs_pymdownx_material_extras
-
-  # Extension pour exporter le site en PDF
   - exporter
-
-  # Minification du code HTML, CSS et JavaScript
   - minify:
       minify_html: true

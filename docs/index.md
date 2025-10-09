@@ -3,7 +3,6 @@
 ### Bien le bonjour jeune aventurier et bien venu sur Skyrage !
 
 Avant de te lancer dans un combat dans les cieux, je vais ici t’expliquer comment fonctionne notre jeu.
-
 Quoi ? Tu voudrais jouer vite et ne pas t’embêter à lire une longue documentation en fin ? Ne t’inquiète pas, nous avons pensé à toi, tu pourras voir dans les 3 premières pages une explication simplifiée au plus possible des commandes de jeux de base, alors vas vite voir ça et va conquérir les cieux !
 
 ## Comment lancer le jeu ?

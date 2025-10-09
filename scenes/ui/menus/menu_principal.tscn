@@ -1,11 +1,11 @@
 [gd_scene load_steps=20 format=3 uid="uid://3naivixtwygu"]
 
 [ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/ui/menu_principal.gd" id="1_o0pl7"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="2_mqn46"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="3_kucxf"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_mqn46"]
-[ext_resource type="FontFile" uid="uid://oh3y0widtpsb" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
+[ext_resource type="Texture2D" uid="uid://fqevqley3gma" path="res://assets/sprites/backgrounds/background_menu.png" id="2_mqn46"]
+[ext_resource type="Texture2D" uid="uid://w556ml318hio" path="res://assets/sprites/backgrounds/title.png" id="3_kucxf"]
+[ext_resource type="FontFile" uid="uid://ypuhw2p4l22j" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_mqn46"]
+[ext_resource type="FontFile" uid="uid://d0wabhfcgx5xx" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
+[ext_resource type="Texture2D" uid="uid://duu1guf58pt0w" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0dla8"]
 texture = ExtResource("3_kucxf")

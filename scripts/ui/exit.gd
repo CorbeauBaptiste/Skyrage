@@ -1,0 +1,15 @@
+extends Button
+
+func _on_button_down_exit() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_principal.tscn")
+
+
+func _on_button_down_exit_choose() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_principal.tscn")
+
+
+func _on_button_down_exit_credits() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_principal.tscn")
+
+
+# fait moi une fonction pour quand j'appuie sur echap ca fait la meme action que les autres par rapport a l'endroit

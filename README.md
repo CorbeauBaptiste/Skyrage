@@ -30,13 +30,6 @@ Chaque choix, chaque action peut faire basculer l’équilibre.
 
 ## 📜 Règles du jeu : SkyRage
 
-# 🎯 Objectif du jeu
-
-Dans SkyRage, deux armées s’affrontent : la base des Enfers contre la base du Paradis.
-Ton but est de détruire la base ennemie en envoyant des unités au combat.
-
-⸻
-
 # 🏰 Bases
 	•	Chaque joueur possède une base (Enfer ou Paradis).
 	•	La base génère de l’or au fil du temps. Cet or sert à acheter des cartes d’unités.

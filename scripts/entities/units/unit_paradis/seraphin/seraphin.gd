@@ -1,15 +1,15 @@
 extends Unit
 
-@export var pos_base: Vector2 = Vector2(635.0, 766.0)
+@export var pos_base: Vector2 = Vector2(635.0, 766.0) # Position approximatif de la base
+@export var speed_sera: float = 20.0 # Rapidité de l'unité
 
 func _ready():
 	set_health(1600)
-	target = pos_base  # Cible initiale : la base
+	set_speed(speed_sera)
+	target = pos_base 
 
 func _physics_process(delta: float):
-	# Appelle le mouvement/évitement/animation de Unit
 	super._physics_process(delta)
-
-	# Si on est arrivé (target = null), on redéfinit la cible comme la base
+	# Si la cible est null, on redéfinit la cible (la base)
 	if target == null:
 		target = pos_base

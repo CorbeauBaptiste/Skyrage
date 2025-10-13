@@ -1,23 +1,23 @@
 extends Control
 
-@onready var bar: ProgressBar              		= %GoldBar
-@onready var label: Label                  		= %GoldLabel
-@onready var btn2: Button                  		= %BtnCost5
-@onready var btn4: Button                  		= %BtnCost10
-@onready var btn6: Button                  		= %BtnCost15
-@onready var gold_manager: GoldManagerParadise 	= %GoldManager
+@onready var bar: ProgressBar = %GoldBar
+@onready var label: Label = %GoldLabel
+@onready var btn_archange: Button = %BtnCost5  # Archange (S)
+@onready var btn_ange: Button = %BtnCost10      # Ange/Chérubin (M)
+@onready var btn_seraphin: Button = %BtnCost15  # Séraphin (L)
+@onready var gold_manager: GoldManagerParadise = %GoldManager
 
-const Cout_5  := 0.0 #5.0
-const Cout_10 := 0.0 #10.0
-const Cout_15 := 0.0 #15.0
+const COUT_ARCHANGE := 0.0   # S - 3 apparitions
+const COUT_ANGE := 0.0      # M - 2 apparitions
+const COUT_SERAPHIN := 0.0  # L - 1 apparition
 
 const PHASE_DURATION := 12.0
 var is_phase_on: bool = true
 var buttons_forced_disabled: bool = false
 
-signal btn2_pressed
-signal btn4_pressed
-signal btn6_pressed
+signal btn_archange_pressed
+signal btn_ange_pressed
+signal btn_seraphin_pressed
 signal phase_changed(is_active: bool)
 
 func _ready() -> void:
@@ -28,31 +28,36 @@ func _ready() -> void:
 	gold_manager.gold_changed.connect(_on_gold_changed)
 	gold_manager.gold_spent.connect(_on_gold_spent)
 
-	btn2.pressed.connect(func(): _try_spend(Cout_5))
-	btn2.pressed.connect(func(): emit_signal("btn2_pressed"))
-	btn4.pressed.connect(func(): _try_spend(Cout_10))
-	btn4.pressed.connect(func(): emit_signal("btn4_pressed"))
-	btn6.pressed.connect(func(): _try_spend(Cout_15))
-	btn6.pressed.connect(func(): emit_signal("btn6_pressed"))
+	btn_archange.pressed.connect(func(): _try_spend(COUT_ARCHANGE, "archange"))
+	btn_ange.pressed.connect(func(): _try_spend(COUT_ANGE, "ange"))
+	btn_seraphin.pressed.connect(func(): _try_spend(COUT_SERAPHIN, "seraphin"))
 
 	_enter_phase(true)
 	_run_cycle()
 
 func _process(_delta: float) -> void:
 	if buttons_forced_disabled:
-		btn2.disabled = true
-		btn4.disabled = true
-		btn6.disabled = true
+		btn_archange.disabled = true
+		btn_ange.disabled = true
+		btn_seraphin.disabled = true
 	else:
-		var e = gold_manager.current_gold
-		btn2.disabled = e < Cout_5
-		btn4.disabled = e < Cout_10
-		btn6.disabled = e < Cout_15
+		var gold = gold_manager.current_gold
+		btn_archange.disabled = gold < COUT_ARCHANGE
+		btn_ange.disabled = gold < COUT_ANGE
+		btn_seraphin.disabled = gold < COUT_SERAPHIN
 
-func _try_spend(cost: float) -> void:
+func _try_spend(cost: float, unit_type: String) -> void:
 	if not is_phase_on:
 		return
-	gold_manager.spend(cost)
+	
+	if gold_manager.spend(cost):
+		match unit_type:
+			"archange":
+				emit_signal("btn_archange_pressed")
+			"ange":
+				emit_signal("btn_ange_pressed")
+			"seraphin":
+				emit_signal("btn_seraphin_pressed")
 
 func _on_gold_changed(current: float, max_value: float) -> void:
 	if is_phase_on:
@@ -66,10 +71,6 @@ func _refresh_ui(current: float, max_value: float) -> void:
 	label.text = "GOLD : %.1f / %.0f" % [current, max_value]
 
 func _pulse_bar() -> void:
-	var tween := create_tween()
-
-func _shake_label(msg: String) -> void:
-	label.text = msg
 	var tween := create_tween()
 
 func _run_cycle() -> void:

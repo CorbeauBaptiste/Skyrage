@@ -1,5 +1,14 @@
 extends Unit
 
-func _ready() -> void:
-	set_health(4)
-	set_side(true)
+func _ready():
+	unit_name = "Ange Déchu"
+	unit_size = "M"
+	max_health = 900
+	base_damage = 250
+	base_speed = 24
+	attack_range = 150.0
+	attack_cooldown = 2.0
+	detection_radius = 200.0
+	is_hell_faction = true
+	
+	super._ready()

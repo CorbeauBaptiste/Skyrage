@@ -1,4 +1,14 @@
 extends Unit
 
 func _ready():
-	set_health(4)
+	unit_name = "Archange"
+	unit_size = "S"
+	max_health = 500
+	base_damage = 150
+	base_speed = 30
+	attack_range = 50.0
+	attack_cooldown = 1.0
+	detection_radius = 200.0
+	is_hell_faction = false
+	
+	super._ready()

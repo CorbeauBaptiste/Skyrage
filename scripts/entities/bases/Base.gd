@@ -48,9 +48,9 @@ func take_damage(amount: int) -> bool:
 		base_destroyed.emit(winner)
 		
 		if team == "enfer":
-			get_tree().change_scene_to_file("res://heaven_wins.tscn")
+			get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
 		elif team == "paradis":
-			get_tree().change_scene_to_file("res://hell_wins.tscn")
+			get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")
 		
 		queue_free()
 		return true

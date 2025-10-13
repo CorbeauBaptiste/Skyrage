@@ -164,12 +164,12 @@ func _on_p_btn2_pressed() -> void:
 
 func _on_p_btn4_pressed() -> void:
 	if base_paradis:
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/seraphin.tscn"), 5)
+		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/archange.tscn"), 5)
 		await get_tree().create_timer(0.5).timeout
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/seraphin.tscn"), 5)
+		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/archange.tscn"), 5)
 		print("DEBUG SPAWN PARADIS : 2 unités séraphin créées (enfer = false)")
 
 func _on_p_btn6_pressed() -> void:
 	if base_paradis:
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/archange.tscn"), 5)
+		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/seraphin.tscn"), 5)
 		print("DEBUG SPAWN PARADIS : 1 unité archange créée (enfer = false)")

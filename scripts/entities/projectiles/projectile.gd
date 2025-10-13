@@ -25,11 +25,13 @@ func _process(delta):
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 	queue_free()
 
-func change_sprite(sprite_route, hframes = 0, vframes = 0, frame = 0):
+func change_sprite(sprite_route, hframes = 1, vframes = 1, frame = 0):
 	var texture = load(sprite_route)
 	$Sprite2D.texture = texture
-	$Sprite2D.hframes = hframes
-	$Sprite2D.vframes = vframes
+	if hframes > 1:
+		$Sprite2D.hframes = hframes
+	if vframes > 1:
+		$Sprite2D.vframes = vframes
 	$Sprite2D.frame = frame
 
 func set_speed(value):
@@ -52,7 +54,7 @@ func _on_body_entered(body: Node2D) -> void:
 		
 		if is_valid_target:
 			var final_damage = damage
-			if source_unit and source_unit.has("damage_multiplier"):
+			if source_unit and "damage_multiplier" in source_unit:
 				final_damage = int(damage * source_unit.damage_multiplier)
 			
 			#print("Projectile attaque BASE ", body.team, " avec ", final_damage, " dégâts")
@@ -74,7 +76,7 @@ func _on_body_entered(body: Node2D) -> void:
 			else:
 				# flèche normal : dégâts directs
 				var final_damage = damage
-				if source_unit and source_unit.has("damage_multiplier"):
+				if source_unit and "damage_multiplier" in source_unit:
 					final_damage = int(damage * source_unit.damage_multiplier)
 				
 				body.set_health(body.get_health() - final_damage)
@@ -115,7 +117,7 @@ func _explode_area_damage(explosion_pos: Vector2) -> void:
 			
 			if is_valid_target:
 				var final_damage = area_damage
-				if source_unit and source_unit.has("damage_multiplier"):
+				if source_unit and "damage_multiplier" in source_unit:
 					final_damage = int(area_damage * source_unit.damage_multiplier)
 				
 				unit.set_health(unit.get_health() - final_damage)

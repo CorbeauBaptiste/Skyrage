@@ -12,6 +12,7 @@ signal base_destroyed(winning_team: String)
 signal unit_spawned(unit: Unit)
 
 func _ready() -> void:
+	max_health = 2500
 	current_health = max_health
 	health_changed.emit(current_health, max_health)
 	
@@ -38,21 +39,16 @@ func _ready() -> void:
 	print("Base ", team, " ready (PV: ", current_health, ", Or: ", gold_manager.current_gold, ")")
 
 func take_damage(amount: int) -> bool:
-	print("💥 BASE ", team, " prend ", amount, " dégâts ! PV: ", current_health, " → ", current_health - amount)
+	print("Base ", team, " prend ", amount, " dégâts ! PV: ", current_health, " → ", current_health - amount)
 	current_health = max(0, current_health - amount)
 	health_changed.emit(current_health, max_health)
 	
 	if current_health <= 0:
-		print("💀 BASE ", team, " DÉTRUITE !")
+		print("BASE ", team, " détruite !")
 		var winner = "paradis" if team == "enfer" else "enfer"
 		base_destroyed.emit(winner)
 		
-		if team == "enfer":
-			get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
-		elif team == "paradis":
-			get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")
-		
-		queue_free()
+		call_deferred("queue_free")
 		return true
 	return false
 
@@ -104,12 +100,12 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		# Petit délai pour éviter les chevauchements
 		await get_tree().create_timer(0.1).timeout
 		
-		print("✅ Unité spawnée: %s à %s pour %s (is_hell_faction: %s) – Or restant: %.1f" % 
+		print("Unité spawnée: %s à %s pour %s (is_hell_faction: %s) – Or restant: %.1f" % 
 			[unit.unit_name, unit.global_position, team.capitalize(), is_hell, gold_manager.current_gold])
 		
 		return unit
 	
-	print("❌ Or insuffisant pour ", team, " (besoin: ", cost, ", actuel: ", gold_manager.current_gold, ")")
+	print("Or insuffisant pour ", team, " (besoin: ", cost, ", actuel: ", gold_manager.current_gold, ")")
 	return null
 
 

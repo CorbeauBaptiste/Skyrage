@@ -140,7 +140,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.pressed:
 			if selected.size() == 0:
 				dragging = true
-				drag_start = event.position
+				drag_start = get_global_mouse_position()
 			else:
 				for item in selected:
 					if not item.has("collider"):
@@ -193,8 +193,10 @@ func _perform_selection(drag_end: Vector2) -> void:
 func _draw() -> void:
 	"""Dessine le rectangle de sélection"""
 	if dragging:
+		var start_local = to_local(drag_start)
+		var end_local = get_local_mouse_position()
 		draw_rect(
-			Rect2(drag_start, get_global_mouse_position() - drag_start), 
+			Rect2(start_local, end_local - start_local), 
 			Color.AQUA, 
 			false,
 			2.0

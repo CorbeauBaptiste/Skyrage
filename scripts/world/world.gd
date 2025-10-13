@@ -13,12 +13,43 @@ var ui_layer: CanvasLayer
 var hud_enfer
 var hud_paradis
 
-var current_phase_is_enfer: bool = false # true = phase enfer, false = phase paradis
+var current_phase_is_enfer: bool = false
+
+const UNITS = {
+	"paradis": {
+		"archange": preload("res://scenes/entities/units/paradise/archange.tscn"),
+		"ange": preload("res://scenes/entities/units/paradise/ange.tscn"),
+		"seraphin": preload("res://scenes/entities/units/paradise/seraphin.tscn")
+	},
+	"enfer": {
+		"diablotin": preload("res://scenes/entities/units/hell/diablotin.tscn"),
+		"ange_dechu": preload("res://scenes/entities/units/hell/ange_dechu.tscn"),
+		"demon": preload("res://scenes/entities/units/hell/demon.tscn")
+	}
+}
+
+const SPAWN_COUNTS = {
+	"archange": 3,
+	"ange": 2,
+	"seraphin": 1,
+	"diablotin": 3,
+	"ange_dechu": 2,
+	"demon": 1
+}
+
+const COSTS = {
+	"archange": 5,
+	"ange": 10,
+	"seraphin": 15,
+	"diablotin": 6,
+	"ange_dechu": 11,
+	"demon": 16
+}
 
 func _ready() -> void:
-	
+	# Timer de match
 	if match_timer:
-		match_timer.wait_time = 300.0 
+		match_timer.wait_time = 300.0  # 5 minutes
 		match_timer.timeout.connect(_on_match_end)
 		match_timer.start()
 	
@@ -27,49 +58,82 @@ func _ready() -> void:
 	if base_paradis:
 		base_paradis.base_destroyed.connect(_on_victory)
 	
+	# Afficher infos joueurs
 	if base_enfer and base_enfer.player:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
 
+	_setup_ui()
+
+func _setup_ui() -> void:
+	"""Configure les HUDs des deux camps"""
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
 	
-	# Setup HUD Enfer
+	# HUD Enfer
 	hud_enfer = preload("res://scenes/ui/hud/hud_hell.tscn").instantiate()
 	ui_layer.add_child(hud_enfer)
 	if hud_enfer:
-		hud_enfer.btn2_pressed.connect(_on_btn2_pressed)
-		hud_enfer.btn4_pressed.connect(_on_btn4_pressed)
-		hud_enfer.btn6_pressed.connect(_on_btn6_pressed)
+		hud_enfer.btn_diablotin_pressed.connect(func(): _spawn_units("enfer", "diablotin"))
+		hud_enfer.btn_ange_dechu_pressed.connect(func(): _spawn_units("enfer", "ange_dechu"))
+		hud_enfer.btn_demon_pressed.connect(func(): _spawn_units("enfer", "demon"))
 		hud_enfer.phase_changed.connect(func(is_active): 
 			if is_active:
 				_on_phase_changed(true)
 		)
 
-	# Setup HUD Paradis
+	# HUD Paradis
 	hud_paradis = preload("res://scenes/ui/hud/hud_paradise.tscn").instantiate()
 	ui_layer.add_child(hud_paradis)
 	if hud_paradis:
-		hud_paradis.btn2_pressed.connect(_on_p_btn2_pressed)
-		hud_paradis.btn4_pressed.connect(_on_p_btn4_pressed)
-		hud_paradis.btn6_pressed.connect(_on_p_btn6_pressed)
+		hud_paradis.btn_archange_pressed.connect(func(): _spawn_units("paradis", "archange"))
+		hud_paradis.btn_ange_pressed.connect(func(): _spawn_units("paradis", "ange"))
+		hud_paradis.btn_seraphin_pressed.connect(func(): _spawn_units("paradis", "seraphin"))
 		hud_paradis.phase_changed.connect(func(is_active): 
 			if is_active:
 				_on_phase_changed(false)
 		)
 
+func _spawn_units(camp: String, unit_type: String) -> void:
+	"""Spawn plusieurs unités selon leur type"""
+	var base = base_enfer if camp == "enfer" else base_paradis
+	
+	if not base:
+		push_error("Base non trouvée pour le camp: %s" % camp)
+		return
+	
+	if not UNITS[camp].has(unit_type):
+		push_error("Type d'unité inconnu: %s" % unit_type)
+		return
+	
+	var unit_scene = UNITS[camp][unit_type]
+	var count = SPAWN_COUNTS[unit_type]
+	var cost = COSTS[unit_type]
+	
+	#print("Spawn de %d %s pour %s (coût: %d)" % [count, unit_type, camp.capitalize(), cost])
+	
+	# Spawner les unites avec un délai
+	for i in range(count):
+		await base.spawn_unit(unit_scene, cost)
+		if i < count - 1:
+			await get_tree().create_timer(0.5).timeout
+
 func _on_phase_changed(is_enfer_phase: bool) -> void:
 	current_phase_is_enfer = is_enfer_phase
-	print("🔄 Phase changée : ", "ENFER" if is_enfer_phase else "PARADIS")
+	#print("Phase changée : %s" % ("ENFER" if is_enfer_phase else "PARADIS"))
 	
-	# Déselectionner toutes les unités au changement de phase
+	# TODO: faire arrêter les unites
+	_clear_selection()
+
+func _clear_selection() -> void:
+	"""Déselectionne toutes les unités"""
 	for item in selected:
 		if item.has("collider"):
 			var collider = item.collider
 			if is_instance_valid(collider) and collider is Unit:
 				collider.selected = false
-	selected = []
+	selected.clear()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -83,93 +147,83 @@ func _unhandled_input(event: InputEvent) -> void:
 						continue
 					var collider = item.collider
 					if is_instance_valid(collider) and collider is Unit:
-						collider.target = event.position
+						collider.target = get_global_mouse_position()
 						collider.selected = false
-				selected = []
+				selected.clear()
 		elif dragging:
 			dragging = false
 			queue_redraw()
-			var drag_end = event.position
-			select_rect.extents = abs(drag_end - drag_start)/2
-			var space = get_world_2d().direct_space_state
-			var q = PhysicsShapeQueryParameters2D.new()
-			q.shape = select_rect
-			q.collision_mask = 2 
-			q.transform = Transform2D(0, (drag_end + drag_start) / 2)
-			selected = space.intersect_shape(q)
-			
-			var valid_selected = []
-			for item in selected:
-				if not item.has("collider"):
-					continue
-				var collider = item.collider
-				if is_instance_valid(collider) and collider is Unit:
-					var unit_is_enfer = collider.get_side()
-					if unit_is_enfer == current_phase_is_enfer:
-						collider.selected = true
-						valid_selected.append(item)
-					else:
-						print("❌ Cannot select enemy unit during ", "ENFER" if current_phase_is_enfer else "PARADIS", " phase")
-				else:
-					print("Ignore collider non-Unit ou invalide")
-			selected = valid_selected
-			
+			_perform_selection(event.position)
+	
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
 
-func _draw():
+func _perform_selection(drag_end: Vector2) -> void:
+	"""Effectue la sélection des unités dans le rectangle"""
+	select_rect.extents = abs(drag_end - drag_start) / 2
+	
+	var space = get_world_2d().direct_space_state
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.shape = select_rect
+	query.collision_mask = 2
+	query.transform = Transform2D(0, (drag_end + drag_start) / 2)
+	
+	selected = space.intersect_shape(query)
+	
+	# Filtrer les unites valides
+	var valid_selected = []
+	for item in selected:
+		if not item.has("collider"):
+			continue
+		
+		var collider = item.collider
+		if is_instance_valid(collider) and collider is Unit:
+			var unit_is_enfer = collider.get_side()
+			
+			# Vérifier que l'unite appartient au camp de la phase actuelle
+			if unit_is_enfer == current_phase_is_enfer:
+				collider.selected = true
+				valid_selected.append(item)
+			else:
+				print("Impossible de sélectionner une unité ennemie pendant la phase %s" % 
+					("ENFER" if current_phase_is_enfer else "PARADIS"))
+	
+	selected = valid_selected
+
+func _draw() -> void:
+	"""Dessine le rectangle de sélection"""
 	if dragging:
-		draw_rect(Rect2(drag_start, get_global_mouse_position() - drag_start), Color.AQUA, false)
+		draw_rect(
+			Rect2(drag_start, get_global_mouse_position() - drag_start), 
+			Color.AQUA, 
+			false,
+			2.0
+		)
 
 func _on_victory(winner: String) -> void:
-	print(winner.capitalize() + " gagne ! (Base détruite)")
+	"""Appelé quand une base est détruite"""
+	print("%s gagne ! (Base détruite)" % winner.capitalize())
+	
 	if match_timer:
 		match_timer.stop()
+	
+	if winner == "enfer":
+		get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")
 
 func _on_match_end() -> void:
+	"""Appelé quand le timer de 5 minutes expire"""
 	var pv_enfer = base_enfer.current_health if base_enfer else 0
 	var pv_paradis = base_paradis.current_health if base_paradis else 0
+	
 	var winner = "enfer" if pv_enfer > pv_paradis else "paradis"
-	print(winner.capitalize() + " gagne par PV restants ! (Enfer: ", pv_enfer, ", Paradis: ", pv_paradis, ")")
-
-func _on_btn2_pressed() -> void:
-	if base_enfer:
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/diablotin.tscn"), 11)
-		await get_tree().create_timer(0.5).timeout
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/diablotin.tscn"), 11)
-		await get_tree().create_timer(0.5).timeout
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/diablotin.tscn"), 11)
-		print("DEBUG SPAWN ENFER : 3 unités diablotin créées (enfer = true)")
-
-func _on_btn4_pressed() -> void:
-	if base_enfer:
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/ange_dechu.tscn"), 11)
-		await get_tree().create_timer(0.5).timeout
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/ange_dechu.tscn"), 11)
-		print("DEBUG SPAWN ENFER : 2 unités ange déchu créées (enfer = true)")
-
-func _on_btn6_pressed() -> void:
-	if base_enfer:
-		base_enfer.spawn_unit(preload("res://scenes/entities/units/hell/demon.tscn"), 11)
-		print("DEBUG SPAWN ENFER : 1 unité démon créée (enfer = true)")
-
-func _on_p_btn2_pressed() -> void:
-	if base_paradis:
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/ange.tscn"), 5)
-		await get_tree().create_timer(0.5).timeout
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/ange.tscn"), 5)
-		await get_tree().create_timer(0.5).timeout
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/ange.tscn"), 5)
-		print("DEBUG SPAWN PARADIS : 3 unités ange créées (enfer = false)")
-
-func _on_p_btn4_pressed() -> void:
-	if base_paradis:
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/seraphin.tscn"), 5)
-		await get_tree().create_timer(0.5).timeout
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/seraphin.tscn"), 5)
-		print("DEBUG SPAWN PARADIS : 2 unités séraphin créées (enfer = false)")
-
-func _on_p_btn6_pressed() -> void:
-	if base_paradis:
-		base_paradis.spawn_unit(preload("res://scenes/entities/units/paradise/archange.tscn"), 5)
-		print("DEBUG SPAWN PARADIS : 1 unité archange créée (enfer = false)")
+	
+	print("Temps écoulé ! %s gagne par PV restants (Enfer: %d, Paradis: %d)" % 
+		[winner.capitalize(), pv_enfer, pv_paradis])
+	
+	# Changer de scène vers l'écran de victoire
+	if winner == "enfer":
+		get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")

@@ -1,123 +1,341 @@
 extends CharacterBody2D
 class_name Unit
 
-@export var speed = 50: set = set_speed
-@export var enfer = false: set = set_side
-@export var health = 4: set = set_health
-@export var attack_speed = 1: set = set_attack_speed
-var av = Vector2.ZERO
-var avoid_weight = 0.1
-var target_radius = 20
-var selected = false:
-	set = set_selected
-var target: Variant = null:
-	set = set_target
+@export_group("Stats de base")
+@export var unit_name: String = "Unit"
+@export var unit_size: String = "M" 
+@export var max_health: int = 100
+@export var base_damage: int = 10
+@export var base_speed: float = 50.0
+@export var attack_range: float = 150.0
+@export var attack_cooldown: float = 1.0
+@export var detection_radius: float = 200.0
 
-var arrow = preload("res://scenes/entities/projectiles/projectile.tscn"):
-	set = set_arrow
+@export_group("Faction")
+@export var is_hell_faction: bool = false
 
-func set_selected(value):
-	selected = value
-	if not is_inside_tree():
+var current_health: int
+var current_speed: float
+var current_damage: int
+
+var damage_multiplier: float = 1.0
+var speed_multiplier: float = 1.0
+var attack_cooldown_modifier: float = 0.0
+
+var michael_charges: int = 0
+var cupidon_arrows: int = 0
+
+var target: Variant = null
+var current_enemy: Node2D = null
+var can_attack: bool = true
+var is_attacking: bool = false
+
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var detection_area: Area2D = $Detect
+@onready var range_area: Area2D = $Range
+@onready var attack_timer: Timer = $Timer
+@onready var projectile_spawn: Marker2D = $Marker2D
+
+var arrow_scene = preload("res://scenes/entities/projectiles/projectile.tscn")
+
+const AVOIDANCE_WEIGHT: float = 0.3
+const TARGET_RADIUS: float = 20.0
+
+signal health_changed(current: int, max_hp: int)
+signal unit_died()
+signal damage_dealt(amount: int)
+
+func _ready() -> void:
+	current_health = max_health
+	current_speed = base_speed
+	current_damage = base_damage
+	
+	collision_layer = 2
+	collision_mask = 3
+	
+	_setup_detection_area()
+	_setup_range_area()
+	
+	attack_timer.one_shot = true
+	attack_timer.timeout.connect(_on_attack_timer_timeout)
+	
+	_apply_faction_color()
+	
+	add_to_group("units")
+
+func _setup_detection_area() -> void:
+	"""Configure la zone de détection des ennemis"""
+	if not detection_area:
 		return
-	if selected:
-		$Sprite2D.self_modulate = Color.AQUA
-	else:
-		$Sprite2D.self_modulate = Color.WHITE
+	
+	detection_area.collision_layer = 2
+	detection_area.collision_mask = 3
+	
+	var shape = CircleShape2D.new()
+	shape.radius = detection_radius
+	
+	var collision = detection_area.get_node("CollisionShape2D")
+	if collision:
+		collision.shape = shape
 
-func set_target(value):
-	target = value
+func _setup_range_area() -> void:
+	"""Configure la zone d'attaque"""
+	if not range_area:
+		return
+	
+	range_area.collision_layer = 2
+	range_area.collision_mask = 3
+	range_area.body_entered.connect(_on_enemy_in_range)
+	range_area.body_exited.connect(_on_enemy_out_of_range)
+	
+	var shape = CircleShape2D.new()
+	shape.radius = attack_range
+	
+	var collision = range_area.get_node("CollisionShape2D")
+	if collision:
+		collision.shape = shape
 
-func set_arrow(value):
-	arrow = value
-
-func set_side(value):
-	enfer = value
-	if has_node("Sprite2D"):
-		$Sprite2D.modulate = Color.RED if enfer else Color.WHITE
-	print("Unit set_side: ", enfer)
-
-func avoid():
-	var result = Vector2.ZERO
-	var neighbors = $Detect.get_overlapping_bodies()
-	if neighbors:
-		for i in neighbors:
-			if is_instance_valid(i):
-				result += i.position.direction_to(position)
-		if neighbors.size() > 0:
-			result /= neighbors.size()
-	return result.normalized()
+func _apply_faction_color() -> void:
+	"""Applique la couleur de faction au sprite"""
+	if sprite:
+		sprite.modulate = Color.RED if is_hell_faction else Color.WHITE
 
 func _physics_process(delta: float) -> void:
-	velocity = Vector2.ZERO
+	# stop l'unite si il attaque
+	if is_attacking:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+	
+	# enemy in range?
+	if current_enemy and is_instance_valid(current_enemy):
+		_handle_combat()
+		return
+	
+	var enemy = _find_nearest_enemy()
+	if enemy:
+		target = enemy.global_position
+	
 	if target:
-		var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
-		velocity = position.direction_to(target_pos)
-		if position.distance_to(target_pos) < target_radius:
-			target = null
-	av = avoid()
-	velocity = (velocity + av * avoid_weight).normalized() * speed
-	move_and_collide(velocity * delta)
-	if velocity != Vector2.ZERO:
-		if abs(velocity.x) > abs(velocity.y):
-			if velocity.x > 0:
-				$AnimationPlayer.play("running-right")
-			else:
-				$AnimationPlayer.play("running-left")
-		else:
-			if velocity.y > 0:
-				$AnimationPlayer.play("running-down")
-			else:
-				$AnimationPlayer.play("running-up")
+		_move_towards_target(delta)
 	else:
-		$AnimationPlayer.stop()
+		velocity = Vector2.ZERO
 	
-	if Input.is_action_just_pressed("right_mouse") and selected:
-		var ennemies = $Range.get_overlapping_bodies()
-		print("Ennemies détectées : ", ennemies.size(), " (debug)")
-		if ennemies.size() > 0:
-			var valid_enemies = [] 
-			for ennemy in ennemies:
-				if is_instance_valid(ennemy) and ennemy != self and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side():
-					valid_enemies.append(ennemy)
-			
-			if valid_enemies.size() > 0:
-				if $Timer.is_stopped():
-					valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
-					var closest = valid_enemies[0]
-					var ennemy_pos = closest.global_position
-					$Marker2D.look_at(ennemy_pos)
-					var arrow_instance = arrow.instantiate()
-					if self.get_side() == true:
-						arrow_instance.change_sprite("res://assets/sprites/projectiles/feu.png")
-						arrow_instance.set_target(false)
-					else:
-						arrow_instance.change_sprite("res://assets/sprites/projectiles/vent.png")
-						arrow_instance.set_target(true)
-					arrow_instance.rotation = $Marker2D.rotation
-					arrow_instance.global_position = $Marker2D.global_position
-					add_child(arrow_instance)
-					$Timer.start()
-					print("Tir 1 projectile sur closest ennemy : ", closest.name)
-			else:
-				print("Pas d'ennemi valide dans range")
-
-func set_speed(new_value):
-	speed = new_value
-
-func set_health(value):
-	health = value
+	move_and_slide()
 	
-	if health <= 0:
-		queue_free()
-		if selected:
-			set_selected(false)
+	_update_animation()
 
-func set_attack_speed(value):
-	attack_speed = value
+func _move_towards_target(delta: float) -> void:
+	"""Déplace l'unité vers sa cible avec évitement"""
+	var target_pos = target if target is Vector2 else target.global_position if target else Vector2.ZERO
+	
+	# direction vers la cible
+	var direction = global_position.direction_to(target_pos)
+	
+	# évite les alliés
+	var avoidance = _calculate_avoidance()
+	direction = (direction + avoidance * AVOIDANCE_WEIGHT).normalized()
+	
+	var final_speed = current_speed * speed_multiplier
+	velocity = direction * final_speed
+	
+	# s'arrêter si on est assez proche
+	if global_position.distance_to(target_pos) < TARGET_RADIUS:
+		target = null
+		velocity = Vector2.ZERO
 
-func get_side():
-	return enfer
+func _calculate_avoidance() -> Vector2:
+	"""Calcule le vecteur d'évitement des alliés"""
+	var result = Vector2.ZERO
+	var neighbors = detection_area.get_overlapping_bodies()
+	
+	if neighbors.is_empty():
+		return result
+	
+	for neighbor in neighbors:
+		if not is_instance_valid(neighbor) or neighbor == self:
+			continue
+		
+		if neighbor is Unit and neighbor.is_hell_faction == self.is_hell_faction:
+			result += neighbor.global_position.direction_to(global_position)
+	
+	if neighbors.size() > 0:
+		result /= neighbors.size()
+	
+	return result.normalized()
 
-func get_health():
-	return health
+func _find_nearest_enemy() -> Node2D:
+	"""Trouve l'ennemi le plus proche dans la zone de détection"""
+	var enemies = range_area.get_overlapping_bodies()
+	var nearest: Node2D = null
+	var min_dist = INF
+	
+	for body in enemies:
+		if not _is_valid_enemy(body):
+			continue
+		
+		var dist = global_position.distance_to(body.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			nearest = body
+	
+	return nearest
+
+func _handle_combat() -> void:
+	"""Gère le combat avec l'ennemi actuel"""
+	if not is_instance_valid(current_enemy):
+		current_enemy = null
+		return
+	
+	# se trourner vers l'ennemie
+	projectile_spawn.look_at(current_enemy.global_position)
+	
+	# cooldown finis ? alors on attaque
+	if can_attack:
+		_perform_attack()
+
+func _perform_attack() -> void:
+	"""Effectue une attaque"""
+	if not current_enemy or not is_instance_valid(current_enemy):
+		return
+	
+	is_attacking = true
+	can_attack = false
+	
+	_spawn_projectile()
+	
+	# active le cooldown de l'attaque
+	var final_cooldown = max(0.1, attack_cooldown + attack_cooldown_modifier)
+	attack_timer.start(final_cooldown)
+	
+	await get_tree().create_timer(0.2).timeout
+	is_attacking = false
+
+func _spawn_projectile() -> void:
+	"""Crée un projectile selon le type d'item équipé"""
+	var projectile = arrow_scene.instantiate() as Projectile
+	
+	projectile.global_position = projectile_spawn.global_position
+	projectile.rotation = projectile_spawn.rotation
+	projectile.targets_enfer = not is_hell_faction
+	projectile.source_unit = self
+	
+	var final_damage = int(current_damage * damage_multiplier)
+	projectile.damage = final_damage
+	
+	# Glaive de Michaël
+	if michael_charges > 0:
+		projectile.is_michael_glaive = true
+		michael_charges -= 1
+		print("⚔️ Tir Glaive de Michaël (charges restantes: %d)" % michael_charges)
+	
+	# Flèche de Cupidon
+	elif cupidon_arrows > 0:
+		projectile.is_cupidon_arrow = true
+		cupidon_arrows -= 1
+		print("💘 Tir Flèche de Cupidon (flèches restantes: %d)" % cupidon_arrows)
+	
+	# Apparence du projectile
+	if is_hell_faction:
+		projectile.change_sprite("res://assets/sprites/projectiles/feu.png")
+	else:
+		projectile.change_sprite("res://assets/sprites/projectiles/vent.png")
+	
+	get_parent().add_child(projectile)
+	
+	emit_signal("damage_dealt", final_damage)
+
+func _on_enemy_in_range(body: Node2D) -> void:
+	"""Callback quand un ennemi entre dans la portée d'attaque"""
+	if _is_valid_enemy(body) and not current_enemy:
+		current_enemy = body
+		print("🎯 %s a détecté %s" % [unit_name, body.name])
+
+func _on_enemy_out_of_range(body: Node2D) -> void:
+	"""Callback quand un ennemi sort de la portée d'attaque"""
+	if body == current_enemy:
+		current_enemy = null
+		target = null
+
+func _is_valid_enemy(body: Node2D) -> bool:
+	"""Vérifie si un body est un ennemi valide"""
+	if not is_instance_valid(body) or body == self:
+		return false
+	
+	if body is Unit:
+		return body.is_hell_faction != self.is_hell_faction
+	
+	if body is Base:
+		return (body.team == "enfer") != self.is_hell_faction
+	
+	return false
+
+func _on_attack_timer_timeout() -> void:
+	"""Callback quand le cooldown d'attaque est terminé"""
+	can_attack = true
+
+func take_damage(amount: int) -> void:
+	"""Inflige des dégâts à l'unité"""
+	set_health(current_health - amount)
+
+func heal(amount: int) -> int:
+	"""Soigne l'unité et retourne la quantité réellement soignée"""
+	var old_health = current_health
+	set_health(current_health + amount)
+	return current_health - old_health
+
+func set_health(value: int) -> void:
+	"""Définit la santé actuelle"""
+	current_health = clamp(value, 0, max_health)
+	health_changed.emit(current_health, max_health)
+	
+	if current_health <= 0:
+		_die()
+
+func get_health() -> int:
+	return current_health
+
+func get_missing_health() -> int:
+	return max_health - current_health
+
+func _die() -> void:
+	"""Appelé quand l'unité meurt"""
+	emit_signal("unit_died")
+	queue_free()
+
+func _update_animation() -> void:
+	"""Met à jour l'animation en fonction du mouvement"""
+	if not anim_player:
+		return
+	
+	if velocity.length() < 1.0:
+		anim_player.stop()
+		return
+	
+	# détermimer la	direction
+	if abs(velocity.x) > abs(velocity.y):
+		if velocity.x > 0:
+			anim_player.play("running-right")
+		else:
+			anim_player.play("running-left")
+	else:
+		if velocity.y > 0:
+			anim_player.play("running-down")
+		else:
+			anim_player.play("running-up")
+
+func get_side() -> bool:
+	return is_hell_faction
+
+func set_side(value: bool) -> void:
+	is_hell_faction = value
+	_apply_faction_color()
+
+# Pour le système de sélection
+var selected: bool = false:
+	set(value):
+		selected = value
+		if sprite:
+			sprite.self_modulate = Color.AQUA if selected else Color.WHITE

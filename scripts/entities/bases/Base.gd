@@ -63,9 +63,13 @@ func get_enemy_base() -> Base:
 	return null
 
 func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
+	"""Spawne une unité avec le nouveau système"""
 	print("Tentative spawn pour ", team, " (or actuel: ", gold_manager.current_gold, ", besoin: ", cost, ")")
+	
 	if gold_manager.can_spend(cost):
 		gold_manager.spend(cost)
+		
+		# Trouver la position de spawn
 		var spawn_pos: Vector2
 		var spawn_node_name = "SpawnPoint"
 		if team == "enfer":
@@ -80,35 +84,48 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 			spawn_pos = global_position + Vector2(50 if team == "enfer" else -50, 0)
 			print("Fallback spawn pour ", team, " à ", spawn_pos)
 		
+		# Instancier l'unité
 		var unit = unit_scene.instantiate() as Unit
 		unit.global_position = spawn_pos
-		unit.enfer = (team == "enfer")
-		unit.set_side(unit.enfer)
 		
-		if get_enemy_base():
-			unit.target = get_enemy_base().global_position
+		var is_hell = (team == "enfer")
+		unit.is_hell_faction = is_hell
 		
+		# Définir la cible vers la base ennemie
+		var enemy_base = get_enemy_base()
+		if enemy_base:
+			unit.target = enemy_base.global_position
+		
+		# Ajouter l'unité au monde
 		get_parent().add_child(unit)
 		unit.add_to_group("units")
 		unit_spawned.emit(unit)
 		
-		await get_tree().create_timer(0.5).timeout
-		if is_instance_valid(unit):
-			unit.target = null
+		# Petit délai pour éviter les chevauchements
+		await get_tree().create_timer(0.1).timeout
 		
-		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize(), " (enfer: ", unit.enfer, ") – Or restant: ", gold_manager.current_gold)
+		print("✅ Unité spawnée: %s à %s pour %s (is_hell_faction: %s) – Or restant: %.1f" % 
+			[unit.unit_name, unit.global_position, team.capitalize(), is_hell, gold_manager.current_gold])
 		
 		return unit
-	print("Or insuffisant pour ", team, " (besoin: ", cost, ") – Attends regen")
+	
+	print("❌ Or insuffisant pour ", team, " (besoin: ", cost, ", actuel: ", gold_manager.current_gold, ")")
 	return null
 
 
 func _on_enemy_nearby(body: Node2D) -> void:
-	if body is Unit and body.get_side() != (team == "enfer"):
-		body.target = self.global_position
-		print("Attaque auto sur base ", team, " !")
+	"""Appelé quand un ennemi entre dans la zone de détection de la base"""
+	if body is Unit:
+		var unit_is_hell = body.is_hell_faction
+		var base_is_hell = (team == "enfer")
+		
+		# Si l'unité est du camp ennemi
+		if unit_is_hell != base_is_hell:
+			body.target = self.global_position
+			print("🎯 Attaque auto sur base ", team, " par ", body.unit_name)
 
 func get_side() -> bool:
+	"""Retourne true si c'est le camp de l'Enfer"""
 	return team == "enfer"
 
 func get_health():

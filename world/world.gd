@@ -5,6 +5,7 @@ var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
 
+
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
 @onready var match_timer: Timer = $MatchTimer
@@ -145,6 +146,13 @@ func _on_btn2_pressed() -> void:
 		await get_tree().create_timer(0.5).timeout
 		base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
 		print("DEBUG SPAWN ENFER : 3 unités diablotin créées (enfer = true)")
+		
+				
+		var diablotin = await base_enfer.spawn_unit(preload("res://unit/unit_enfer/diablotin/diablotin.tscn"), 11)
+		if diablotin:
+			diablotin.set_target_base(base_paradis)
+			diablotin.enable_ai(true)
+
 
 func _on_btn4_pressed() -> void:
 	if base_enfer:

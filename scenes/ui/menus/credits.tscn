@@ -65,7 +65,7 @@ layout_mode = 0
 offset_left = 571.0
 offset_top = 533.0
 offset_right = 1392.0
-offset_bottom = 1094.0
+offset_bottom = 1118.0
 
 [node name="speciales" type="HBoxContainer" parent="TextureRect/credits"]
 layout_mode = 2
@@ -143,10 +143,11 @@ text = "Développeurs : "
 [node name="names" type="VBoxContainer" parent="TextureRect/credits/developers"]
 layout_direction = 3
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 
 [node name="members" type="Label" parent="TextureRect/credits/developers/names"]
 layout_mode = 2
+size_flags_vertical = 1
 text = "Baptiste Corbeau
 Leny Guilmin
 Corentin Denis

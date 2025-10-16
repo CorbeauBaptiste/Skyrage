@@ -3,7 +3,7 @@ repo_url: https://github.com/CorbeauBaptiste/Skyrage
 repo_name: CorbeauBaptiste/Skyrage
 
 nav:
-  - Accueil: pages/index.md
+  - Accueil: index.md
   - Règles : pages/rules.md
   - Créatures et pouvoirs : pages/creature_pouvoir.md
   - Lore : pages/Lore.md

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://ce10vc07drsvy"]
+[gd_scene load_steps=19 format=4 uid="uid://ce10vc07drsvy"]
 
 [ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://scripts/world/world.gd" id="1_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://uosst7y8nnpl" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
@@ -1908,15 +1908,9 @@ sources/1 = SubResource("TileSetAtlasSource_dwbse")
 radius = 73.0
 height = 190.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_dwbse"]
-radius = 258.008
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ioo17"]
 radius = 17.4
 height = 46.4
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_gbfbk"]
-radius = 337.38
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_aqk2v")
@@ -1948,7 +1942,7 @@ script = ExtResource("5_gbfbk")
 max_health = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="BaseEnfer"]
-position = Vector2(1, -13)
+position = Vector2(-3, -13)
 scale = Vector2(-0.32, 0.32)
 texture = ExtResource("5_dwbse")
 
@@ -1957,21 +1951,11 @@ position = Vector2(1, -21)
 shape = SubResource("CapsuleShape2D_gbfbk")
 debug_color = Color(0.881805, 0.27956, 0.488752, 0.419608)
 
-[node name="DetectionArea" type="Area2D" parent="BaseEnfer"]
-position = Vector2(-3, -15)
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseEnfer/DetectionArea"]
-position = Vector2(9, 10)
-shape = SubResource("CircleShape2D_dwbse")
-debug_color = Color(0.742686, 0.444487, 0.396684, 0.419608)
-
 [node name="SpawnPointEnfer" type="Marker2D" parent="BaseEnfer"]
-position = Vector2(99, -4)
+position = Vector2(98, -62)
 
 [node name="BaseParadis" type="StaticBody2D" parent="."]
-position = Vector2(1381, 299)
+position = Vector2(1389, 281)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("7_ioo17")
@@ -1988,14 +1972,5 @@ scale = Vector2(5, 5)
 shape = SubResource("CapsuleShape2D_ioo17")
 debug_color = Color(0.977542, 0, 0.406995, 0.419608)
 
-[node name="DetectionArea" type="Area2D" parent="BaseParadis"]
-position = Vector2(-136, -100.6)
-collision_layer = 2
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseParadis/DetectionArea"]
-position = Vector2(124, 58)
-shape = SubResource("CircleShape2D_gbfbk")
-
 [node name="SpawnPointParadis" type="Marker2D" parent="BaseParadis"]
-position = Vector2(-114, 80)
+position = Vector2(-118, 98)

@@ -15,41 +15,10 @@ var hud_paradis
 
 var current_phase_is_enfer: bool = false
 
-const UNITS = {
-	"paradis": {
-		"archange": preload("res://scenes/entities/units/paradise/archange.tscn"),
-		"ange": preload("res://scenes/entities/units/paradise/ange.tscn"),
-		"seraphin": preload("res://scenes/entities/units/paradise/seraphin.tscn")
-	},
-	"enfer": {
-		"diablotin": preload("res://scenes/entities/units/hell/diablotin.tscn"),
-		"ange_dechu": preload("res://scenes/entities/units/hell/ange_dechu.tscn"),
-		"demon": preload("res://scenes/entities/units/hell/demon.tscn")
-	}
-}
-
-const SPAWN_COUNTS = {
-	"archange": 3,
-	"ange": 2,
-	"seraphin": 1,
-	"diablotin": 3,
-	"ange_dechu": 2,
-	"demon": 1
-}
-
-const COSTS = {
-	"archange": 5,
-	"ange": 10,
-	"seraphin": 15,
-	"diablotin": 6,
-	"ange_dechu": 11,
-	"demon": 16
-}
-
 func _ready() -> void:
 	# Timer de match
 	if match_timer:
-		match_timer.wait_time = 300.0  # 5 minutes
+		match_timer.wait_time = Constants.MATCH_DURATION
 		match_timer.timeout.connect(_on_match_end)
 		match_timer.start()
 	
@@ -103,13 +72,13 @@ func _spawn_units(camp: String, unit_type: String) -> void:
 		push_error("Base non trouvée pour le camp: %s" % camp)
 		return
 	
-	if not UNITS[camp].has(unit_type):
+	if not Constants.UNITS[camp].has(unit_type):
 		push_error("Type d'unité inconnu: %s" % unit_type)
 		return
 	
-	var unit_scene = UNITS[camp][unit_type]
-	var count = SPAWN_COUNTS[unit_type]
-	var cost = COSTS[unit_type]
+	var unit_scene = Constants.UNITS[camp][unit_type]
+	var count = Constants.SPAWN_COUNTS[unit_type]
+	var cost = Constants.UNIT_COSTS[unit_type]
 	
 	#print("Spawn de %d %s pour %s (coût: %d)" % [count, unit_type, camp.capitalize(), cost])
 	
@@ -224,8 +193,4 @@ func _on_match_end() -> void:
 	print("Temps écoulé ! %s gagne par PV restants (Enfer: %d, Paradis: %d)" % 
 		[winner.capitalize(), pv_enfer, pv_paradis])
 	
-	# Changer de scène vers l'écran de victoire
-	if winner == "enfer":
-		get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
-	else:
-		get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")
+	# TODO: faire une scene en cas d'egalite

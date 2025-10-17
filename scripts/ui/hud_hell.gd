@@ -7,11 +7,10 @@ extends Control
 @onready var btn_demon: Button = %BtnCost16      # Démon (L)
 @onready var gold_manager: GoldManagerParadise = %GoldManagerE
 
-const COUT_DIABLOTIN := 0.0 # S - 3 apparitions
-const COUT_ANGE_DECHU := 0.0  # M - 2 apparitions
-const COUT_DEMON := 0.0       # L - 1 apparition
+var cout_diablotin: float = Constants.UNIT_COSTS["diablotin"]
+var cout_ange_dechu: float = Constants.UNIT_COSTS["ange_dechu"]
+var cout_demon: float = Constants.UNIT_COSTS["demon"]
 
-const PHASE_DURATION := 12.0
 var is_phase_on: bool = false
 var buttons_forced_disabled: bool = false
 
@@ -28,9 +27,9 @@ func _ready() -> void:
 	gold_manager.gold_changed.connect(_on_gold_changed)
 	gold_manager.gold_spent.connect(_on_gold_spent)
 
-	btn_diablotin.pressed.connect(func(): _try_spend(COUT_DIABLOTIN, "diablotin"))
-	btn_ange_dechu.pressed.connect(func(): _try_spend(COUT_ANGE_DECHU, "ange_dechu"))
-	btn_demon.pressed.connect(func(): _try_spend(COUT_DEMON, "demon"))
+	btn_diablotin.pressed.connect(func(): _try_spend(cout_diablotin, "diablotin"))
+	btn_ange_dechu.pressed.connect(func(): _try_spend(cout_ange_dechu, "ange_dechu"))
+	btn_demon.pressed.connect(func(): _try_spend(cout_demon, "demon"))
 
 	_enter_phase(false)
 	_run_cycle()
@@ -42,9 +41,9 @@ func _process(_delta: float) -> void:
 		btn_demon.disabled = true
 	else:
 		var gold = gold_manager.current_gold
-		btn_diablotin.disabled = gold < COUT_DIABLOTIN
-		btn_ange_dechu.disabled = gold < COUT_ANGE_DECHU
-		btn_demon.disabled = gold < COUT_DEMON
+		btn_diablotin.disabled = gold < cout_diablotin
+		btn_ange_dechu.disabled = gold < cout_ange_dechu
+		btn_demon.disabled = gold < cout_demon
 
 func _try_spend(cost: float, unit_type: String) -> void:
 	if not is_phase_on:
@@ -75,7 +74,7 @@ func _pulse_bar() -> void:
 
 func _run_cycle() -> void:
 	while true:
-		await get_tree().create_timer(PHASE_DURATION).timeout
+		await get_tree().create_timer(Constants.PHASE_DURATION).timeout
 		_enter_phase(not is_phase_on)
 
 func _enter_phase(phase_on: bool) -> void:

@@ -53,7 +53,13 @@ func _ready() -> void:
 	current_damage = base_damage
 	
 	collision_layer = 2
-	collision_mask = 3
+	collision_mask = 1 + 2
+	
+	if has_node("movement_collision"):
+		var move_collision = get_node("movement_collision")
+	
+	if has_node("character_collision"):
+		var char_collision = get_node("character_collision")
 	
 	_setup_detection_area()
 	_setup_range_area()

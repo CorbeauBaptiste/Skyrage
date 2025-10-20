@@ -72,7 +72,7 @@ class GlaiveMichaelEffect extends ItemEffect:
 			if target is Unit:
 				target.michael_charges += uses_remaining
 				_animate_sprite(target, COLOR_GOLD)
-				print("⚔️ Glaive: %d charges ajoutées" % uses_remaining)
+				print("⚔️ Glaive: %d charges ajoutées à %s" % [uses_remaining, target.unit_name])
 
 ## BONUS: Bénédiction de Ploutos - Multiplie l'or du joueur
 class BenedictionPloutosEffect extends ItemEffect:
@@ -84,7 +84,7 @@ class BenedictionPloutosEffect extends ItemEffect:
 				var new_gold = min(old_gold * item.gold_multiplier, gm.max_gold)
 				gm.current_gold = new_gold
 				gm.gold_changed.emit(new_gold, gm.max_gold)
-				print("💰 Ploutos: %.1f -> %.1f" % [old_gold, new_gold])
+				print("💰 Ploutos: %.1f -> %.1f (joueur %s)" % [old_gold, new_gold, target.nom])
 
 ## BONUS: Flèche de Cupidon - Ajoute des flèches spéciales aux unités
 class FlecheCupidonEffect extends ItemEffect:
@@ -94,7 +94,7 @@ class FlecheCupidonEffect extends ItemEffect:
 			if target is Unit:
 				target.cupidon_arrows += uses_remaining
 				_animate_sprite(target, COLOR_PINK, 0.25)
-				print("💘 Cupidon: %d flèches ajoutées" % uses_remaining)
+				print("💘 Cupidon: %d flèches ajoutées à %s" % [uses_remaining, target.unit_name])
 
 ## BONUS: Remède Divin - Soigne les unités blessées (priorité aux plus blessées)
 class RemedeDivinEffect extends ItemEffect:
@@ -127,7 +127,7 @@ class RemedeDivinEffect extends ItemEffect:
 			var actual = unit.heal(heal_amount)
 			remaining -= actual
 		
-		print("💊 Remède: %d PV distribués" % (total_heal - remaining))
+		print("💊 Remède: %d PV distribués sur %d unités" % [total_heal - remaining, wounded_units.size()])
 
 ## BONUS: Rage d'Arès - Réduit le cooldown d'attaque (boost de vitesse d'attaque)
 class RageAresEffect extends ItemEffect:
@@ -137,14 +137,16 @@ class RageAresEffect extends ItemEffect:
 		duration_remaining = item.duration
 		for target in targets:
 			if target is Unit:
-				# Sauvegarde la vitesse originale si pas déjà fait
+				# Sauvegarde le cooldown original
 				if not original_cooldowns.has(target):
-					original_cooldowns[target] = target.attack_speed
+					original_cooldowns[target] = target.attack_cooldown
 				
 				target.attack_cooldown_modifier = item.cooldown_modifier
 				
 				if target.has_node("Sprite2D"):
 					target.get_node("Sprite2D").modulate = COLOR_ORANGE
+				
+				print("⚔️ Rage d'Arès: Cooldown de %s réduit de %.1fs" % [target.unit_name, -item.cooldown_modifier])
 	
 	func _on_expire() -> void:
 		# Restaure l'état normal de toutes les cibles
@@ -165,17 +167,22 @@ class PommeAdamEffect extends ItemEffect:
 		duration_remaining = item.duration
 		for target in targets:
 			if target is Unit:
-				original_speeds[target] = target.speed
-				target.speed *= item.speed_multiplier
+				# ✅ FIX: Utilise current_speed au lieu de speed
+				original_speeds[target] = target.current_speed
+				target.current_speed *= item.speed_multiplier
+				target.speed_multiplier = item.speed_multiplier
 				
 				if target.has_node("Sprite2D"):
 					target.get_node("Sprite2D").modulate = COLOR_DARK
+				
+				print("🍎 Pomme d'Adam: Vitesse de %s réduite à %.1f%%" % [target.unit_name, item.speed_multiplier * 100])
 	
 	func _on_expire() -> void:
 		# Restaure les vitesses originales
 		for target in original_speeds.keys():
 			if is_instance_valid(target) and target is Unit:
-				target.speed = original_speeds[target]
+				target.current_speed = original_speeds[target]
+				target.speed_multiplier = 1.0
 				if target.has_node("Sprite2D"):
 					var final_color = Color.RED if target.get_side() else Color.WHITE
 					target.get_node("Sprite2D").modulate = final_color
@@ -188,6 +195,7 @@ class RageFourbeEffect extends ItemEffect:
 		for target in targets:
 			if target is Unit:
 				target.damage_multiplier = item.damage_multiplier
+				print("😠 Rage Fourbe: Dégâts de %s réduits à %.0f%%" % [target.unit_name, item.damage_multiplier * 100])
 	
 	func _on_expire() -> void:
 		# Remet le multiplicateur de dégâts à 1.0
@@ -203,7 +211,7 @@ class FourberieScapinEffect extends ItemEffect:
 			if target is Base:
 				var old_health = target.current_health
 				target.take_damage(item.damage_value)
-				print("💀 Scapin: Base %d -> %d PV" % [old_health, target.current_health])
+				print("💀 Scapin: Base %s %d -> %d PV" % [target.team, old_health, target.current_health])
 
 ## MALUS: Intervention de Chronos - Augmente le cooldown d'attaque (ralentit les attaques)
 class InterventionChronosEffect extends ItemEffect:
@@ -212,6 +220,7 @@ class InterventionChronosEffect extends ItemEffect:
 		for target in targets:
 			if target is Unit:
 				target.attack_cooldown_modifier = item.cooldown_modifier
+				print("⏰ Chronos: Cooldown de %s augmenté de +%.1fs" % [target.unit_name, item.cooldown_modifier])
 	
 	func _on_expire() -> void:
 		# Restaure le cooldown normal
@@ -229,6 +238,7 @@ class RevolteSombreEffect extends ItemEffect:
 				target.damage_multiplier = 0.0
 				if target.has_node("Sprite2D"):
 					target.get_node("Sprite2D").modulate = COLOR_BLACK
+				print("🌑 Révolte Sombre: %s ne fait plus de dégâts" % target.unit_name)
 	
 	func _on_expire() -> void:
 		# Restaure les dégâts normaux
@@ -261,7 +271,7 @@ func _register_all_effects() -> void:
 	effect_registry["L'intervention de Chronos"] = InterventionChronosEffect
 	effect_registry["La révolte sombre"] = RevolteSombreEffect
 	
-	print("✅ %d effets enregistrés" % effect_registry.size())
+	print("✅ %d effets d'items enregistrés" % effect_registry.size())
 
 ## Point d'entrée principal - Applique l'effet d'un item collecté
 func apply_item_effect(item: Item, collector_unit: Unit, world: Node) -> void:
@@ -296,7 +306,7 @@ func apply_item_effect(item: Item, collector_unit: Unit, world: Node) -> void:
 			effect.effect_expired.connect(_on_effect_expired.bind(effect, item.name, collector_unit.get_side()))
 	
 	effect_applied.emit(item.name, collector_unit.get_side())
-	print("✨ Effet appliqué: %s" % item.name)
+	print("✨ Effet appliqué: %s (type: %s)" % [item.name, Item.ItemType.keys()[item.type]])
 
 ## Détermine les cibles selon le type de ciblage de l'item
 func _find_targets(item: Item, collector: Unit, world: Node) -> Array:

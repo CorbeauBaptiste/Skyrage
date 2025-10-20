@@ -5,9 +5,14 @@ var drag_start = Vector2.ZERO
 var select_rect = RectangleShape2D.new()
 var selected = []
 
+# Systèmes d'items
+var item_spawn_system: ItemSpawnSystem
+var item_effect_manager: ItemEffectManager
+var item_ui_system: ItemUISystem
+
 @onready var base_enfer: Base = $BaseEnfer
 @onready var base_paradis: Base = $BaseParadis
-@onready var match_timer: Timer = $MatchTimer
+@onready var match_timer: Timer = Timer.new()
 
 var ui_layer: CanvasLayer
 var hud_enfer
@@ -16,24 +21,111 @@ var hud_paradis
 var current_phase_is_enfer: bool = false
 
 func _ready() -> void:
-	# Timer de match
-	if match_timer:
-		match_timer.wait_time = Constants.MATCH_DURATION
-		match_timer.timeout.connect(_on_match_end)
-		match_timer.start()
+	# Add timer to scene
+	add_child(match_timer)
+	match_timer.wait_time = Constants.MATCH_DURATION
+	match_timer.timeout.connect(_on_match_end)
+	match_timer.start()
 	
 	if base_enfer:
 		base_enfer.base_destroyed.connect(_on_victory)
 	if base_paradis:
 		base_paradis.base_destroyed.connect(_on_victory)
 	
-	# Afficher infos joueurs
+	# Attendre que les bases soient prêtes
+	await get_tree().process_frame
+	
 	if base_enfer and base_enfer.player:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
 
 	_setup_ui()
+	_setup_item_systems()
+
+func _setup_item_systems() -> void:
+	"""Configure le système d'items complet"""
+	print("🔧 Configuration des systèmes d'items...")
+	
+	# Système de spawn d'items
+	item_spawn_system = ItemSpawnSystem.new()
+	add_child(item_spawn_system)
+	
+	# Vérifie que les TileMapLayer existent
+	if has_node("TileMap/Sol") and has_node("TileMap/Decoration"):
+		# Charge la texture (avec fallback si introuvable)
+		var texture: Texture2D = null
+		if ResourceLoader.exists("res://assets/sprites/items/light_item.png"):
+			texture = load("res://assets/sprites/items/light_item.png")
+			print("✅ Texture item chargée")
+		else:
+			push_warning("⚠️ Texture d'item introuvable, utilisation d'une texture par défaut")
+			# Créer une texture simple de fallback
+			var img = Image.create(32, 32, false, Image.FORMAT_RGBA8)
+			img.fill(Color.YELLOW)
+			texture = ImageTexture.create_from_image(img)
+		
+		# Récupère les layers (pas la TileMap parente !)
+		var sol_layer = $TileMap/Sol as TileMapLayer
+		var deco_layer = $TileMap/Decoration as TileMapLayer
+		
+		if sol_layer and deco_layer:
+			item_spawn_system.setup(sol_layer, deco_layer, texture)
+			item_spawn_system.item_collected.connect(_on_item_collected)
+			print("✅ ItemSpawnSystem configuré avec Sol + Decoration")
+		else:
+			push_error("❌ Sol ou Decoration n'est pas un TileMapLayer !")
+			return
+	else:
+		push_error("❌ TileMap/Sol ou TileMap/Decoration introuvable !")
+		if has_node("TileMap"):
+			print("TileMap trouvée, enfants disponibles :")
+			for child in $TileMap.get_children():
+				print("  - %s (%s)" % [child.name, child.get_class()])
+		return
+	
+	# Système d'effets d'items
+	item_effect_manager = ItemEffectManager.new()
+	add_child(item_effect_manager)
+	print("✅ ItemEffectManager configuré")
+	
+	# Système UI pour les items
+	item_ui_system = ItemUISystem.new()
+	add_child(item_ui_system)
+	print("✅ ItemUISystem configuré")
+
+func _process(_delta: float) -> void:
+	# Vérifier la collecte d'items
+	if item_spawn_system:
+		var units = get_tree().get_nodes_in_group("units")
+		item_spawn_system.check_collection(units)
+
+func _on_item_collected(item: Item, position: Vector2) -> void:
+	"""Callback quand un item est collecté"""
+	print("📦 Item collecté: %s à %s" % [item.name, position])
+	
+	# Trouve l'unité la plus proche qui a collecté
+	var collector: Unit = null
+	var min_dist = INF
+	
+	for unit in get_tree().get_nodes_in_group("units"):
+		if unit is Unit:
+			var dist = unit.global_position.distance_to(position)
+			if dist < min_dist:
+				min_dist = dist
+				collector = unit
+	
+	if not collector:
+		push_warning("Aucune unité trouvée pour collecter l'item")
+		return
+	
+	# Affiche le feedback UI
+	if item_ui_system:
+		item_ui_system.show_item_collected(item, position, self)
+	
+	# Applique l'effet de l'item
+	if item_effect_manager:
+		item_effect_manager.apply_item_effect(item, collector, self)
 
 func _setup_ui() -> void:
 	"""Configure les HUDs des deux camps"""
@@ -80,8 +172,6 @@ func _spawn_units(camp: String, unit_type: String) -> void:
 	var count = Constants.SPAWN_COUNTS[unit_type]
 	var cost = Constants.UNIT_COSTS[unit_type]
 	
-	#print("Spawn de %d %s pour %s (coût: %d)" % [count, unit_type, camp.capitalize(), cost])
-	
 	# Spawner les unites avec un délai
 	for i in range(count):
 		await base.spawn_unit(unit_scene, cost)
@@ -90,9 +180,6 @@ func _spawn_units(camp: String, unit_type: String) -> void:
 
 func _on_phase_changed(is_enfer_phase: bool) -> void:
 	current_phase_is_enfer = is_enfer_phase
-	#print("Phase changée : %s" % ("ENFER" if is_enfer_phase else "PARADIS"))
-	
-	# TODO: faire arrêter les unites
 	_clear_selection()
 
 func _clear_selection() -> void:
@@ -149,13 +236,9 @@ func _perform_selection(drag_end: Vector2) -> void:
 		if is_instance_valid(collider) and collider is Unit:
 			var unit_is_enfer = collider.get_side()
 			
-			# Vérifier que l'unite appartient au camp de la phase actuelle
 			if unit_is_enfer == current_phase_is_enfer:
 				collider.selected = true
 				valid_selected.append(item)
-			else:
-				print("Impossible de sélectionner une unité ennemie pendant la phase %s" % 
-					("ENFER" if current_phase_is_enfer else "PARADIS"))
 	
 	selected = valid_selected
 
@@ -192,5 +275,3 @@ func _on_match_end() -> void:
 	
 	print("Temps écoulé ! %s gagne par PV restants (Enfer: %d, Paradis: %d)" % 
 		[winner.capitalize(), pv_enfer, pv_paradis])
-	
-	# TODO: faire une scene en cas d'egalite

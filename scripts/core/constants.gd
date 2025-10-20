@@ -29,12 +29,12 @@ const SPAWN_COUNTS = {
 # PRIX UNITE
 # -------------------------------------------
 const UNIT_COSTS = {
-	"archange": 5.0,
-	"ange": 10.0,
-	"seraphin": 15.0,
-	"diablotin": 6.0,
-	"ange_dechu": 11.0,
-	"demon": 16.0
+	"archange": 	0.0, # 5.0
+	"ange": 		0.0, # 10.0
+	"seraphin": 	0.0, # 15.0 
+	"diablotin": 	0.0, # 6.0
+	"ange_dechu": 	0.0, # 11.0
+	"demon": 		0.0, # 16.0
 }
 
 # CONFIGURATION DE L'OR

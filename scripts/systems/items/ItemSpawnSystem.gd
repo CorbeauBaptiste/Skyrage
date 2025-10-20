@@ -3,7 +3,7 @@ extends Node
 
 signal item_collected(item: Item, position: Vector2)
 
-@export var spawn_interval: float = 30.0
+@export var spawn_interval: float = 5.0
 @export var min_distance_between_items: float = 32.0
 @export var grid_size: int = 64
 @export var item_texture: Texture2D
@@ -24,6 +24,9 @@ const PLAYABLE_TILE_COORDS := [
 	Vector2i(12, 2),  # Sol
 ]
 
+# ==============================
+# 🧩 VARIABLES INTERNES
+# ==============================
 var item_manager: ItemManager
 var spawned_items: Dictionary = {}  # position -> item
 var spawn_timer: Timer

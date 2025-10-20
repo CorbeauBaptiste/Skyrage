@@ -6,10 +6,14 @@ class_name Base
 var current_health: int = 2500
 var gold_manager: GoldManagerParadise
 var player: Player
+var attacking_units: Array[Node2D] = []
+var max_simultaneous_attackers: int = 3  # Maximum number of units that can attack the base at once
 
 signal health_changed(current: int, max: int)
 signal base_destroyed(winning_team: String)
 signal unit_spawned(unit: Unit)
+signal base_under_attack(attacker: Node2D)
+signal attack_ended(attacker: Node2D)
 
 func _ready() -> void:
 	max_health = 2500
@@ -38,7 +42,11 @@ func _ready() -> void:
 	add_to_group("bases")
 	print("Base ", team, " ready (PV: ", current_health, ", Or: ", gold_manager.current_gold, ")")
 
-func take_damage(amount: int) -> bool:
+func take_damage(amount: int, attacker: Node2D = null) -> bool:
+	if attacker and not attacking_units.has(attacker):
+		attacking_units.append(attacker)
+		base_under_attack.emit(attacker)
+	
 	print("Base ", team, " prend ", amount, " dégâts ! PV: ", current_health, " → ", current_health - amount)
 	current_health = max(0, current_health - amount)
 	health_changed.emit(current_health, max_health)
@@ -51,6 +59,19 @@ func take_damage(amount: int) -> bool:
 		call_deferred("queue_free")
 		return true
 	return false
+
+func can_attack_base(unit: Node2D) -> bool:
+	# Check if the unit is already attacking or if there's room for more attackers
+	return attacking_has_room() or attacking_units.has(unit)
+
+func attacking_has_room() -> bool:
+	# Check if the base can accept more attackers
+	return attacking_units.size() < max_simultaneous_attackers
+
+func stop_attacking(unit: Node2D) -> void:
+	if attacking_units.has(unit):
+		attacking_units.erase(unit)
+		attack_ended.emit(unit)
 
 func get_enemy_base() -> Base:
 	for b in get_tree().get_nodes_in_group("bases"):
@@ -82,7 +103,8 @@ func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
 		
 		# Instancier l'unité
 		var unit = unit_scene.instantiate() as Unit
-		unit.global_position = spawn_pos
+		var random_offset = Vector2(randf_range(-20, 20), randf_range(-20, 20))
+		unit.global_position = spawn_pos + random_offset
 		
 		var is_hell = (team == "enfer")
 		unit.is_hell_faction = is_hell

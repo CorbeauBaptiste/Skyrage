@@ -193,7 +193,7 @@ func _connect_signals() -> void:
 # ========================================
 
 func _physics_process(delta: float) -> void:
-	# ⚠️ CRITIQUE : Attendre que les components soient prêts
+	## Boucle principale (à ne pas override).
 	if not components_ready:
 		return
 	
@@ -203,16 +203,21 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 	
-	# 2. Si un ennemi est détecté ET à portée d'attaque, on combat
-	if targeting_component and targeting_component.current_enemy:
-		if is_instance_valid(targeting_component.current_enemy):
-			if combat_component and combat_component.is_target_in_range():
-				_handle_combat()
-				velocity = Vector2.ZERO
-				move_and_slide()
-				return
+	# 2. Mise à jour du ciblage
+	if targeting_component:
+		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
+			# On a un ennemi valide
+			if combat_component:
+				var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
+				
+				if distance <= combat_component.attack_range:
+					# À portée : on attaque
+					_handle_combat()
+					velocity = Vector2.ZERO
+					move_and_slide()
+					return
 	
-	# 3. Appel de la logique de mouvement personnalisée
+	# 3. Pas d'ennemi à portée : on se déplace
 	handle_movement(delta)
 	
 	# 4. Application du mouvement

@@ -9,11 +9,6 @@ extends Unit
 ## - Vitesse : 30
 ## - Portée : 50 (courte, corps à corps)
 
-var _spawn_move_time: float = 0.0
-const INITIAL_MOVE_DURATION: float = 1.0
-var _initial_move_done: bool = false
-
-
 func _ready() -> void:
 	unit_name = "Archange"
 	unit_size = "S"
@@ -28,27 +23,32 @@ func _ready() -> void:
 	super._ready()
 
 
-##
-##
-## @param delta: Temps écoulé
-func handle_movement(delta: float) -> void:
-	if not movement_component:
+func handle_movement(_delta: float) -> void:
+	## Implémente le mouvement de l'Archange.
+	##
+	## Comportement : Avance en continu vers la cible avec évitement.
+	if not movement_component or not targeting_component:
 		return
 	
-	# ⚠️ COMPORTEMENT TEMPORAIRE (template de base)
-	if not _initial_move_done:
-		_spawn_move_time += delta
-		if _spawn_move_time >= INITIAL_MOVE_DURATION:
-			_initial_move_done = true
-			movement_component.stop()
-			return
-		
-		if targeting_component and targeting_component.target:
-			var target_pos: Vector2 = targeting_component.get_target_position()
-			var direction: Vector2 = global_position.direction_to(target_pos)
-			var avoidance: Vector2 = movement_component.calculate_avoidance()
-			var final_direction: Vector2 = (direction + avoidance * 0.6).normalized()
-			movement_component.apply_velocity(final_direction)
+	if not targeting_component.target:
+		movement_component.stop()
 		return
 	
-	movement_component.stop()
+	var target_pos: Vector2 = targeting_component.get_target_position()
+	
+	if target_pos == Vector2.ZERO:
+		movement_component.stop()
+		return
+	
+	var distance: float = global_position.distance_to(target_pos)
+	
+	if distance <= attack_range:
+		movement_component.stop()
+		return
+	
+	var direction: Vector2 = global_position.direction_to(target_pos)
+	var avoidance: Vector2 = movement_component.calculate_avoidance()
+	
+	var final_direction: Vector2 = (direction + avoidance * movement_component.avoidance_weight).normalized()
+	
+	movement_component.apply_velocity(final_direction)

@@ -48,11 +48,18 @@ func _ready() -> void:
 	_detection_area = _parent_unit.get_node_or_null("Detect")
 	_range_area = _parent_unit.get_node_or_null("Range")
 	
-	if _range_area:
-		_range_area.body_entered.connect(_on_enemy_in_range)
-		_range_area.body_exited.connect(_on_enemy_out_of_range)
+	if not _range_area:
+		push_error("UnitTargetingComponent: Range Area2D manquante sur %s" % _parent_unit.name)
+		return
 	
-	# Attendre 2 frames pour que tout soit chargé
+	if not _detection_area:
+		push_warning("UnitTargetingComponent: Detect Area2D manquante sur %s" % _parent_unit.name)
+	
+	# Connexion des signaux
+	_range_area.body_entered.connect(_on_enemy_in_range)
+	_range_area.body_exited.connect(_on_enemy_out_of_range)
+	
+	# Attendre que tout soit chargé
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_set_initial_target()
@@ -60,40 +67,28 @@ func _ready() -> void:
 
 ## Définit la base ennemie comme cible initiale.
 func _set_initial_target() -> void:
-	if not _parent_unit:
+	## Définit la base ennemie comme cible initiale.
+	if not _parent_unit or not is_instance_valid(_parent_unit):
 		return
 	
-	# ✅ CORRECTION : Utiliser get() au lieu de has()
-	var parent_faction = _parent_unit.get("is_hell_faction")
-	if parent_faction == null:
-		print("⚠️ %s: Parent unit missing is_hell_faction" % name)
+	if not (_parent_unit is Unit):
 		return
 	
-	var parent_side: bool = parent_faction
+	var parent_side: bool = _parent_unit.is_hell_faction
 	var bases := _parent_unit.get_tree().get_nodes_in_group("bases")
-	
-	print("🔍 %s: Searching enemy base (I'm %s, found %d bases)" % [
-		_parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit",
-		"hell" if parent_side else "heaven",
-		bases.size()
-	])
 	
 	for base in bases:
 		if not is_instance_valid(base) or not base.is_inside_tree():
 			continue
+		
+		if not (base is Base):
+			continue
 			
-		if base.has_method("get_side"):
-			var base_side: bool = base.get_side()
-			print("  - Base %s: side=%s" % [base.name, "hell" if base_side else "heaven"])
-			
-			if base_side != parent_side:
-				target = base
-				var unit_name = _parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit"
-				print("✅ %s: Target set to %s" % [unit_name, base.name])
-				return
-	
-	var unit_name = _parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit"
-	print("❌ %s: No enemy base found!" % unit_name)
+		var base_side: bool = base.get_side()
+		
+		if base_side != parent_side:
+			target = base
+			return
 
 
 ## Trouve la meilleure cible parmi les ennemis à portée.
@@ -126,9 +121,16 @@ func find_best_target() -> Node2D:
 ##
 ## @param body: Corps qui entre
 func _on_enemy_in_range(body: Node2D) -> void:
+	## Callback quand un ennemi entre à portée.
 	if not _is_valid_enemy(body):
 		return
 	
+	# Ajoute à la liste des ennemis
+	if not enemies_in_range.has(body):
+		enemies_in_range.append(body)
+		enemy_detected.emit(body)
+	
+	# Si c'est une base
 	if body is Base:
 		if not current_enemy or current_enemy == body:
 			current_enemy = body
@@ -139,19 +141,19 @@ func _on_enemy_in_range(body: Node2D) -> void:
 			if body.has_method("take_damage"):
 				body.take_damage(0, _parent_unit)
 	
-	elif not current_enemy:
-		current_enemy = body
-		is_attacking_base = false
-	
-	if not enemies_in_range.has(body):
-		enemies_in_range.append(body)
-		enemy_detected.emit(body)
+	# Si c'est une unité ET qu'on n'a pas déjà de cible
+	elif body is Unit:
+		if not current_enemy:
+			current_enemy = body
+			is_attacking_base = false
+			print("🎯 %s cible %s" % [_parent_unit.unit_name, body.unit_name])
 
 
 ## Callback quand un ennemi sort de portée.
 ##
 ## @param body: Corps qui sort
 func _on_enemy_out_of_range(body: Node2D) -> void:
+	## Callback quand un ennemi sort de portée.
 	enemies_in_range.erase(body)
 	
 	if body == current_enemy:
@@ -159,8 +161,14 @@ func _on_enemy_out_of_range(body: Node2D) -> void:
 			body.stop_attacking(_parent_unit)
 			is_attacking_base = false
 		
-		current_enemy = null
-		enemy_lost.emit(body)
+		# Cherche une nouvelle cible
+		current_enemy = find_best_target()
+		
+		if not current_enemy:
+			enemy_lost.emit(body)
+			print("❌ %s perd sa cible" % _parent_unit.unit_name)
+		else:
+			print("🔄 %s change de cible" % _parent_unit.unit_name)
 
 
 ## Vérifie si une entité est un ennemi valide.
@@ -168,22 +176,20 @@ func _on_enemy_out_of_range(body: Node2D) -> void:
 ## @param body: Entité à vérifier
 ## @return: true si ennemi valide
 func _is_valid_enemy(body: Node2D) -> bool:
+	## Vérifie si une entité est un ennemi valide.
 	if not is_instance_valid(body) or body == _parent_unit:
 		return false
 	
-	# ✅ CORRECTION : Utiliser get() au lieu de has()
-	var parent_faction = _parent_unit.get("is_hell_faction")
-	if parent_faction == null:
+	if not (_parent_unit is Unit):
 		return false
 	
+	var parent_side: bool = _parent_unit.is_hell_faction
+	
 	if body is Unit:
-		var body_faction = body.get("is_hell_faction")
-		if body_faction == null:
-			return false
-		return body_faction != parent_faction
+		return body.is_hell_faction != parent_side
 	
 	if body is Base:
-		return body.get_side() != parent_faction
+		return body.get_side() != parent_side
 	
 	return false
 

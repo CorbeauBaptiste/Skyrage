@@ -8,11 +8,8 @@ extends Node
 ## - Spawning de projectiles
 ## - Application des multiplicateurs de dégâts
 ## - Gestion des charges spéciales (Michaël, Cupidon)
-##
-## @tutorial: Utilisé par Unit pour handle_combat()
 
 ## Émis quand des dégâts sont infligés.
-## @param amount: Montant des dégâts
 signal damage_dealt(amount: int)
 
 ## Émis quand une attaque est lancée.
@@ -64,7 +61,6 @@ func _ready() -> void:
 	current_damage = base_damage
 	_parent_unit = get_parent()
 	
-	# Récupère les nodes nécessaires
 	_timer = _parent_unit.get_node_or_null("Timer")
 	_projectile_spawn = _parent_unit.get_node_or_null("Marker2D")
 	
@@ -76,10 +72,8 @@ func _ready() -> void:
 		projectile_scene = preload("res://scenes/entities/projectiles/projectile.tscn")
 
 
-## Tente d'attaquer la cible actuelle.
-##
-## @return: true si attaque lancée, false sinon
 func try_attack() -> bool:
+	## Tente d'attaquer la cible actuelle.
 	if not can_attack or not current_target or not is_instance_valid(current_target):
 		return false
 	
@@ -87,8 +81,8 @@ func try_attack() -> bool:
 	return true
 
 
-## Effectue une attaque.
 func _perform_attack() -> void:
+	## Effectue une attaque.
 	is_attacking = true
 	can_attack = false
 	
@@ -100,13 +94,12 @@ func _perform_attack() -> void:
 	
 	attack_performed.emit()
 	
-	# Petit délai pour l'animation
 	await get_tree().create_timer(0.2).timeout
 	is_attacking = false
 
 
-## Spawne un projectile vers la cible.
 func _spawn_projectile() -> void:
+	## Spawne un projectile vers la cible.
 	if not projectile_scene or not _projectile_spawn:
 		return
 	
@@ -118,18 +111,15 @@ func _spawn_projectile() -> void:
 	projectile.global_position = _projectile_spawn.global_position
 	projectile.rotation = _projectile_spawn.rotation
 	
-	# Configuration camp
-	if _parent_unit.has("is_hell_faction"):
+	if _parent_unit is Unit:
 		projectile.targets_enfer = not _parent_unit.is_hell_faction
 	
 	projectile.source_unit = _parent_unit
 	projectile.max_distance = attack_range
 	
-	# Dégâts finaux
 	var final_damage := int(current_damage * damage_multiplier)
 	projectile.damage = final_damage
 	
-	# Effets spéciaux
 	if michael_charges > 0:
 		projectile.is_michael_glaive = true
 		michael_charges -= 1
@@ -137,18 +127,15 @@ func _spawn_projectile() -> void:
 		projectile.is_cupidon_arrow = true
 		cupidon_arrows -= 1
 	
-	# Sprite selon le camp
 	_apply_projectile_sprite(projectile)
 	
 	_parent_unit.get_parent().add_child(projectile)
 	damage_dealt.emit(final_damage)
 
 
-## Applique le sprite du projectile selon le camp.
-##
-## @param projectile: Projectile à configurer
 func _apply_projectile_sprite(projectile: Projectile) -> void:
-	if not _parent_unit.has("is_hell_faction"):
+	## Applique le sprite du projectile selon le camp.
+	if not (_parent_unit is Unit):
 		return
 	
 	if _parent_unit.is_hell_faction:
@@ -157,34 +144,37 @@ func _apply_projectile_sprite(projectile: Projectile) -> void:
 		projectile.change_sprite("res://assets/sprites/projectiles/vent.png")
 
 
-## Callback du timer de cooldown.
 func _on_cooldown_finished() -> void:
+	## Callback du timer de cooldown.
 	can_attack = true
 
 
-## Définit la cible actuelle.
-##
-## @param target: Node2D à cibler
 func set_target(target: Node2D) -> void:
+	## Définit la cible actuelle.
 	current_target = target
 	
-	# Oriente le spawn vers la cible
 	if _projectile_spawn and target and is_instance_valid(target):
 		_projectile_spawn.look_at(target.global_position)
 
 
-## Vérifie si la cible est à portée.
-##
-## @return: true si à portée
 func is_target_in_range() -> bool:
-	if not current_target or not is_instance_valid(current_target):
+	## Vérifie si la cible est à portée.
+	if not _parent_unit or not (_parent_unit is Unit):
 		return false
 	
-	var distance := _parent_unit.global_position.distance_to(current_target.global_position)
+	if not _parent_unit.targeting_component:
+		return false
+	
+	var enemy: Node2D = _parent_unit.targeting_component.current_enemy
+	
+	if not enemy or not is_instance_valid(enemy):
+		return false
+	
+	var distance := _parent_unit.global_position.distance_to(enemy.global_position)
 	return distance <= attack_range
 
 
-## Réinitialise les modificateurs de combat.
 func reset_modifiers() -> void:
+	## Réinitialise les modificateurs de combat.
 	damage_multiplier = 1.0
 	cooldown_modifier = 0.0

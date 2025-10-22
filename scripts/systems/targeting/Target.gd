@@ -193,55 +193,97 @@ func resolve(source: Node, world: Node) -> Array:
 # ========================================
 
 func _find_all_allies(source: Node, world: Node) -> Array:
+	## Trouve tous les alliés.
 	var allies: Array = []
-	var source_side: bool = source.get_side() if source.has_method("get_side") else false
+	
+	if not source.has_method("get_side"):
+		return allies
+	
+	var source_side: bool = source.get_side()
 	
 	for unit in world.get_tree().get_nodes_in_group("units"):
-		if unit is Unit and unit.get_side() == source_side:
+		if not is_instance_valid(unit):
+			continue
+		if not (unit is Unit):
+			continue
+		if unit.get_side() == source_side:
 			allies.append(unit)
 	
 	return allies
 
 
 func _find_all_enemies(source: Node, world: Node) -> Array:
+	## Trouve tous les ennemis.
 	var enemies: Array = []
-	var source_side: bool = source.get_side() if source.has_method("get_side") else false
+	
+	if not source.has_method("get_side"):
+		return enemies
+	
+	var source_side: bool = source.get_side()
 	
 	for unit in world.get_tree().get_nodes_in_group("units"):
-		if unit is Unit and unit.get_side() != source_side:
+		if not is_instance_valid(unit):
+			continue
+		if not (unit is Unit):
+			continue
+		if unit.get_side() != source_side:
 			enemies.append(unit)
 	
 	return enemies
 
 
 func _find_ally_base(source: Node, world: Node) -> Array:
-	var source_side: bool = source.get_side() if source.has_method("get_side") else false
+	## Trouve la base alliée.
+	if not source.has_method("get_side"):
+		return []
+	
+	var source_side: bool = source.get_side()
 	
 	for base in world.get_tree().get_nodes_in_group("bases"):
-		if base is Base and base.get_side() == source_side:
+		if not is_instance_valid(base):
+			continue
+		if not (base is Base):
+			continue
+		if base.get_side() == source_side:
 			return [base]
 	
 	return []
 
 
 func _find_enemy_base(source: Node, world: Node) -> Array:
-	var source_side: bool = source.get_side() if source.has_method("get_side") else false
+	## Trouve la base ennemie.
+	if not source.has_method("get_side"):
+		return []
+	
+	var source_side: bool = source.get_side()
 	
 	for base in world.get_tree().get_nodes_in_group("bases"):
-		if base is Base and base.get_side() != source_side:
+		if not is_instance_valid(base):
+			continue
+		if not (base is Base):
+			continue
+		if base.get_side() != source_side:
 			return [base]
 	
 	return []
 
 
 func _find_player(source: Node, world: Node) -> Array:
-	var source_side: bool = source.get_side() if source.has_method("get_side") else false
-	var base_name: String = "base_enfer" if source_side else "base_paradis"
+	## Trouve le joueur.
+	if not source.has_method("get_side"):
+		return []
 	
-	if world.has_node(base_name):
-		var base: Base = world.get_node(base_name)
-		if base.player:
-			return [base.player]
+	var source_side: bool = source.get_side()
+	
+	for base in world.get_tree().get_nodes_in_group("bases"):
+		if not is_instance_valid(base):
+			continue
+		if not (base is Base):
+			continue
+		if base.get_side() == source_side:
+			if base.player:
+				return [base.player]
+			break
 	
 	return []
 

@@ -58,10 +58,15 @@ func take_damage(amount: int, _attacker: Node2D = null) -> bool:
 
 ## Callback quand la base est détruite.
 func _on_destroyed() -> void:
-	if not _parent_base or not _parent_base.has("team"):
+	if not _parent_base:
 		return
 	
-	var winner := "paradis" if _parent_base.team == "enfer" else "enfer"
+	var parent_team = _parent_base.get("team")
+	if parent_team == null:
+		push_warning("BaseHealthComponent: Parent base missing 'team' property")
+		return
+	
+	var winner := "paradis" if parent_team == "enfer" else "enfer"
 	
 	base_destroyed.emit(winner)
 

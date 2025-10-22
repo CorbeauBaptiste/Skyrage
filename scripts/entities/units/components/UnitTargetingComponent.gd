@@ -52,58 +52,48 @@ func _ready() -> void:
 		_range_area.body_entered.connect(_on_enemy_in_range)
 		_range_area.body_exited.connect(_on_enemy_out_of_range)
 	
-	# On attend une frame pour être sûr que tout est bien chargé
+	# Attendre 2 frames pour que tout soit chargé
+	await get_tree().process_frame
 	await get_tree().process_frame
 	_set_initial_target()
 
 
 ## Définit la base ennemie comme cible initiale.
 func _set_initial_target() -> void:
-	# Vérification sécurisée de la propriété is_hell_faction
-	if not _parent_unit.get("is_hell_faction") is bool:
-		print("❌ %s: Parent unit missing is_hell_faction" % _parent_unit.name)
+	if not _parent_unit:
 		return
 	
-	# Debug: Afficher tous les groupes existants
-	print("\n🔍 Debug - Groupes disponibles:")
-	var group_names = []
-	var nodes = _parent_unit.get_tree().get_nodes_in_group("")
-	for node in nodes:
-		for group in node.get_groups():
-			if not group in group_names:
-				group_names.append(group)
-	print("Groupes trouvés: " + str(group_names))
+	# ✅ CORRECTION : Utiliser get() au lieu de has()
+	var parent_faction = _parent_unit.get("is_hell_faction")
+	if parent_faction == null:
+		print("⚠️ %s: Parent unit missing is_hell_faction" % name)
+		return
 	
+	var parent_side: bool = parent_faction
 	var bases := _parent_unit.get_tree().get_nodes_in_group("bases")
-	print("\n🔍 %s: Found %d bases in scene" % [_parent_unit.name, bases.size()])
 	
-	# Debug: Afficher des informations sur chaque base trouvée
-	for i in bases.size():
-		var base = bases[i]
-		if not is_instance_valid(base):
-			print("  %d. Base invalide (déjà libérée)" % i)
+	print("🔍 %s: Searching enemy base (I'm %s, found %d bases)" % [
+		_parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit",
+		"hell" if parent_side else "heaven",
+		bases.size()
+	])
+	
+	for base in bases:
+		if not is_instance_valid(base) or not base.is_inside_tree():
 			continue
 			
-		print("  %d. %s (type: %s, in tree: %s)" % [
-			i,
-			base.name,
-			base.get_class(),
-			base.is_inside_tree()
-		])
-		
-		# Afficher les propriétés de la base
-		print("     - Team: " + (str(base.get("team")) if base.get("team") != null else "No team property"))
-		print("     - Groups: " + str(base.get_groups()))
+		if base.has_method("get_side"):
+			var base_side: bool = base.get_side()
+			print("  - Base %s: side=%s" % [base.name, "hell" if base_side else "heaven"])
 			
-		var base_side = base.get_side() if base.has_method("get_side") else "unknown"
-		print("  - Base: %s (side: %s, our side: %s)" % [base.name, base_side, "hell" if _parent_unit.is_hell_faction else "heaven"])
-		
-		if base.has_method("get_side") and base.get_side() != _parent_unit.is_hell_faction:
-			target = base
-			print("🎯 %s: Found enemy base target: %s" % [_parent_unit.name, base.name])
-			return
+			if base_side != parent_side:
+				target = base
+				var unit_name = _parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit"
+				print("✅ %s: Target set to %s" % [unit_name, base.name])
+				return
 	
-	print("⚠️ %s: No valid enemy base found!" % _parent_unit.name)
+	var unit_name = _parent_unit.get("unit_name") if _parent_unit.get("unit_name") else "Unit"
+	print("❌ %s: No enemy base found!" % unit_name)
 
 
 ## Trouve la meilleure cible parmi les ennemis à portée.
@@ -181,14 +171,19 @@ func _is_valid_enemy(body: Node2D) -> bool:
 	if not is_instance_valid(body) or body == _parent_unit:
 		return false
 	
-	if not _parent_unit.has("is_hell_faction"):
+	# ✅ CORRECTION : Utiliser get() au lieu de has()
+	var parent_faction = _parent_unit.get("is_hell_faction")
+	if parent_faction == null:
 		return false
 	
 	if body is Unit:
-		return body.is_hell_faction != _parent_unit.is_hell_faction
+		var body_faction = body.get("is_hell_faction")
+		if body_faction == null:
+			return false
+		return body_faction != parent_faction
 	
 	if body is Base:
-		return body.get_side() != _parent_unit.is_hell_faction
+		return body.get_side() != parent_faction
 	
 	return false
 
@@ -218,13 +213,8 @@ func get_target_position() -> Vector2:
 		return target
 	elif target is Node2D and is_instance_valid(target):
 		if not target.is_inside_tree():
-			print("⚠️ %s: Target is not in scene tree!" % _parent_unit.name)
 			return Vector2.ZERO
 		return target.global_position
-	else:
-		if target != null:
-			print("⚠️ %s: Invalid target type: %s" % [_parent_unit.name, typeof(target)])
-		return Vector2.ZERO
 	return Vector2.ZERO
 
 

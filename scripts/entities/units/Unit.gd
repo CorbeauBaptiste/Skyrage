@@ -72,6 +72,9 @@ var selected: bool = false:
 		if selection_component:
 			selection_component.set_selected(value)
 
+## Si les components sont prêts.
+var components_ready: bool = false
+
 # ========================================
 # COMPONENTS
 # ========================================
@@ -88,10 +91,7 @@ var movement_component: UnitMovementComponent = null
 var combat_component: UnitCombatComponent = null
 var targeting_component: UnitTargetingComponent = null
 var selection_component: UnitSelectionComponent = null
-
-# ========================================
-# NODES ENFANTS
-# ========================================
+var item_effect_component: UnitItemEffectComponent = null
 
 # ========================================
 # SCENE DE PROJECTILE
@@ -104,84 +104,80 @@ var arrow_scene: PackedScene = preload("res://scenes/entities/projectiles/projec
 # ========================================
 
 func _ready() -> void:
-	print("\n🚀 Unit._ready() called for %s" % unit_name)
+	print("🚀 Unit._ready() START for %s" % unit_name)
 	
 	# Configuration physique
 	collision_layer = 2
-	collision_mask = 1  # Collisions uniquement avec le terrain
+	collision_mask = 1
 	add_to_group("units")
 	
-	# Configuration des composants
+	# Setup des nodes
+	_setup_nodes()
+	
+	# Setup différé pour laisser les enfants définir leurs propriétés
+	call_deferred("_deferred_setup")
+
+## Setup différé exécuté après que les classes enfants aient configuré leurs valeurs
+func _deferred_setup() -> void:
 	_setup_components()
 	_connect_signals()
 	_apply_faction_color()
 	
-	print("\n✅ Unit setup complete for %s" % unit_name)
+	# Marquer les components comme prêts
+	components_ready = true
+	
+	print("✅ Unit setup complete for %s (HP:%d, Speed:%.1f, Dmg:%d)" % [unit_name, max_health, base_speed, base_damage])
 
 ## Configure les composants de l'unité.
 func _setup_components() -> void:
-	print("\n🔧 Setting up components for %s" % unit_name)
+	print("🔧 Setting up components for %s" % unit_name)
 
-	# Création des composants s'ils n'existent pas
-	health_component = _get_or_create_component("HealthComponent", "res://scripts/entities/units/components/UnitHealthComponent.gd")
-	movement_component = _get_or_create_component("MovementComponent", "res://scripts/entities/units/components/UnitMovementComponent.gd")
-	combat_component = _get_or_create_component("CombatComponent", "res://scripts/entities/units/components/UnitCombatComponent.gd")
-	targeting_component = _get_or_create_component("TargetingComponent", "res://scripts/entities/units/components/UnitTargetingComponent.gd")
-	selection_component = _get_or_create_component("SelectionComponent", "res://scripts/entities/units/components/UnitSelectionComponent.gd")
+	# Création des composants avec leurs vrais types
+	health_component = _create_component("HealthComponent", UnitHealthComponent)
+	movement_component = _create_component("MovementComponent", UnitMovementComponent)
+	combat_component = _create_component("CombatComponent", UnitCombatComponent)
+	targeting_component = _create_component("TargetingComponent", UnitTargetingComponent)
+	selection_component = _create_component("SelectionComponent", UnitSelectionComponent)
+	item_effect_component = _create_component("ItemEffectComponent", UnitItemEffectComponent)
 	
-	# Configuration des composants
-	if health_component and health_component.has_method("setup"):
-		health_component.setup({
-			"max_health": max_health,
-			"current_health": max_health
-		})
+	# Attendre que les components soient ajoutés à l'arbre
+	await get_tree().process_frame
+	
+	# Configuration manuelle des propriétés (plus fiable que setup())
+	if health_component:
+		health_component.max_health = max_health
+		health_component.current_health = max_health
 		
-	if movement_component and movement_component.has_method("setup"):
-		movement_component.setup({
-			"speed": base_speed,
-			"acceleration": 10.0,
-			"deceleration": 15.0
-		})
+	if movement_component:
+		movement_component.base_speed = base_speed
+		movement_component.current_speed = base_speed
 		
-	if combat_component and combat_component.has_method("setup"):
-		combat_component.setup({
-			"damage": base_damage,
-			"attack_range": attack_range,
-			"attack_cooldown": attack_cooldown
-		})
+	if combat_component:
+		combat_component.base_damage = base_damage
+		combat_component.current_damage = base_damage
+		combat_component.attack_range = attack_range
+		combat_component.attack_cooldown = attack_cooldown
 		
-	if targeting_component and targeting_component.has_method("setup"):
-		targeting_component.setup({
-			"detection_radius": detection_radius,
-			"is_hell_faction": is_hell_faction
-		})
+	if targeting_component:
+		targeting_component.detection_radius = detection_radius
+
+## Crée un component avec le bon type
+func _create_component(component_name: String, component_type) -> Node:
+	var existing := get_node_or_null(component_name)
+	if existing:
+		print("  ✓ %s exists" % component_name)
+		return existing
+		
+	print("  ➕ Creating %s" % component_name)
+	var component = component_type.new()
+	component.name = component_name
+	add_child(component)
+	return component
 
 ## Récupère les nodes enfants requis.
 func _setup_nodes() -> void:
 	sprite = get_node_or_null("Sprite2D")
 	anim_player = get_node_or_null("AnimationPlayer")
-
-
-## Fonction utilitaire pour créer un composant s'il n'existe pas
-func _get_or_create_component(component_name: String, script_path: String) -> Node:
-	# Vérifie si le composant existe déjà
-	var existing = get_node_or_null(component_name)
-	if existing:
-		print("    ✅ Found existing %s" % component_name)
-		return existing
-		
-	# Crée le composant s'il n'existe pas
-	print("    ➕ Creating new %s" % component_name)
-	var component = Node.new()
-	component.name = component_name
-	var script = load(script_path)
-	if script:
-		component.set_script(script)
-	else:
-		push_error("Failed to load script: %s" % script_path)
-	
-	add_child(component)
-	return component
 
 ## Connecte les signaux des composants.
 func _connect_signals() -> void:
@@ -192,28 +188,17 @@ func _connect_signals() -> void:
 	if combat_component:
 		combat_component.damage_dealt.connect(_on_damage_dealt)
 
-
 # ========================================
 # BOUCLE PRINCIPALE (À NE PAS OVERRIDE)
 # ========================================
 
 func _physics_process(delta: float) -> void:
-	# Debug: Track physics process execution
-	if Engine.get_frames_drawn() % 60 == 0:  # Print every second
-		print("\n🔧 %s _physics_process" % unit_name)
-		print("Position: %s" % global_position)
-		print("Velocity: %s" % velocity)
-		print("Components - Health: %s, Movement: %s, Combat: %s, Targeting: %s" % [
-			"✅" if health_component else "❌",
-			"✅" if movement_component else "❌",
-			"✅" if combat_component else "❌",
-			"✅" if targeting_component else "❌"
-		])
-
+	# ⚠️ CRITIQUE : Attendre que les components soient prêts
+	if not components_ready:
+		return
+	
 	# 1. Si en train d'attaquer, on ne bouge pas
 	if combat_component and combat_component.is_attacking:
-		if velocity != Vector2.ZERO:
-			print("⚔️ %s: Attacking, stopping movement" % unit_name)
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
@@ -221,29 +206,20 @@ func _physics_process(delta: float) -> void:
 	# 2. Si un ennemi est détecté ET à portée d'attaque, on combat
 	if targeting_component and targeting_component.current_enemy:
 		if is_instance_valid(targeting_component.current_enemy):
-			# Vérifie si l'ennemi est à portée
 			if combat_component and combat_component.is_target_in_range():
 				_handle_combat()
 				velocity = Vector2.ZERO
 				move_and_slide()
 				return
-			# Sinon, on continue le mouvement normal pour s'approcher
 	
 	# 3. Appel de la logique de mouvement personnalisée
 	handle_movement(delta)
 	
 	# 4. Application du mouvement
-	if velocity != Vector2.ZERO:
-		print("🚀 %s: Moving with velocity %s" % [unit_name, velocity])
 	move_and_slide()
-	
-	# Debug: Check if position changed after move_and_slide()
-	if Engine.get_frames_drawn() % 60 == 0 and velocity != Vector2.ZERO:
-		print("📌 %s: After move_and_slide() - Position: %s" % [unit_name, global_position])
 	
 	# 5. Animation
 	_update_animation()
-
 
 # ========================================
 # MÉTHODE ABSTRAITE (OBLIGATOIRE)
@@ -257,10 +233,8 @@ func _physics_process(delta: float) -> void:
 ## @param delta: Temps écoulé depuis la dernière frame
 func handle_movement(_delta: float) -> void:
 	push_error("%s: handle_movement() must be overridden!" % unit_name)
-	# Par défaut, on arrête le mouvement
 	if movement_component:
 		movement_component.stop()
-
 
 # ========================================
 # SYSTÈME DE COMBAT
@@ -283,7 +257,6 @@ func _handle_combat() -> void:
 	# Attaque si possible
 	combat_component.try_attack()
 
-
 # ========================================
 # GESTION DE LA SANTÉ (IDamageable)
 # ========================================
@@ -295,7 +268,6 @@ func take_damage(amount: int) -> void:
 	if health_component:
 		health_component.take_damage(amount)
 
-
 ## Soigne l'unité.
 ##
 ## @param amount: Montant de soin
@@ -305,14 +277,12 @@ func heal(amount: int) -> int:
 		return health_component.heal(amount)
 	return 0
 
-
 ## Définit directement la santé.
 ##
 ## @param value: Nouvelle valeur de santé
 func set_health(value: int) -> void:
 	if health_component:
 		health_component.set_health(value)
-
 
 ## Retourne la santé actuelle.
 ##
@@ -322,7 +292,6 @@ func get_health() -> int:
 		return health_component.get_health()
 	return 0
 
-
 ## Retourne les PV manquants.
 ##
 ## @return: Différence entre max et actuel
@@ -330,7 +299,6 @@ func get_missing_health() -> int:
 	if health_component:
 		return health_component.get_missing_health()
 	return 0
-
 
 # ========================================
 # GESTION DU CAMP (ITargetable)
@@ -342,7 +310,6 @@ func get_missing_health() -> int:
 func get_side() -> bool:
 	return is_hell_faction
 
-
 ## Définit le camp de l'unité.
 ##
 ## @param value: true pour Enfer, false pour Paradis
@@ -350,12 +317,10 @@ func set_side(value: bool) -> void:
 	is_hell_faction = value
 	_apply_faction_color()
 
-
 ## Applique la couleur selon le camp.
 func _apply_faction_color() -> void:
 	if sprite:
 		sprite.modulate = Color.RED if is_hell_faction else Color.WHITE
-
 
 # ========================================
 # ANIMATION
@@ -382,7 +347,6 @@ func _update_animation() -> void:
 		else:
 			anim_player.play("running-up")
 
-
 # ========================================
 # CALLBACKS DES SIGNAUX
 # ========================================
@@ -390,10 +354,8 @@ func _update_animation() -> void:
 func _on_health_changed(current: int, max_hp: int) -> void:
 	health_changed.emit(current, max_hp)
 
-
 func _on_damage_dealt(amount: int) -> void:
 	damage_dealt.emit(amount)
-
 
 func _on_died() -> void:
 	# Notifie la base si on l'attaquait

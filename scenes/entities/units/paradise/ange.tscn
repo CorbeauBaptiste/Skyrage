@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://87hem040vnrn"]
 
-[ext_resource type="Script" uid="uid://c2xfy054l7bvj" path="res://scripts/entities/units/unit_paradis/ange/ange.gd" id="1_vo3tg"]
-[ext_resource type="Texture2D" uid="uid://c6ue2vk7jh8e7" path="res://assets/sprites/units/paradise/ange.png" id="2_rilh7"]
+[ext_resource type="Script" uid="uid://d36nlxrb85uee" path="res://scripts/entities/units/paradise/Ange.gd" id="1_vo3tg"]
+[ext_resource type="Texture2D" uid="uid://nr2grdfamhge" path="res://assets/sprites/units/paradise/ange.png" id="2_rilh7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vo3tg"]
 size = Vector2(30, 16)

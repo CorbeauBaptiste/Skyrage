@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://bpem4157qmn2d"]
 
-[ext_resource type="Script" uid="uid://dsvabggskaf10" path="res://scripts/entities/units/unit_paradis/archange/archange.gd" id="1_rk7dp"]
-[ext_resource type="Texture2D" uid="uid://dv366q2fvr5rr" path="res://assets/sprites/units/paradise/archange.png" id="2_8upee"]
+[ext_resource type="Script" uid="uid://dtv1bv8nvxmq1" path="res://scripts/entities/units/paradise/Archange.gd" id="1_rk7dp"]
+[ext_resource type="Texture2D" uid="uid://co4ke1q32ixk3" path="res://assets/sprites/units/paradise/archange.png" id="2_8upee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5v82g"]
 size = Vector2(30, 16)

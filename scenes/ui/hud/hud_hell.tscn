@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://chpqlr81pjt78"]
 
 [ext_resource type="Script" uid="uid://dr2n70wgn4xvu" path="res://scripts/ui/hud_hell.gd" id="1_rwdrd"]
-[ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/managers/GoldManagerParadise.gd" id="2_vs2k7"]
-[ext_resource type="Texture2D" uid="uid://b2g06cx0p61c3" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="3_e57d0"]
-[ext_resource type="Texture2D" uid="uid://c12puqncfmi0m" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="4_ew0i0"]
-[ext_resource type="Texture2D" uid="uid://c8almtu5xd3w2" path="res://assets/sprites/ui/cards/hell/diablotin.png" id="5_3ljc2"]
-[ext_resource type="Texture2D" uid="uid://dimgviqllds2t" path="res://assets/sprites/ui/cards/hell/ange_dechu.jpg" id="6_4hrxl"]
-[ext_resource type="Texture2D" uid="uid://cuf4j28woem4o" path="res://assets/sprites/ui/cards/hell/demon.png" id="7_vt1ly"]
+[ext_resource type="Script" uid="uid://taf2l3af4b07" path="res://scripts/managers/GoldManager.gd" id="2_vs2k7"]
+[ext_resource type="Texture2D" uid="uid://dnbkrpg4odwae" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="3_e57d0"]
+[ext_resource type="Texture2D" uid="uid://pyy7a2fplv7q" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="4_ew0i0"]
+[ext_resource type="Texture2D" uid="uid://dm54g1yxkrgq7" path="res://assets/sprites/ui/cards/hell/diablotin.png" id="5_3ljc2"]
+[ext_resource type="Texture2D" uid="uid://ifjy5og2t4sl" path="res://assets/sprites/ui/cards/hell/ange_dechu.jpg" id="6_4hrxl"]
+[ext_resource type="Texture2D" uid="uid://oh2v1ik5dm15" path="res://assets/sprites/ui/cards/hell/demon.png" id="7_vt1ly"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("3_e57d0")

@@ -1,66 +1,72 @@
 class_name BonusItemFactory
 extends RefCounted
 
+## Factory pour créer les items bonus avec le système Target.
+
 static func create_glaive_michael() -> Item:
-	var item = Item.new(
+	var item := Item.new(
 		Item.ItemType.BONUS,
-		5.0, 
+		5.0,
 		"Le glaive de michaël",
-		"dégât de zone (one shot les S, 3/4 les M, midlife les L)",
+		"Dégâts de zone (one shot S, 3/4 M, midlife L)",
 		Item.EffectType.COUNT,
-		2,
-		Item.Target.SINGLE
+		2,  # 2 charges
+		Target.self_target()  # Cible soi-même
 	)
 	return item
 
+
 static func create_benediction_ploutos() -> Item:
-	var item = Item.new(
+	var item := Item.new(
 		Item.ItemType.BONUS,
-		40.0,  # 40% de drop
+		40.0,
 		"La bénédiction de Ploutos",
-		"sort qui permet de faire x 1.5 de son or",
+		"Multiplie l'or par 1.5",
 		Item.EffectType.IMMEDIATE,
-		1,  # 1 utilisation
-		Item.Target.ALLY
+		1,
+		Target.player_target()  # Cible le joueur
 	)
 	item.gold_multiplier = 1.5
 	return item
 
+
 static func create_fleche_cupidon() -> Item:
-	var item = Item.new(
+	var item := Item.new(
 		Item.ItemType.BONUS,
-		15.0,  # 15% de drop
+		15.0,
 		"La flèche de cupidon",
-		"Ajoute une flèche qui fait des dégâts de zone à l'unité (-35 pv)",
+		"Ajoute 3 flèches AoE (-35 PV chacune)",
 		Item.EffectType.COUNT,
 		3,  # 3 flèches
-		Item.Target.SINGLE
+		Target.self_target()  # Cible soi-même
 	)
 	item.damage_value = 35
 	return item
 
+
 static func create_remede_divin() -> Item:
-	var item = Item.new(
+	var item := Item.new(
 		Item.ItemType.BONUS,
-		50.0,  # 50% de drop
+		50.0,
 		"Le remède divin",
-		"Soigne de 200 pv au total les unités",
+		"Soigne 200 PV répartis sur les alliés blessés",
 		Item.EffectType.IMMEDIATE,
-		1,  # 1 utilisation
-		Item.Target.ALLY
+		1,
+		Target.wounded_allies(5)  # Cible jusqu'à 5 alliés blessés
 	)
 	item.heal_value = 200
 	return item
 
+
 static func create_rage_ares() -> Item:
-	var item = Item.new(
+	var item := Item.new(
 		Item.ItemType.BONUS,
-		10.0, 
+		10.0,
 		"La rage d'ares",
-		"boost les unités alliés (temps d'attaque réduit de moitié)",
+		"Réduit le cooldown de -0.5s pendant 5 secondes",
 		Item.EffectType.DURATION,
-		5,  # secondes
-		Item.Target.ALLY
+		5,  # 5 secondes
+		Target.all_allies()  # Cible tous les alliés
 	)
-	item.cooldown_modifier = -0.5  # -50% de cooldown
+	item.cooldown_modifier = -0.5
 	return item

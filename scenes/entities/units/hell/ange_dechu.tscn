@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://bl7go3g78ckpo"]
 
-[ext_resource type="Script" uid="uid://bpl4qjnk0vw4y" path="res://scripts/entities/units/unit_enfer/ange_dechu/ange_dechu.gd" id="1_ipigq"]
-[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://assets/sprites/units/hell/ange_dechu.png" id="2_6uqi0"]
+[ext_resource type="Script" uid="uid://bonsy1icyav4l" path="res://scripts/entities/units/hell/AngeDechu.gd" id="1_ipigq"]
+[ext_resource type="Texture2D" uid="uid://pb265usgqoon" path="res://assets/sprites/units/hell/ange_dechu.png" id="2_6uqi0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dnbuk"]
 size = Vector2(30, 16)

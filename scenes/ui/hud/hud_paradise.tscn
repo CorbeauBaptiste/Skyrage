@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://cebs8u3h3h054"]
 
 [ext_resource type="Script" uid="uid://gltekkusuw53" path="res://scripts/ui/hud_paradise.gd" id="1_fathq"]
-[ext_resource type="Script" uid="uid://bwd70mknhows4" path="res://scripts/managers/GoldManagerParadise.gd" id="2_k0442"]
-[ext_resource type="Texture2D" uid="uid://c12puqncfmi0m" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="3_pktxi"]
-[ext_resource type="Texture2D" uid="uid://b2g06cx0p61c3" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="4_haoln"]
-[ext_resource type="Texture2D" uid="uid://bedrq0k5jlgad" path="res://assets/sprites/ui/cards/paradise/ange.png" id="5_7fr2o"]
-[ext_resource type="Texture2D" uid="uid://ki16xkuayjw2" path="res://assets/sprites/ui/cards/paradise/seraphin.jpg" id="6_7lo1c"]
-[ext_resource type="Texture2D" uid="uid://djgonjbj0yspy" path="res://assets/sprites/ui/cards/paradise/archange.png" id="7_tv32i"]
+[ext_resource type="Script" uid="uid://taf2l3af4b07" path="res://scripts/managers/GoldManager.gd" id="2_k0442"]
+[ext_resource type="Texture2D" uid="uid://pyy7a2fplv7q" path="res://assets/sprites/ui/bars/progress_bar_gold.png" id="3_pktxi"]
+[ext_resource type="Texture2D" uid="uid://dnbkrpg4odwae" path="res://assets/sprites/ui/bars/progress_bar_gold_background.png" id="4_haoln"]
+[ext_resource type="Texture2D" uid="uid://byiqfwm607cl3" path="res://assets/sprites/ui/cards/paradise/ange.png" id="5_7fr2o"]
+[ext_resource type="Texture2D" uid="uid://b32acadu8s4bu" path="res://assets/sprites/ui/cards/paradise/seraphin.jpg" id="6_7lo1c"]
+[ext_resource type="Texture2D" uid="uid://dmihil5o5ypsn" path="res://assets/sprites/ui/cards/paradise/archange.png" id="7_tv32i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xsix"]
 texture = ExtResource("4_haoln")

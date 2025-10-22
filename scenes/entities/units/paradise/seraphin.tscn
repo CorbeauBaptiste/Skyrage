@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://ceb1j2mcdxh7n"]
 
-[ext_resource type="Script" uid="uid://4c8calelr8ci" path="res://scripts/entities/units/unit_paradis/seraphin/seraphin.gd" id="1_4dlos"]
-[ext_resource type="Texture2D" uid="uid://dynn44upm8y01" path="res://assets/sprites/units/paradise/seraphin.png" id="2_swywn"]
+[ext_resource type="Script" uid="uid://bfq6kcnbd5l0r" path="res://scripts/entities/units/paradise/Seraphin.gd" id="1_4dlos"]
+[ext_resource type="Texture2D" uid="uid://c04ewdydq1vf5" path="res://assets/sprites/units/paradise/seraphin.png" id="2_swywn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vqto"]
 size = Vector2(30, 16)

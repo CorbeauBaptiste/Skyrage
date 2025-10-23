@@ -225,25 +225,34 @@ func _clear_selection() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			# Début du clic
 			if selected.size() == 0:
 				dragging = true
 				drag_start = get_global_mouse_position()
+		else:
+			# Relâchement du clic
+			if dragging:
+				# Fin du drag : sélection par zone
+				dragging = false
+				queue_redraw()
+				_perform_selection(get_global_mouse_position())
 			else:
-				# Assigner cible aux unités sélectionnées
+				# Clic simple : ordre de déplacement
+				var click_pos := get_global_mouse_position()
+				
 				for item in selected:
 					if not item.has("collider"):
 						continue
 					var collider: Node = item.collider
 					if is_instance_valid(collider) and collider is Unit:
 						if collider.targeting_component:
-							collider.targeting_component.target = get_global_mouse_position()
+							collider.targeting_component.target = click_pos
+							collider.targeting_component.current_enemy = null
+							collider.targeting_component.is_attacking_base = false
+							print("CLICK: déplacement vers %s" % click_pos)
 						if collider.selection_component:
 							collider.selection_component.set_selected(false)
 				selected.clear()
-		elif dragging:
-			dragging = false
-			queue_redraw()
-			_perform_selection(event.position)
 	
 	if event is InputEventMouseMotion and dragging:
 		queue_redraw()
@@ -282,12 +291,14 @@ func _draw() -> void:
 	if dragging:
 		var start_local: Vector2 = to_local(drag_start)
 		var end_local: Vector2 = get_local_mouse_position()
-		draw_rect(
-			Rect2(start_local, end_local - start_local), 
-			Color.AQUA, 
-			false,
-			2.0
-		)
+		
+		var rect := Rect2(start_local, end_local - start_local)
+		
+		z_index = 141
+		
+		# Rectangle de sélection avec remplissage semi-transparent
+		draw_rect(rect, Color(0, 1, 1, 0.2), true)  # Fond cyan transparent
+		draw_rect(rect, Color(0, 1, 1, 1.0), false, 2.0)  # Bordure cyan
 
 # ========================================
 # FIN DE PARTIE

@@ -206,11 +206,15 @@ func _physics_process(delta: float) -> void:
 	# 2. Mise à jour du ciblage
 	if targeting_component:
 		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
-			# On a un ennemi valide
 			if combat_component:
 				var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
 				
-				if distance <= combat_component.attack_range:
+				# Si c'est une base, portée augmentée de 50px (pour compenser la taille)
+				var effective_range := combat_component.attack_range
+				if targeting_component.is_attacking_base:
+					effective_range += 60.0
+				
+				if distance <= effective_range:
 					# À portée : on attaque
 					_handle_combat()
 					velocity = Vector2.ZERO

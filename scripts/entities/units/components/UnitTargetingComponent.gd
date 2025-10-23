@@ -125,23 +125,19 @@ func _on_enemy_in_range(body: Node2D) -> void:
 	if not _is_valid_enemy(body):
 		return
 	
-	# Ajoute à la liste des ennemis
 	if not enemies_in_range.has(body):
 		enemies_in_range.append(body)
 		enemy_detected.emit(body)
 	
-	# Si c'est une base
 	if body is Base:
-		if not current_enemy or current_enemy == body:
-			current_enemy = body
-			is_attacking_base = true
-			base_attack_position = _parent_unit.global_position
-			
-			# Notifie la base
-			if body.has_method("take_damage"):
-				body.take_damage(0, _parent_unit)
+		current_enemy = body
+		is_attacking_base = true
+		
+		target = body
+		
+		if body.has_method("take_damage"):
+			body.take_damage(0, _parent_unit)
 	
-	# Si c'est une unité ET qu'on n'a pas déjà de cible
 	elif body is Unit:
 		if not current_enemy:
 			current_enemy = body
@@ -163,6 +159,12 @@ func _on_enemy_out_of_range(body: Node2D) -> void:
 		
 		# Cherche une nouvelle cible
 		current_enemy = find_best_target()
+		
+		# Met à jour le flag selon la nouvelle cible
+		if current_enemy is Base:
+			is_attacking_base = true
+		else:
+			is_attacking_base = false
 		
 		if not current_enemy:
 			enemy_lost.emit(body)
@@ -215,6 +217,7 @@ func set_target(new_target: Variant) -> void:
 ##
 ## @return: Position ou Vector2.ZERO
 func get_target_position() -> Vector2:
+	## Retourne la position de la cible actuelle.
 	if target is Vector2:
 		return target
 	elif target is Node2D and is_instance_valid(target):

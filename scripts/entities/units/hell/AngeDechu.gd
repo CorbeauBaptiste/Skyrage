@@ -29,41 +29,27 @@ func _ready() -> void:
 	super._ready()
 
 
-## Implémente le mouvement de l'Ange Déchu
 ##
-## Comportement : Avance en continu vers la cible avec évitement
 ##
 ## @param delta: Temps écoulé
-func handle_movement(_delta: float) -> void:
-	if not movement_component or not targeting_component:
+func handle_movement(delta: float) -> void:
+	if not movement_component:
 		return
 	
-	# Pas de cible = on s'arrête
-	if not targeting_component.target:
-		movement_component.stop()
+	# ⚠️ COMPORTEMENT TEMPORAIRE (template de base)
+	if not _initial_move_done:
+		_spawn_move_time += delta
+		if _spawn_move_time >= INITIAL_MOVE_DURATION:
+			_initial_move_done = true
+			movement_component.stop()
+			return
+		
+		if targeting_component and targeting_component.target:
+			var target_pos: Vector2 = targeting_component.get_target_position()
+			var direction: Vector2 = global_position.direction_to(target_pos)
+			var avoidance: Vector2 = movement_component.calculate_avoidance()
+			var final_direction: Vector2 = (direction + avoidance * 0.6).normalized()
+			movement_component.apply_velocity(final_direction)
 		return
 	
-	# Récupère la position de la cible
-	var target_pos: Vector2 = targeting_component.get_target_position()
-	
-	if target_pos == Vector2.ZERO:
-		movement_component.stop()
-		return
-	
-	# Calcule la distance
-	var distance: float = global_position.distance_to(target_pos)
-	
-	# Si à portée, on s'arrête pour attaquer
-	if distance <= attack_range:
-		movement_component.stop()
-		return
-	
-	# Sinon, on avance avec évitement
-	var direction: Vector2 = global_position.direction_to(target_pos)
-	var avoidance: Vector2 = movement_component.calculate_avoidance()
-	
-	# Combinaison direction + évitement
-	var final_direction: Vector2 = (direction + avoidance * movement_component.avoidance_weight).normalized()
-	
-	# Applique le mouvement
-	movement_component.apply_velocity(final_direction)
+	movement_component.stop()

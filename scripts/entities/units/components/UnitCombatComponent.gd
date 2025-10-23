@@ -9,11 +9,19 @@ extends Node
 ## - Application des multiplicateurs de dégâts
 ## - Gestion des charges spéciales (Michaël, Cupidon)
 
+# ========================================
+# SIGNAUX
+# ========================================
+
 ## Émis quand des dégâts sont infligés.
 signal damage_dealt(amount: int)
 
 ## Émis quand une attaque est lancée.
 signal attack_performed()
+
+# ========================================
+# PROPRIÉTÉS EXPORTÉES
+# ========================================
 
 ## Dégâts de base de l'unité.
 @export var base_damage: int = 10
@@ -26,6 +34,10 @@ signal attack_performed()
 
 ## Scene du projectile à spawner.
 @export var projectile_scene: PackedScene
+
+# ========================================
+# VARIABLES D'ÉTAT
+# ========================================
 
 ## Dégâts actuels (modifiés par buffs).
 var current_damage: int = 10
@@ -56,6 +68,9 @@ var _timer: Timer = null
 var _projectile_spawn: Marker2D = null
 var _parent_unit: Node2D = null
 
+# ========================================
+# INITIALISATION
+# ========================================
 
 func _ready() -> void:
 	current_damage = base_damage
@@ -71,9 +86,14 @@ func _ready() -> void:
 	if not projectile_scene:
 		projectile_scene = preload("res://scenes/entities/projectiles/projectile.tscn")
 
+# ========================================
+# SYSTÈME D'ATTAQUE
+# ========================================
 
 func try_attack() -> bool:
 	## Tente d'attaquer la cible actuelle.
+	##
+	## @return: true si attaque lancée, false sinon
 	if not can_attack or not current_target or not is_instance_valid(current_target):
 		return false
 	
@@ -135,6 +155,8 @@ func _spawn_projectile() -> void:
 
 func _apply_projectile_sprite(projectile: Projectile) -> void:
 	## Applique le sprite du projectile selon le camp.
+	##
+	## @param projectile: Projectile à configurer
 	if not (_parent_unit is Unit):
 		return
 	
@@ -143,14 +165,22 @@ func _apply_projectile_sprite(projectile: Projectile) -> void:
 	else:
 		projectile.change_sprite("res://assets/sprites/projectiles/vent.png")
 
+# ========================================
+# CALLBACKS
+# ========================================
 
 func _on_cooldown_finished() -> void:
 	## Callback du timer de cooldown.
 	can_attack = true
 
+# ========================================
+# UTILITAIRES
+# ========================================
 
 func set_target(target: Node2D) -> void:
 	## Définit la cible actuelle.
+	##
+	## @param target: Node2D à cibler
 	current_target = target
 	
 	if _projectile_spawn and target and is_instance_valid(target):
@@ -159,6 +189,8 @@ func set_target(target: Node2D) -> void:
 
 func is_target_in_range() -> bool:
 	## Vérifie si la cible est à portée.
+	##
+	## @return: true si à portée
 	if not _parent_unit or not (_parent_unit is Unit):
 		return false
 	

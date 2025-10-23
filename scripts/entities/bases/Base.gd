@@ -71,9 +71,6 @@ func _ready() -> void:
 	# Création du joueur
 	_setup_player()
 	
-	# Configuration de la zone de détection
-	_setup_detection_area()
-	
 	print("✅ Base %s initialisée (PV: %d, Or: %.1f)" % [team, max_health, gold_component.get_current_gold() if gold_component else 0.0])
 
 
@@ -141,13 +138,6 @@ func _setup_player() -> void:
 	player.set_camp(team)
 	player.base = self
 	player.modifier_or(0)  # Initialise à 0
-
-
-## Configure la zone de détection des ennemis.
-func _setup_detection_area() -> void:
-	if has_node("DetectionArea"):
-		var detection_area: Area2D = $DetectionArea
-		detection_area.body_entered.connect(_on_enemy_nearby)
 
 
 # ========================================
@@ -306,19 +296,3 @@ func _on_attack_ended(attacker: Node2D) -> void:
 
 func _on_gold_changed(current: float, max_gold: float) -> void:
 	gold_changed.emit(current, max_gold)
-
-
-## Callback quand un ennemi entre dans la zone de détection.
-func _on_enemy_nearby(body: Node2D) -> void:
-	if not body is Unit:
-		return
-	
-	var unit: Unit = body
-	var unit_is_hell: bool = unit.is_hell_faction
-	var base_is_hell: bool = (team == "enfer")
-	
-	# Si l'unité est du camp ennemi
-	if unit_is_hell != base_is_hell:
-		if unit.targeting_component:
-			unit.targeting_component.target = self.global_position
-		print("🎯 Base %s ciblée par %s" % [team, unit.unit_name])

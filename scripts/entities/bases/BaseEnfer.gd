@@ -6,3 +6,4 @@ func _ready() -> void:
 	super._ready() 
 	$Sprite2D.modulate = Color.RED
 	print("BaseEnfer team: ", team)
+"res://scripts/entities/bases/BaseEnfer.gd"

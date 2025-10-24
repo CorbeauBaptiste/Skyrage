@@ -58,6 +58,11 @@ signal damage_dealt(amount: int)
 ## Rayon de détection.
 @export var detection_radius: float = 200.0
 
+@export_group("Comportement")
+
+## Si l'unité peut attaquer (false = seulement se déplacer)
+@export var can_attack: bool = true
+
 # ========================================
 # VARIABLES D'ÉTAT
 # ========================================
@@ -122,6 +127,10 @@ func _deferred_setup() -> void:
 	_setup_components()
 	_connect_signals()
 	_apply_faction_color()
+	
+	# Synchronise le flag d'attaque
+	if combat_component:
+		combat_component.is_enabled = can_attack
 	
 	# Marquer les components comme prêts
 	components_ready = true
@@ -209,39 +218,45 @@ func _physics_process(delta: float) -> void:
 	if targeting_component:
 		# Priorité 1 : Ennemi détecté (peu importe s'il y a un ordre manuel)
 		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
-			# Annuler l'ordre manuel si on a trouvé un ennemi
-			if targeting_component.manual_order:
-				targeting_component.clear_manual_order()
-			
-			if combat_component:
-				var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
+			# ✅ NOUVEAU : Vérifie si l'unité peut attaquer
+			if can_attack:
+				# Annuler l'ordre manuel si on a trouvé un ennemi
+				if targeting_component.manual_order:
+					targeting_component.clear_manual_order()
 				
-				# Si c'est une base, portée augmentée de 50px (pour compenser la taille)
-				var effective_range := combat_component.attack_range
-				if targeting_component.is_attacking_base:
-					effective_range += 60.0
-				
-				if distance <= effective_range:
-					# À portée : on attaque
-					_handle_combat()
-					velocity = Vector2.ZERO
-					move_and_slide()
-					return
-				else:
-					# Pas à portée : on s'approche de l'ennemi
-					var direction := global_position.direction_to(targeting_component.current_enemy.global_position)
-					if movement_component:
-						var avoidance := movement_component.calculate_avoidance()
-						var final_direction := (direction + avoidance * 0.3).normalized()
-						movement_component.apply_velocity(final_direction)
-					else:
-						velocity = direction.normalized() * base_speed
+				if combat_component:
+					var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
 					
-					move_and_slide()
-					_update_animation()
-					return
+					# Si c'est une base, portée augmentée de 60px (pour compenser la taille)
+					var effective_range := combat_component.attack_range
+					if targeting_component.is_attacking_base:
+						effective_range += 60.0
+					
+					if distance <= effective_range:
+						# À portée : on attaque
+						_handle_combat()
+						velocity = Vector2.ZERO
+						move_and_slide()
+						return
+					else:
+						# Pas à portée : on s'approche de l'ennemi
+						var direction := global_position.direction_to(targeting_component.current_enemy.global_position)
+						if movement_component:
+							var avoidance := movement_component.calculate_avoidance()
+							var final_direction := (direction + avoidance * 0.3).normalized()
+							movement_component.apply_velocity(final_direction)
+						else:
+							velocity = direction.normalized() * base_speed
+						
+						move_and_slide()
+						_update_animation()
+						return
+			else:
+				# Si ne peut pas attaquer, ignore l'ennemi détecté
+				# et continue le comportement normal (ordre manuel ou handle_movement)
+				pass
 		
-		# Priorité 2 : Ordre manuel du joueur (seulement si pas d'ennemi)
+		# Priorité 2 : Ordre manuel du joueur (seulement si pas d'ennemi OU si can_attack = false)
 		if targeting_component.has_manual_order():
 			var target_pos := targeting_component.get_target_position()
 			if target_pos != Vector2.ZERO:

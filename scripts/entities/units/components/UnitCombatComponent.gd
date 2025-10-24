@@ -68,6 +68,9 @@ var _timer: Timer = null
 var _projectile_spawn: Marker2D = null
 var _parent_unit: Node2D = null
 
+## Si le component est actif (peut attaquer)
+var is_enabled: bool = true
+
 # ========================================
 # INITIALISATION
 # ========================================
@@ -94,6 +97,9 @@ func try_attack() -> bool:
 	## Tente d'attaquer la cible actuelle.
 	##
 	## @return: true si attaque lancée, false sinon
+	if not is_enabled:
+		return false
+	
 	if not can_attack or not current_target or not is_instance_valid(current_target):
 		return false
 	

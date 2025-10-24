@@ -26,6 +26,8 @@ func _ready() -> void:
 	detection_radius = 200.0
 	is_hell_faction = true
 	
+	can_attack = false
+	
 	super._ready()
 
 

@@ -19,7 +19,7 @@ func _ready() -> void:
 		var gm_node = Node.new()
 		gm_node.set_script(load("res://scripts/goldManager.gd"))  
 		add_child(gm_node)
-		gold_manager = gm_node as goldManager  
+		gold_manager = gm_node as goldManager 
 		gold_manager.max_gold = 50.0
 		gold_manager.regen_per_sec = 10.0 
 		gold_manager.use_overtime_curve = true

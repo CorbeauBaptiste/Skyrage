@@ -44,7 +44,6 @@ func set_target(value):
 func _on_body_entered(body: Node2D) -> void:
 	if not is_instance_valid(body):  # ✅ Sécurité
 		return
-		
 	print("Projectile touché : ", body.get_class(), " (nom: ", body.name if body else "null", ")")
 	
 	# ✅ Vérifier si c'est une Base en premier

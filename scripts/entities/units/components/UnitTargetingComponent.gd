@@ -7,6 +7,7 @@ extends Node
 ## - Détecter les ennemis à portée
 ## - Sélectionner la meilleure cible
 ## - Maintenir une liste des ennemis proches
+## - Distinguer ordres manuels vs cibles automatiques
 ##
 ## @tutorial: Utilisé par Unit pour trouver des cibles automatiquement
 
@@ -23,6 +24,9 @@ signal enemy_lost(enemy: Node2D)
 
 ## Cible actuelle (peut être Vector2 ou Node2D).
 var target: Variant = null
+
+## Si la cible est un ordre manuel du joueur (sinon c'est une cible automatique).
+var manual_order: bool = false
 
 ## Ennemi actuellement ciblé.
 var current_enemy: Node2D = null
@@ -67,7 +71,7 @@ func _ready() -> void:
 
 ## Définit la base ennemie comme cible initiale.
 func _set_initial_target() -> void:
-	## Définit la base ennemie comme cible initiale.
+	## Définit la base ennemie comme cible initiale (automatique, pas manuelle).
 	if not _parent_unit or not is_instance_valid(_parent_unit):
 		return
 	
@@ -88,6 +92,7 @@ func _set_initial_target() -> void:
 		
 		if base_side != parent_side:
 			target = base
+			manual_order = false  # Cible automatique
 			return
 
 
@@ -134,6 +139,7 @@ func _on_enemy_in_range(body: Node2D) -> void:
 		is_attacking_base = true
 		
 		target = body
+		manual_order = false  # Base = cible automatique
 		
 		if body.has_method("take_damage"):
 			body.take_damage(0, _parent_unit)
@@ -206,11 +212,24 @@ func find_alternative_target() -> void:
 	is_attacking_base = false
 
 
-## Définit manuellement une cible.
+## Définit manuellement une cible (ordre du joueur).
 ##
 ## @param new_target: Vector2 ou Node2D
 func set_target(new_target: Variant) -> void:
 	target = new_target
+	manual_order = true  # Ordre manuel du joueur
+
+
+## Vérifie si l'unité a un ordre manuel.
+##
+## @return: true si ordre manuel du joueur
+func has_manual_order() -> bool:
+	return manual_order and target != null
+
+
+## Supprime l'ordre manuel (arrivé à destination).
+func clear_manual_order() -> void:
+	manual_order = false
 
 
 ## Retourne la position de la cible actuelle.

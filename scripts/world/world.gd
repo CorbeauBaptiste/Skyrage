@@ -22,6 +22,10 @@ var drag_start: Vector2 = Vector2.ZERO
 var select_rect: RectangleShape2D = RectangleShape2D.new()
 var selected: Array = []
 
+# NOUVEAU : Layer dédié pour le rectangle de sélection
+var selection_canvas: CanvasLayer
+var selection_rect_node: Control
+
 # ========================================
 # RÉFÉRENCES
 # ========================================
@@ -41,6 +45,7 @@ var current_phase_is_enfer: bool = false
 # ========================================
 
 func _ready() -> void:
+	_setup_selection_canvas()  # NOUVEAU
 	_setup_match_timer()
 	_setup_bases()
 	_setup_ui()
@@ -52,6 +57,20 @@ func _ready() -> void:
 		base_enfer.player.afficher_infos()
 	if base_paradis and base_paradis.player:
 		base_paradis.player.afficher_infos()
+
+
+# NOUVEAU : Crée un CanvasLayer dédié pour le rectangle de sélection
+func _setup_selection_canvas() -> void:
+	selection_canvas = CanvasLayer.new()
+	selection_canvas.layer = 100  # Au-dessus de tout
+	add_child(selection_canvas)
+	
+	# Control qui dessinera le rectangle
+	selection_rect_node = Control.new()
+	selection_rect_node.set_anchors_preset(Control.PRESET_FULL_RECT)  # Prend tout l'écran
+	selection_rect_node.mouse_filter = Control.MOUSE_FILTER_IGNORE  # N'intercepte pas les clics
+	selection_rect_node.draw.connect(_draw_selection_rect)  # Connecte à notre fonction de dessin
+	selection_canvas.add_child(selection_rect_node)
 
 
 func _setup_match_timer() -> void:
@@ -229,12 +248,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			if selected.size() == 0:
 				dragging = true
 				drag_start = get_global_mouse_position()
+				selection_rect_node.queue_redraw()  # MODIFIÉ : redraw sur le Control
 		else:
 			# Relâchement du clic
 			if dragging:
 				# Fin du drag : sélection par zone
 				dragging = false
-				queue_redraw()
+				selection_rect_node.queue_redraw()  # MODIFIÉ
 				_perform_selection(get_global_mouse_position())
 			else:
 				# Clic simple : ordre de déplacement
@@ -246,7 +266,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					var collider: Node = item.collider
 					if is_instance_valid(collider) and collider is Unit:
 						if collider.targeting_component:
-							collider.targeting_component.target = click_pos
+							collider.targeting_component.set_target(click_pos)  # ✅ NOUVEAU
 							collider.targeting_component.current_enemy = null
 							collider.targeting_component.is_attacking_base = false
 							print("CLICK: déplacement vers %s" % click_pos)
@@ -255,7 +275,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				selected.clear()
 	
 	if event is InputEventMouseMotion and dragging:
-		queue_redraw()
+		selection_rect_node.queue_redraw()  # MODIFIÉ
 
 
 func _perform_selection(drag_end: Vector2) -> void:
@@ -287,18 +307,18 @@ func _perform_selection(drag_end: Vector2) -> void:
 	selected = valid_selected
 
 
-func _draw() -> void:
+# MODIFIÉ : Fonction de dessin appelée par le Control dans le CanvasLayer
+func _draw_selection_rect() -> void:
 	if dragging:
-		var start_local: Vector2 = to_local(drag_start)
-		var end_local: Vector2 = get_local_mouse_position()
+		# Convertit les positions monde en positions écran
+		var start_screen := get_viewport().canvas_transform * drag_start
+		var end_screen := get_viewport().canvas_transform * get_global_mouse_position()
 		
-		var rect := Rect2(start_local, end_local - start_local)
+		var rect := Rect2(start_screen, end_screen - start_screen)
 		
-		z_index = 141
-		
-		# Rectangle de sélection avec remplissage semi-transparent
-		draw_rect(rect, Color(0, 1, 1, 0.2), true)  # Fond cyan transparent
-		draw_rect(rect, Color(0, 1, 1, 1.0), false, 2.0)  # Bordure cyan
+		# Dessine le rectangle
+		selection_rect_node.draw_rect(rect, Color(0, 1, 1, 0.2), true)  # Fond cyan transparent
+		selection_rect_node.draw_rect(rect, Color(0, 1, 1, 1.0), false, 2.0)  # Bordure cyan
 
 # ========================================
 # FIN DE PARTIE

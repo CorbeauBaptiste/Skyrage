@@ -194,6 +194,8 @@ func _connect_signals() -> void:
 
 func _physics_process(delta: float) -> void:
 	## Boucle principale (à ne pas override).
+	##
+	## Gère automatiquement les ordres de mouvement via targeting_component.target.
 	if not components_ready:
 		return
 	
@@ -205,7 +207,12 @@ func _physics_process(delta: float) -> void:
 	
 	# 2. Mise à jour du ciblage
 	if targeting_component:
+		# Priorité 1 : Ennemi détecté (peu importe s'il y a un ordre manuel)
 		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
+			# Annuler l'ordre manuel si on a trouvé un ennemi
+			if targeting_component.manual_order:
+				targeting_component.clear_manual_order()
+			
 			if combat_component:
 				var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
 				
@@ -220,8 +227,47 @@ func _physics_process(delta: float) -> void:
 					velocity = Vector2.ZERO
 					move_and_slide()
 					return
+				else:
+					# Pas à portée : on s'approche de l'ennemi
+					var direction := global_position.direction_to(targeting_component.current_enemy.global_position)
+					if movement_component:
+						var avoidance := movement_component.calculate_avoidance()
+						var final_direction := (direction + avoidance * 0.3).normalized()
+						movement_component.apply_velocity(final_direction)
+					else:
+						velocity = direction.normalized() * base_speed
+					
+					move_and_slide()
+					_update_animation()
+					return
+		
+		# Priorité 2 : Ordre manuel du joueur (seulement si pas d'ennemi)
+		if targeting_component.has_manual_order():
+			var target_pos := targeting_component.get_target_position()
+			if target_pos != Vector2.ZERO:
+				var distance := global_position.distance_to(target_pos)
+				
+				# Si on est arrivé (< 20px), on supprime l'ordre
+				if distance < 20.0:
+					targeting_component.clear_manual_order()
+					velocity = Vector2.ZERO
+					move_and_slide()
+					return
+				
+				# Sinon on se déplace vers la cible
+				var direction := global_position.direction_to(target_pos)
+				if movement_component:
+					var avoidance := movement_component.calculate_avoidance()
+					var final_direction := (direction + avoidance * 0.3).normalized()
+					movement_component.apply_velocity(final_direction)
+				else:
+					velocity = direction.normalized() * base_speed
+				
+				move_and_slide()
+				_update_animation()
+				return
 	
-	# 3. Pas d'ennemi à portée : on se déplace
+	# 3. Pas d'ennemi à portée et pas d'ordre : on laisse handle_movement() gérer
 	handle_movement(delta)
 	
 	# 4. Application du mouvement
@@ -238,6 +284,9 @@ func _physics_process(delta: float) -> void:
 ##
 ## Définit la logique de mouvement spécifique à chaque type d'unité.
 ## Utilise les helpers de movement_component (calculate_avoidance, apply_velocity).
+##
+## NOTE: Cette méthode n'est appelée QUE si l'unité n'a ni ennemi ni ordre de mouvement.
+## Les ordres de mouvement (clic/drag) sont gérés automatiquement dans _physics_process.
 ##
 ## @param delta: Temps écoulé depuis la dernière frame
 func handle_movement(_delta: float) -> void:

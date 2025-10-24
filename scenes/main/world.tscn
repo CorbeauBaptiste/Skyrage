@@ -1962,7 +1962,7 @@ scale = Vector2(-0.2, 0.2)
 texture = ExtResource("6_pkg7o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseParadis"]
-position = Vector2(-8, 27)
+position = Vector2(19, 14)
 rotation = -2.7052603
 skew = 0.66322505
 shape = SubResource("RectangleShape2D_7te0o")

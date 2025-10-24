@@ -390,6 +390,12 @@ func set_side(value: bool) -> void:
 	is_hell_faction = value
 	_apply_faction_color()
 
+## Active ou désactive les attaques de cette unité
+func set_can_attack(value: bool) -> void:
+	can_attack = value
+	if combat_component:
+		combat_component.is_enabled = value
+
 ## Applique la couleur selon le camp.
 func _apply_faction_color() -> void:
 	if sprite:

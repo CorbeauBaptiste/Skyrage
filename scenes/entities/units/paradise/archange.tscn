@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bpem4157qmn2d"]
+[gd_scene load_steps=13 format=3 uid="uid://bpem4157qmn2d"]
 
 [ext_resource type="Script" uid="uid://dsvabggskaf10" path="res://scripts/entities/units/unit_paradis/archange/archange.gd" id="1_rk7dp"]
-[ext_resource type="Texture2D" uid="uid://dv366q2fvr5rr" path="res://assets/sprites/units/paradise/archange.png" id="2_8upee"]
+[ext_resource type="Texture2D" uid="uid://l3apvj0utser" path="res://assets/sprites/units/paradise/archange.png" id="2_8upee"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
 radius = 14.8661
@@ -104,9 +104,12 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_rk7dp"]
 radius = 270.252
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5v82g"]
+size = Vector2(38.8314, 42.9017)
+
 [node name="Archange" type="CharacterBody2D"]
 scale = Vector2(0.463542, 0.448529)
-collision_layer = 2
+collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_rk7dp")
 metadata/_custom_type_script = "uid://crka5xwh24rix"
@@ -140,3 +143,12 @@ shape = SubResource("CircleShape2D_rk7dp")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="Droite" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Droite"]
+position = Vector2(0, 58.8116)
+shape = SubResource("RectangleShape2D_5v82g")

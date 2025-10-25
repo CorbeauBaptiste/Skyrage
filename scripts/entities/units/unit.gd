@@ -73,35 +73,37 @@ func _physics_process(delta: float) -> void:
 		$AnimationPlayer.stop()
 	
 	if Input.is_action_just_pressed("right_mouse") and selected:
-		var ennemies = $Range.get_overlapping_bodies()
-		print("Ennemies détectées : ", ennemies.size(), " (debug)")
-		if ennemies.size() > 0:
-			var valid_enemies = [] 
-			for ennemy in ennemies:
-				if is_instance_valid(ennemy) and ennemy != self and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side():
-					valid_enemies.append(ennemy)
-			
-			if valid_enemies.size() > 0:
-				if $Timer.is_stopped():
-					valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
-					var closest = valid_enemies[0]
-					var ennemy_pos = closest.global_position
-					$Marker2D.look_at(ennemy_pos)
-					var arrow_instance = arrow.instantiate()
-					if self.get_side() == true:
-						arrow_instance.change_sprite("res://assets/sprites/projectiles/feu.png")
-						arrow_instance.set_target(false)
-					else:
-						arrow_instance.change_sprite("res://assets/sprites/projectiles/vent.png")
-						arrow_instance.set_target(true)
-					arrow_instance.rotation = $Marker2D.rotation
-					arrow_instance.global_position = $Marker2D.global_position
-					add_child(arrow_instance)
-					$Timer.start()
-					print("Tir 1 projectile sur closest ennemy : ", closest.name)
-			else:
-				print("Pas d'ennemi valide dans range")
+		shoot()
 
+func shoot():
+	var ennemies = $Range.get_overlapping_bodies()
+	print("Ennemies détectées : ", ennemies.size(), " (debug)")
+	if ennemies.size() > 0:
+		var valid_enemies = [] 
+		for ennemy in ennemies:
+			if is_instance_valid(ennemy) and ennemy != self and ennemy.has_method("get_side") and ennemy.get_side() != self.get_side():
+				valid_enemies.append(ennemy)
+		
+		if valid_enemies.size() > 0:
+			if $Timer.is_stopped():
+				valid_enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
+				var closest = valid_enemies[0]
+				var ennemy_pos = closest.global_position
+				$Marker2D.look_at(ennemy_pos)
+				var arrow_instance = arrow.instantiate()
+				if self.get_side() == true:
+					arrow_instance.change_sprite("res://assets/sprites/projectiles/feu.png")
+					arrow_instance.set_target(false)
+				else:
+					arrow_instance.change_sprite("res://assets/sprites/projectiles/vent.png")
+					arrow_instance.set_target(true)
+				arrow_instance.rotation = $Marker2D.rotation
+				arrow_instance.global_position = $Marker2D.global_position
+				add_child(arrow_instance)
+				$Timer.start()
+				print("Tir 1 projectile sur closest ennemy : ", closest.name)
+		else:
+			print("Pas d'ennemi valide dans range")
 func set_speed(new_value):
 	speed = new_value
 

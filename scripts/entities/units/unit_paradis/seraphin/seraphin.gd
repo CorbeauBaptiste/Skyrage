@@ -22,11 +22,12 @@ func _physics_process(delta):
 		avoid_timer -= delta
 		if avoid_timer <= 0.0:
 			avoiding = false
-			target = pos_base
+			target = global_position.lerp(pos_base,0.2)
+			await get_tree().create_timer(0.1)
 	else:
 		_move_to()
+		
 	var last_pos = global_position
-	
 	super._physics_process(delta)
 
 	if global_position.distance_to(last_pos) < 0.1 and not avoiding:
@@ -36,8 +37,11 @@ func _physics_process(delta):
 		target = null
 		velocity = Vector2.ZERO
 
-	if can_attack:
+	if can_attack and _check_and_attack():
+		set_speed(speed_sera * 0.5)
 		_check_and_attack()
+	else : 
+		set_speed(speed_sera)
 
 # fonction pour calculer une cible intermédiaire
 func _move_to():

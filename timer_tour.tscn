@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dfhpe4050iroy"]
 
-[ext_resource type="Script" uid="uid://clqrjbxq7ptvu" path="res://timer_tour.gd" id="1_cg7ls"]
+[ext_resource type="Script" uid="uid://b7w154f62n47y" path="res://timer_tour.gd" id="1_cg7ls"]
 
 [node name="TimerTour" type="Node"]
 script = ExtResource("1_cg7ls")

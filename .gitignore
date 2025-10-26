@@ -23,7 +23,6 @@ Thumbs.db
 
 # builds
 builds/
-*.exe
 *.pck
 *.zip
 *.apk

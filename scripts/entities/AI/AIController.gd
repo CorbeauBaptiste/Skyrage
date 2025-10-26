@@ -162,11 +162,26 @@ func _execute_decision(decision: String, delta: float) -> void:
 			_move_to_base()
 
 
-## Se déplace vers la base ennemie.
+## Déplace l'unité vers la base ennemie.
+##
+## Calcule un point accessible près de la base au lieu d'aller au centre.
 func _move_to_base() -> void:
 	var enemy_base: Base = _find_enemy_base()
-	if enemy_base and pathfinding.has_method("move_towards_target"):
-		pathfinding.move_towards_target(enemy_base.global_position)
+	if not enemy_base or not pathfinding:
+		return
+	
+	# Calcule un point accessible près de la base
+	var base_pos := enemy_base.global_position
+	var unit_pos := unit.global_position
+	var direction := unit_pos.direction_to(base_pos)
+	
+	# Point à 200px de la base (en dehors de la zone d'obstacles)
+	var target_offset := -direction * 200.0
+	var accessible_target := base_pos + target_offset
+	
+	# Utilise A* vers ce point accessible
+	if pathfinding.has_method("move_towards_target"):
+		pathfinding.move_towards_target(accessible_target)
 
 
 ## Poursuit une unité L en coordination avec un partenaire.
@@ -230,11 +245,26 @@ func _flee() -> void:
 
 
 ## Se replie vers la base alliée.
+##
+## Calcule un point accessible près de la base au lieu d'aller au centre.
 func _retreat_to_base() -> void:
 	var ally_base: Base = _find_ally_base()
-	if ally_base and pathfinding.has_method("move_towards_target"):
-		pathfinding.move_towards_target(ally_base.global_position)
-
+	if not ally_base or not pathfinding:
+		return
+	
+	# Calcule un point accessible près de la base
+	var base_pos := ally_base.global_position
+	var unit_pos := unit.global_position
+	var direction := unit_pos.direction_to(base_pos)
+	
+	# Point à 200px de la base (en dehors de la zone d'obstacles)
+	var target_offset := -direction * 200.0
+	var accessible_target := base_pos + target_offset
+	
+	# Utilise A* vers ce point accessible
+	if pathfinding.has_method("move_towards_target"):
+		pathfinding.move_towards_target(accessible_target)
+		
 
 ## Arrête tout mouvement.
 func _idle() -> void:

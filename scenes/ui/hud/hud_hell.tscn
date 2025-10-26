@@ -28,7 +28,7 @@ grow_horizontal = 2
 script = ExtResource("1_rwdrd")
 
 [node name="VBoxContainer2E" type="VBoxContainer" parent="."]
-layout_mode = 2
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -57,7 +57,7 @@ show_percentage = false
 
 [node name="GoldLabelE" type="Label" parent="VBoxContainer2E/GoldBarE"]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 0
 offset_left = 90.0
 offset_top = -37.0
 offset_right = 319.0
@@ -65,6 +65,15 @@ offset_bottom = 24.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "GOLD : "
+
+[node name="GoldLabelE" type="Label" parent="VBoxContainer2E/GoldBarE/GoldLabelE"]
+layout_mode = 0
+offset_left = 119.0
+offset_top = -107.0
+offset_right = 181.0
+offset_bottom = -19.0
+theme_override_font_sizes/font_size = 64
+text = "IA"
 
 [node name="HBoxContainerE" type="HBoxContainer" parent="VBoxContainer2E"]
 unique_name_in_owner = true

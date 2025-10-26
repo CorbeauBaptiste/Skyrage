@@ -80,6 +80,9 @@ var selected: bool = false:
 ## Si les components sont prêts.
 var components_ready: bool = false
 
+## Si l'unité est contrôlée par le joueur (true) ou par l'IA (false).
+@export var is_player_unit: bool = false
+
 # ========================================
 # COMPONENTS
 # ========================================
@@ -218,7 +221,7 @@ func _physics_process(delta: float) -> void:
 	if targeting_component:
 		# Priorité 1 : Ennemi détecté (peu importe s'il y a un ordre manuel)
 		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
-			# ✅ NOUVEAU : Vérifie si l'unité peut attaquer
+			# Vérifie si l'unité peut attaquer
 			if can_attack:
 				# Annuler l'ordre manuel si on a trouvé un ennemi
 				if targeting_component.manual_order:
@@ -232,7 +235,7 @@ func _physics_process(delta: float) -> void:
 					if targeting_component.is_attacking_base:
 						effective_range += 60.0
 					
-					if distance <= effective_range:
+					if distance <= effective_range + 100:
 						# À portée : on attaque
 						_handle_combat()
 						velocity = Vector2.ZERO
@@ -243,7 +246,7 @@ func _physics_process(delta: float) -> void:
 						var direction := global_position.direction_to(targeting_component.current_enemy.global_position)
 						if movement_component:
 							var avoidance := movement_component.calculate_avoidance()
-							var final_direction := (direction + avoidance * 0.3).normalized()
+							var final_direction := (direction * 0.8 + avoidance * 0.2).normalized()
 							movement_component.apply_velocity(final_direction)
 						else:
 							velocity = direction.normalized() * base_speed
@@ -301,13 +304,21 @@ func _physics_process(delta: float) -> void:
 ## Utilise les helpers de movement_component (calculate_avoidance, apply_velocity).
 ##
 ## NOTE: Cette méthode n'est appelée QUE si l'unité n'a ni ennemi ni ordre de mouvement.
-## Les ordres de mouvement (clic/drag) sont gérés automatiquement dans _physics_process.
+## Gère le déplacement de base de l'unité
 ##
 ## @param delta: Temps écoulé depuis la dernière frame
-func handle_movement(_delta: float) -> void:
-	push_error("%s: handle_movement() must be overridden!" % unit_name)
-	if movement_component:
-		movement_component.stop()
+func handle_movement(delta: float) -> void:
+	# Si on a un movement_component, on l'utilise
+	if movement_component and is_instance_valid(movement_component):
+		# Si on a une vélocité non nulle, on l'applique
+		if velocity != Vector2.ZERO:
+			movement_component.apply_velocity(velocity.normalized())
+		else:
+			movement_component.stop()
+	else:
+		# Fallback si pas de movement_component
+		if velocity != Vector2.ZERO:
+			move_and_slide()
 
 # ========================================
 # SYSTÈME DE COMBAT

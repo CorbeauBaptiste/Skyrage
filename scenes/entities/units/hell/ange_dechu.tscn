@@ -127,6 +127,7 @@ shape = SubResource("RectangleShape2D_dnbuk")
 
 [node name="character_collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_dnbuk")
+disabled = true
 
 [node name="Detect" type="Area2D" parent="."]
 collision_layer = 2

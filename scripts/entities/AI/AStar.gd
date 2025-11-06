@@ -45,7 +45,7 @@ var isometric: bool = true
 var obstacles: Array[Vector2i] = []
 
 # Limite d'itérations pour éviter boucle infinie.
-var max_iterations: int = 1000
+var max_iterations: int = 10000
 
 # ========================================
 # ALGORITHME A*

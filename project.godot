@@ -12,13 +12,14 @@ config_version=5
 
 config/name="SAE-jeu-video"
 run/main_scene="uid://3naivixtwygu"
-config/features=PackedStringArray("4.4", "Mobile")
+config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Globals="*res://scripts/core/globals.gd"
 GlobalWorldEnvironment="*res://scenes/environment/world_environment.tscn"
+Constants="*res://scripts/core/constants.gd"
 
 [display]
 
@@ -44,3 +45,4 @@ right_mouse={
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

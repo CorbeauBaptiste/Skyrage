@@ -1,120 +1,298 @@
-extends StaticBody2D
 class_name Base
+extends StaticBody2D
 
-@export var team: String = "neutral"
-@export var max_health: int = 2500
-var current_health: int = 2500
-var gold_manager: GoldManagerParadise
-var player: Player
+## Classe de base pour les bases (Enfer et Paradis).
+##
+## Architecture par composition :
+## - Utilise des components pour gérer santé, spawn, attaque, or
+## - Délègue les responsabilités aux components
+## - Classe légère et maintenable
+##
+## @tutorial: Voir BaseEnfer.gd et BaseParadis.gd pour implémentations
 
-signal health_changed(current: int, max: int)
+# ========================================
+# SIGNAUX
+# ========================================
+
+## Émis quand la santé change.
+signal health_changed(current: int, max_hp: int)
+
+## Émis quand la base est détruite.
 signal base_destroyed(winning_team: String)
+
+## Émis quand une unité est spawnée.
 signal unit_spawned(unit: Unit)
 
+## Émis quand la base est attaquée.
+signal base_under_attack(attacker: Node2D)
+
+## Émis quand une attaque se termine.
+signal attack_ended(attacker: Node2D)
+
+## Émis quand l'or change.
+signal gold_changed(current: float, max_gold: float)
+
+# ========================================
+# PROPRIÉTÉS
+# ========================================
+
+## Camp de la base ("enfer" ou "paradis").
+@export var team: String = "neutral"
+
+## Points de vie maximum.
+@export var max_health: int = 2500
+
+## Référence au joueur propriétaire.
+var player: Player = null
+
+# ========================================
+# COMPONENTS
+# ========================================
+
+var health_component: BaseHealthComponent = null
+var spawn_component: BaseSpawnComponent = null
+var attack_component: BaseAttackComponent = null
+var gold_component: BaseGoldComponent = null
+
+# ========================================
+# INITIALISATION
+# ========================================
+
 func _ready() -> void:
-	current_health = max_health
-	health_changed.emit(current_health, max_health)
+	# Configuration de base
+	add_to_group("bases")
 	
-	if not gold_manager:
-		var gm_node = Node.new()
-		gm_node.set_script(load("res://scripts/managers/GoldManagerParadise.gd"))  
-		add_child(gm_node)
-		gold_manager = gm_node as GoldManagerParadise  
-		gold_manager.max_gold = 50.0
-		gold_manager.regen_per_sec = 10.0 
-		gold_manager.use_overtime_curve = true
-		gold_manager.set_process(true)  
+	# Setup des components
+	_setup_components()
 	
-	player = Player.new(1 if team == "enfer" else 2, "Joueur " + team.capitalize(), team)
+	# Connexion des signaux
+	_connect_signals()
+	
+	# Création du joueur
+	_setup_player()
+	
+	print("✅ Base %s initialisée (PV: %d, Or: %.1f)" % [team, max_health, gold_component.get_current_gold() if gold_component else 0.0])
+
+
+## Configure tous les components de la base.
+func _setup_components() -> void:
+	# Cherche les components existants
+	for child in get_children():
+		if child is BaseHealthComponent:
+			health_component = child
+		elif child is BaseSpawnComponent:
+			spawn_component = child
+		elif child is BaseAttackComponent:
+			attack_component = child
+		elif child is BaseGoldComponent:
+			gold_component = child
+	
+	# Si pas de components, crée-les dynamiquement
+	if not health_component:
+		health_component = BaseHealthComponent.new()
+		health_component.name = "HealthComponent"
+		health_component.max_health = max_health
+		add_child(health_component)
+	
+	if not spawn_component:
+		spawn_component = BaseSpawnComponent.new()
+		spawn_component.name = "SpawnComponent"
+		add_child(spawn_component)
+	
+	if not attack_component:
+		attack_component = BaseAttackComponent.new()
+		attack_component.name = "AttackComponent"
+		add_child(attack_component)
+	
+	if not gold_component:
+		gold_component = BaseGoldComponent.new()
+		gold_component.name = "GoldComponent"
+		add_child(gold_component)
+
+
+## Connecte les signaux des components aux signaux de la base.
+func _connect_signals() -> void:
+	if health_component:
+		health_component.health_changed.connect(_on_health_changed)
+		health_component.base_destroyed.connect(_on_base_destroyed)
+	
+	if spawn_component:
+		spawn_component.unit_spawned.connect(_on_unit_spawned)
+	
+	if attack_component:
+		attack_component.base_under_attack.connect(_on_base_under_attack)
+		attack_component.attack_ended.connect(_on_attack_ended)
+	
+	if gold_component:
+		gold_component.gold_changed.connect(_on_gold_changed)
+
+
+## Crée et configure le joueur de la base.
+func _setup_player() -> void:
+	var player_id: int = 1 if team == "enfer" else 2
+	var player_name: String = "Joueur " + team.capitalize()
+	
+	player = Player.new(player_id, player_name, team)
 	add_child(player)
+	
 	player.set_camp(team)
 	player.base = self
-	player.modifier_or(0)
-	
-	if has_node("DetectionArea"):
-		$DetectionArea.body_entered.connect(_on_enemy_nearby)
-	
-	add_to_group("bases")
-	print("Base ", team, " ready (PV: ", current_health, ", Or: ", gold_manager.current_gold, ")")
+	player.modifier_or(0)  # Initialise à 0
 
-func take_damage(amount: int) -> bool:
-	print("💥 BASE ", team, " prend ", amount, " dégâts ! PV: ", current_health, " → ", current_health - amount)
-	current_health = max(0, current_health - amount)
-	health_changed.emit(current_health, max_health)
+
+# ========================================
+# GESTION DES DÉGÂTS (IDamageable)
+# ========================================
+
+## Inflige des dégâts à la base.
+##
+## @param amount: Montant des dégâts
+## @param attacker: Source des dégâts
+## @return: true si base détruite
+func take_damage(amount: int, attacker: Node2D = null) -> bool:
+	if not health_component:
+		return false
 	
-	if current_health <= 0:
-		print("💀 BASE ", team, " DÉTRUITE !")
-		var winner = "paradis" if team == "enfer" else "enfer"
-		base_destroyed.emit(winner)
-		
-		if team == "enfer":
-			get_tree().change_scene_to_file("res://scenes/ui/victory/hell_wins.tscn")
-		elif team == "paradis":
-			get_tree().change_scene_to_file("res://scenes/ui/victory/heaven_wins.tscn")
-		
-		queue_free()
+	# Enregistre l'attaquant
+	if attacker and attack_component:
+		attack_component.register_attacker(attacker)
+	
+	print("🔥 Base %s prend %d dégâts (PV: %d → %d)" % [
+		team, 
+		amount, 
+		health_component.current_health, 
+		health_component.current_health - amount
+	])
+	
+	return health_component.take_damage(amount, attacker)
+
+
+## Vérifie si une unité peut attaquer la base.
+##
+## @param unit: Unité à vérifier
+## @return: true si peut attaquer
+func can_attack_base(unit: Node2D) -> bool:
+	if not attack_component:
 		return true
-	return false
+	return attack_component.can_attack(unit)
 
+
+## Vérifie si la base peut accepter plus d'attaquants.
+##
+## @return: true si place disponible
+func attacking_has_room() -> bool:
+	if not attack_component:
+		return true
+	return attack_component.has_room()
+
+
+## Retire une unité de la liste des attaquants.
+##
+## @param unit: Unité à retirer
+func stop_attacking(unit: Node2D) -> void:
+	if attack_component:
+		attack_component.unregister_attacker(unit)
+
+
+## Retourne la santé actuelle.
+##
+## @return: PV actuels
+func get_health() -> int:
+	if health_component:
+		return health_component.get_health()
+	return 0
+
+
+## Définit la santé directement.
+##
+## @param value: Nouvelle valeur
+func set_health(value: int) -> void:
+	if health_component:
+		health_component.set_health(value)
+
+
+# ========================================
+# SPAWN D'UNITÉS
+# ========================================
+
+## Spawne une unité avec vérification du coût.
+##
+## @param unit_scene: Scene de l'unité
+## @param cost: Coût en or
+## @return: Unité créée ou null
+func spawn_unit(unit_scene: PackedScene, cost: float) -> Unit:
+	if not spawn_component or not gold_component:
+		push_error("Base %s: Components manquants pour spawn" % team)
+		return null
+	
+	print("💰 Tentative spawn pour %s (or: %.1f, coût: %.1f)" % [team, gold_component.get_current_gold(), cost])
+	
+	# Vérifie si assez d'or
+	if not gold_component.can_spend(cost):
+		print("⚠️ Or insuffisant pour %s" % team)
+		return null
+	
+	# Dépense l'or
+	if not gold_component.spend(cost):
+		return null
+	
+	# Spawne l'unité
+	var unit: Unit = spawn_component.spawn_unit(unit_scene)
+	
+	if unit:
+		print("✅ Unité spawnée: %s à %s (or restant: %.1f)" % [
+			unit.unit_name, 
+			unit.global_position, 
+			gold_component.get_current_gold()
+		])
+	
+	return unit
+
+
+# ========================================
+# UTILITAIRES
+# ========================================
+
+## Trouve la base ennemie.
+##
+## @return: Base ennemie ou null
 func get_enemy_base() -> Base:
-	for b in get_tree().get_nodes_in_group("bases"):
-		if b.team != team:
-			return b
-	return null
-
-func spawn_unit(unit_scene: PackedScene, cost: int) -> Unit:
-	print("Tentative spawn pour ", team, " (or actuel: ", gold_manager.current_gold, ", besoin: ", cost, ")")
-	if gold_manager.can_spend(cost):
-		gold_manager.spend(cost)
-		var spawn_pos: Vector2
-		var spawn_node_name = "SpawnPoint"
-		if team == "enfer":
-			spawn_node_name = "SpawnPointEnfer"
-		elif team == "paradis":
-			spawn_node_name = "SpawnPointParadis"
-		
-		if has_node(spawn_node_name):
-			spawn_pos = get_node(spawn_node_name).global_position
-			print("Spawn via ", spawn_node_name, " : Position = ", spawn_pos)
-		else:
-			spawn_pos = global_position + Vector2(50 if team == "enfer" else -50, 0)
-			print("Fallback spawn pour ", team, " à ", spawn_pos)
-		
-		var unit = unit_scene.instantiate() as Unit
-		unit.global_position = spawn_pos
-		unit.enfer = (team == "enfer")
-		unit.set_side(unit.enfer)
-		
-		if get_enemy_base():
-			unit.target = get_enemy_base().global_position
-		
-		get_parent().add_child(unit)
-		unit.add_to_group("units")
-		unit_spawned.emit(unit)
-		
-		await get_tree().create_timer(0.5).timeout
-		if is_instance_valid(unit):
-			unit.target = null
-		
-		print("Unité spawnée à ", unit.global_position, " pour ", team.capitalize(), " (enfer: ", unit.enfer, ") – Or restant: ", gold_manager.current_gold)
-		
-		return unit
-	print("Or insuffisant pour ", team, " (besoin: ", cost, ") – Attends regen")
+	for base in get_tree().get_nodes_in_group("bases"):
+		if base.team != team:
+			return base
 	return null
 
 
-func _on_enemy_nearby(body: Node2D) -> void:
-	if body is Unit and body.get_side() != (team == "enfer"):
-		body.target = self.global_position
-		print("Attaque auto sur base ", team, " !")
-
+## Retourne le camp de la base.
+##
+## @return: true si Enfer, false si Paradis
 func get_side() -> bool:
 	return team == "enfer"
 
-func get_health():
-	return current_health
 
-func set_health(value):
-	current_health = value
-	if current_health <= 0:
-		take_damage(0)
+# ========================================
+# CALLBACKS DES SIGNAUX
+# ========================================
+
+func _on_health_changed(current: int, max_hp: int) -> void:
+	health_changed.emit(current, max_hp)
+
+
+func _on_base_destroyed(winning_team: String) -> void:
+	base_destroyed.emit(winning_team)
+
+
+func _on_unit_spawned(unit: Unit) -> void:
+	unit_spawned.emit(unit)
+
+
+func _on_base_under_attack(attacker: Node2D) -> void:
+	base_under_attack.emit(attacker)
+
+
+func _on_attack_ended(attacker: Node2D) -> void:
+	attack_ended.emit(attacker)
+
+
+func _on_gold_changed(current: float, max_gold: float) -> void:
+	gold_changed.emit(current, max_gold)

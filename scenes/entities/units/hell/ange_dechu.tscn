@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl7go3g78ckpo"]
+[gd_scene load_steps=13 format=3 uid="uid://bl7go3g78ckpo"]
 
-[ext_resource type="Script" uid="uid://bpl4qjnk0vw4y" path="res://scripts/entities/units/unit_enfer/ange_dechu/ange_dechu.gd" id="1_ipigq"]
-[ext_resource type="Texture2D" uid="uid://bsyve6cfh3bej" path="res://assets/sprites/units/hell/ange_dechu.png" id="2_6uqi0"]
+[ext_resource type="Script" uid="uid://bonsy1icyav4l" path="res://scripts/entities/units/hell/AngeDechu.gd" id="1_ipigq"]
+[ext_resource type="Texture2D" uid="uid://pb265usgqoon" path="res://assets/sprites/units/hell/ange_dechu.png" id="2_6uqi0"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ppyta"]
-radius = 14.8661
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnbuk"]
+size = Vector2(30, 16)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dnbuk"]
+radius = 15.0
+height = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ykrsh"]
 radius = 29.0
@@ -111,13 +115,19 @@ collision_mask = 3
 script = ExtResource("1_ipigq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
 texture = ExtResource("2_6uqi0")
 hframes = 3
 vframes = 4
 frame = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_ppyta")
+[node name="movement_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 22)
+shape = SubResource("RectangleShape2D_dnbuk")
+
+[node name="character_collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_dnbuk")
+disabled = true
 
 [node name="Detect" type="Area2D" parent="."]
 collision_layer = 2

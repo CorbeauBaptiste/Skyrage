@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://dh2knij7weaqs"]
+[gd_scene load_steps=13 format=3 uid="uid://dh2knij7weaqs"]
 
-[ext_resource type="Script" uid="uid://clihgyot2ywah" path="res://scripts/entities/units/unit_enfer/demon/demon.gd" id="1_ixyw5"]
-[ext_resource type="Texture2D" uid="uid://by4ja30xcy84d" path="res://assets/sprites/units/hell/demon.png" id="2_rot22"]
+[ext_resource type="Script" uid="uid://b5vu3thkrfahd" path="res://scripts/entities/units/hell/Demon.gd" id="1_ixyw5"]
+[ext_resource type="Texture2D" uid="uid://dpqpyghtwxkho" path="res://assets/sprites/units/hell/demon.png" id="2_rot22"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_agkxd"]
-radius = 14.8661
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fnpni"]
+size = Vector2(30, 16)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fnpni"]
+radius = 15.0
+height = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_csuuc"]
 radius = 29.0
@@ -117,8 +121,12 @@ hframes = 3
 vframes = 4
 frame = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_agkxd")
+[node name="movement_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 22)
+shape = SubResource("RectangleShape2D_fnpni")
+
+[node name="character_collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_fnpni")
 
 [node name="Detect" type="Area2D" parent="."]
 

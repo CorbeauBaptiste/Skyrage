@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://87hem040vnrn"]
+[gd_scene load_steps=13 format=3 uid="uid://87hem040vnrn"]
 
-[ext_resource type="Script" uid="uid://c2xfy054l7bvj" path="res://scripts/entities/units/unit_paradis/ange/ange.gd" id="1_vo3tg"]
-[ext_resource type="Texture2D" uid="uid://c6ue2vk7jh8e7" path="res://assets/sprites/units/paradise/ange.png" id="2_rilh7"]
+[ext_resource type="Script" uid="uid://d36nlxrb85uee" path="res://scripts/entities/units/paradise/Ange.gd" id="1_vo3tg"]
+[ext_resource type="Texture2D" uid="uid://nr2grdfamhge" path="res://assets/sprites/units/paradise/ange.png" id="2_rilh7"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jk54y"]
-radius = 14.8661
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vo3tg"]
+size = Vector2(30, 16)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vo3tg"]
+radius = 15.0
+height = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qc1b4"]
 radius = 29.0
@@ -116,8 +120,13 @@ hframes = 3
 vframes = 4
 frame = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_jk54y")
+[node name="movement_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 22)
+shape = SubResource("RectangleShape2D_vo3tg")
+debug_color = Color(0.9742, 0, 0.428507, 0.42)
+
+[node name="character_collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_vo3tg")
 
 [node name="Detect" type="Area2D" parent="."]
 collision_layer = 2

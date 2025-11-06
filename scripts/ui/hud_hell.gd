@@ -1,86 +1,172 @@
 extends Control
 
-@onready var bar: ProgressBar           		= %GoldBarE
-@onready var label: Label               		= %GoldLabelE
-@onready var btn2: Button               		= %BtnCost6
-@onready var btn4: Button               		= %BtnCost11
-@onready var btn6: Button               		= %BtnCost16
-@onready var gold_manager: GoldManagerParadise 	= %GoldManagerE
+## HUD du camp Enfer.
+##
+## Affiche et gère :
+## - La barre d'or et son label
+## - Les boutons de spawn d'unités
+## - Le système de phases (alternance Paradis/Enfer)
+## - Les coûts et la disponibilité des unités
 
-const Cout_6  := 0.0 #6.0
-const Cout_11 := 0.0 #11.0
-const Cout_16 := 0.0 #16.0
+# ========================================
+# NODES
+# ========================================
 
-const PHASE_DURATION := 12.0
+@onready var bar: ProgressBar = %GoldBarE
+@onready var label: Label = %GoldLabelE
+@onready var btn_diablotin: Button = %BtnCost6
+@onready var btn_ange_dechu: Button = %BtnCost11
+@onready var btn_demon: Button = %BtnCost16
+@onready var gold_manager: GoldManager = %GoldManagerE
+
+# ========================================
+# COÛTS DES UNITÉS
+# ========================================
+
+var cout_diablotin: float = Constants.UNIT_COSTS["diablotin"]
+var cout_ange_dechu: float = Constants.UNIT_COSTS["ange_dechu"]
+var cout_demon: float = Constants.UNIT_COSTS["demon"]
+
+# ========================================
+# ÉTAT DES PHASES
+# ========================================
+
+## Si la phase Enfer est active.
 var is_phase_on: bool = false
+
+## Si les boutons sont forcés désactivés.
 var buttons_forced_disabled: bool = false
 
-signal btn2_pressed
-signal btn4_pressed
-signal btn6_pressed
+# ========================================
+# SIGNAUX
+# ========================================
+
+## Émis quand le bouton Diablotin est pressé.
+signal btn_diablotin_pressed
+
+## Émis quand le bouton Ange Déchu est pressé.
+signal btn_ange_dechu_pressed
+
+## Émis quand le bouton Démon est pressé.
+signal btn_demon_pressed
+
+## Émis quand la phase change.
 signal phase_changed(is_active: bool)
+
+# ========================================
+# INITIALISATION
+# ========================================
 
 func _ready() -> void:
 	bar.min_value = 0.0
 	bar.max_value = gold_manager.max_gold
 	_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
 
+	# Connexions signaux gold
 	gold_manager.gold_changed.connect(_on_gold_changed)
 	gold_manager.gold_spent.connect(_on_gold_spent)
 
-	btn2.pressed.connect(func(): _try_spend(Cout_6))
-	btn2.pressed.connect(func(): emit_signal("btn2_pressed"))
-	btn4.pressed.connect(func(): _try_spend(Cout_11))
-	btn4.pressed.connect(func(): emit_signal("btn4_pressed"))
-	btn6.pressed.connect(func(): _try_spend(Cout_16))
-	btn6.pressed.connect(func(): emit_signal("btn6_pressed"))
+	# Connexions boutons
+	btn_diablotin.pressed.connect(func(): _try_spend(cout_diablotin, "diablotin"))
+	btn_ange_dechu.pressed.connect(func(): _try_spend(cout_ange_dechu, "ange_dechu"))
+	btn_demon.pressed.connect(func(): _try_spend(cout_demon, "demon"))
 
+	# Démarre en phase inactive (Paradis commence)
 	_enter_phase(false)
 	_run_cycle()
 
-func _process(_delta: float) -> void:
-	if buttons_forced_disabled:
-		btn2.disabled = true
-		btn4.disabled = true
-		btn6.disabled = true
-	else:
-		var e = gold_manager.current_gold
-		btn2.disabled = e < Cout_6
-		btn4.disabled = e < Cout_11
-		btn6.disabled = e < Cout_16
-		
+# ========================================
+# UPDATE
+# ========================================
 
-func _try_spend(cost: float) -> void:
+func _process(_delta: float) -> void:
+	# Gestion de la disponibilité des boutons
+	if buttons_forced_disabled:
+		btn_diablotin.disabled = true
+		btn_ange_dechu.disabled = true
+		btn_demon.disabled = true
+	else:
+		var gold: float = gold_manager.current_gold
+		btn_diablotin.disabled = gold < cout_diablotin
+		btn_ange_dechu.disabled = gold < cout_ange_dechu
+		btn_demon.disabled = gold < cout_demon
+
+# ========================================
+# DÉPENSES
+# ========================================
+
+## Tente de dépenser de l'or pour spawner une unité.
+##
+## @param cost: Coût de l'unité
+## @param unit_type: Type d'unité à spawner
+func _try_spend(cost: float, unit_type: String) -> void:
 	if not is_phase_on:
 		return
-	gold_manager.spend(cost)
+	
+	if gold_manager.spend(cost):
+		match unit_type:
+			"diablotin":
+				emit_signal("btn_diablotin_pressed")
+			"ange_dechu":
+				emit_signal("btn_ange_dechu_pressed")
+			"demon":
+				emit_signal("btn_demon_pressed")
 
+# ========================================
+# CALLBACKS GOLD
+# ========================================
+
+## Callback quand l'or change.
+##
+## @param current: Or actuel
+## @param max_value: Or maximum
 func _on_gold_changed(current: float, max_value: float) -> void:
 	if is_phase_on:
 		_refresh_ui(current, max_value)
 
+
+## Callback quand de l'or est dépensé.
+##
+## @param _cost: Coût dépensé (non utilisé)
 func _on_gold_spent(_cost: float) -> void:
 	_pulse_bar()
 
+# ========================================
+# UI
+# ========================================
+
+## Met à jour l'affichage de la barre et du label d'or.
+##
+## @param current: Or actuel
+## @param max_value: Or maximum
 func _refresh_ui(current: float, max_value: float) -> void:
 	bar.value = current
 	label.text = "GOLD : %.1f / %.0f" % [current, max_value]
 
+
+## Animation visuelle de la barre lors d'une dépense.
 func _pulse_bar() -> void:
-	var tween := create_tween()
+	var tween: Tween = create_tween()
+	# Animation à compléter si nécessaire
 
-func _shake_label(msg: String) -> void:
-	label.text = msg
-	var tween := create_tween()
+# ========================================
+# SYSTÈME DE PHASES
+# ========================================
 
+## Boucle infinie gérant l'alternance des phases.
 func _run_cycle() -> void:
 	while true:
-		await get_tree().create_timer(PHASE_DURATION).timeout
-		_enter_phase(not is_phase_on)  
+		await get_tree().create_timer(Constants.PHASE_DURATION).timeout
+		_enter_phase(not is_phase_on)
 
+
+## Entre dans une phase (active ou inactive).
+##
+## @param phase_on: true si phase active, false sinon
 func _enter_phase(phase_on: bool) -> void:
 	is_phase_on = phase_on
 	emit_signal("phase_changed", phase_on)
+	
 	if is_phase_on:
 		buttons_forced_disabled = false
 		gold_manager.set_process(true)

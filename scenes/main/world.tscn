@@ -1,12 +1,13 @@
-[gd_scene load_steps=18 format=4 uid="uid://ce10vc07drsvy"]
+[gd_scene load_steps=19 format=4 uid="uid://ce10vc07drsvy"]
 
 [ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://scripts/world/world.gd" id="1_aqk2v"]
-[ext_resource type="Texture2D" uid="uid://ci3rg03b4bw6w" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
-[ext_resource type="Texture2D" uid="uid://creyvj87itdgk" path="res://assets/sprites/map/spritesheet.png" id="4_pkg7o"]
-[ext_resource type="Texture2D" uid="uid://ebbk3njk4mq4" path="res://assets/sprites/bases/BaseEnfer.png" id="5_dwbse"]
+[ext_resource type="PackedScene" uid="uid://dfhpe4050iroy" path="res://scenes/main/timer_tour.tscn" id="2_smv1n"]
+[ext_resource type="Texture2D" uid="uid://dwoxul44h1sjr" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
+[ext_resource type="Texture2D" uid="uid://u7ppf5oswa04" path="res://assets/sprites/map/spritesheet.png" id="4_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://crie8ri614iw5" path="res://assets/sprites/bases/BaseEnfer.png" id="5_dwbse"]
 [ext_resource type="Script" uid="uid://bdnrhxa45axyp" path="res://scripts/entities/bases/BaseEnfer.gd" id="5_gbfbk"]
-[ext_resource type="Texture2D" uid="uid://cikkfty44jn73" path="res://assets/sprites/map/iso_tile_export.png" id="6_ioo17"]
-[ext_resource type="Texture2D" uid="uid://clijoohq1mk4t" path="res://assets/sprites/bases/BaseParadis.png" id="6_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://b3tdd8p1g25gn" path="res://assets/sprites/map/iso_tile_export.png" id="6_ioo17"]
+[ext_resource type="Texture2D" uid="uid://c1e7gd4uey5ap" path="res://assets/sprites/bases/BaseParadis.png" id="6_pkg7o"]
 [ext_resource type="Script" uid="uid://bhpxx8e3ub6vm" path="res://scripts/entities/bases/BaseParadis.gd" id="7_ioo17"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fj7yv"]
@@ -1910,6 +1911,8 @@ size = Vector2(160, 160)
 [node name="Level" type="Node2D"]
 script = ExtResource("1_aqk2v")
 
+[node name="TimerTour" parent="." instance=ExtResource("2_smv1n")]
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_fj7yv")
 format = 2
@@ -1942,8 +1945,8 @@ texture = ExtResource("5_dwbse")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseEnfer"]
 position = Vector2(2, 4)
-rotation = -2.7052603
-skew = 0.66322505
+rotation = -2.70526
+skew = 0.663225
 shape = SubResource("RectangleShape2D_7te0o")
 debug_color = Color(0.881805, 0.27956, 0.488752, 0.419608)
 
@@ -1963,8 +1966,8 @@ texture = ExtResource("6_pkg7o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BaseParadis"]
 position = Vector2(19, 14)
-rotation = -2.7052603
-skew = 0.66322505
+rotation = -2.70526
+skew = 0.663225
 shape = SubResource("RectangleShape2D_7te0o")
 debug_color = Color(0.881805, 0.27956, 0.488752, 0.419608)
 

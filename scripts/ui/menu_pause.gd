@@ -13,8 +13,12 @@ func pause_unpause():
 		get_tree().paused = false
 		hide()
 
-		
-	
 func _input(event):
 	if event.is_action_pressed("pause"):
 		pause_unpause()
+
+func _on_param_button_down() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/menus/parametres.tscn")
+
+func _on_quitter_button_down() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_principal.tscn")

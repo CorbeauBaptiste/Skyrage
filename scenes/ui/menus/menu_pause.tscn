@@ -17,16 +17,50 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.194
+anchor_right = 0.5
+anchor_bottom = 0.194
+offset_left = -116.0
+offset_top = -46.52
+offset_right = 103.0
+offset_bottom = 49.48
+grow_horizontal = 2
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_jji3j")
+
+[node name="param" type="Button" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -109.5
-offset_top = -48.0
-offset_right = 109.5
-offset_bottom = 48.0
+offset_left = -163.5
+offset_top = -38.5
+offset_right = 163.5
+offset_bottom = 38.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "PAUSE"
-label_settings = SubResource("LabelSettings_jji3j")
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "PARAMETRES"
+
+[node name="quitter" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.530208
+anchor_top = 0.480556
+anchor_right = 0.569271
+anchor_bottom = 0.509259
+offset_left = -168.0
+offset_top = 98.0
+offset_right = -27.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "QUITTER"
+
+[connection signal="button_down" from="param" to="." method="_on_param_button_down"]
+[connection signal="button_down" from="quitter" to="." method="_on_quitter_button_down"]

@@ -9,9 +9,11 @@ extends Unit
 ## - Vitesse : 20
 ## - Portée : 300 (longue)
 
-var _spawn_move_time: float = 0.0
-const INITIAL_MOVE_DURATION: float = 1.0
-var _initial_move_done: bool = false
+
+@export var pos_base: Vector2 = Vector2(635.0, 766.0)
+@export var att_cooldown: float = 5.0
+
+var current_target: Node = null
 
 
 func _ready() -> void:
@@ -25,9 +27,14 @@ func _ready() -> void:
 	detection_radius = 350.0
 	is_hell_faction = false
 	
-	can_attack = false
+	can_attack = true
 	
 	super._ready()
+
+	# Trouve la base ennemie dynamiquement
+	var enemy_base := _find_enemy_base()
+	if enemy_base:
+		pos_base = enemy_base.global_position
 
 
 ##
@@ -37,20 +44,25 @@ func handle_movement(delta: float) -> void:
 	if not movement_component:
 		return
 	
-	# ⚠️ COMPORTEMENT TEMPORAIRE (template de base)
-	if not _initial_move_done:
-		_spawn_move_time += delta
-		if _spawn_move_time >= INITIAL_MOVE_DURATION:
-			_initial_move_done = true
-			movement_component.stop()
-			return
-		
-		if targeting_component and targeting_component.target:
-			var target_pos: Vector2 = targeting_component.get_target_position()
-			var direction: Vector2 = global_position.direction_to(target_pos)
-			var avoidance: Vector2 = movement_component.calculate_avoidance()
-			var final_direction: Vector2 = (direction + avoidance * 0.6).normalized()
-			movement_component.apply_velocity(final_direction)
+	# Récupère la cible depuis targeting_component
+	current_target = null
+	if targeting_component and targeting_component.current_enemy:
+		current_target = targeting_component.current_enemy
+	
+	# Si on a une cible valide, on s'arrête (le système d'attaque automatique prend le relais)
+	if current_target and is_instance_valid(current_target):
+		movement_component.stop()
 		return
 	
-	movement_component.stop()
+	# Sinon on va vers la base ennemie
+	var direction := global_position.direction_to(pos_base)
+	var avoidance := movement_component.calculate_avoidance()
+	var final_direction := (direction + avoidance * 0.6).normalized()
+	
+	movement_component.apply_velocity(final_direction)
+
+func _find_enemy_base() -> Node2D:
+	for base in get_tree().get_nodes_in_group("bases"):
+		if base.has_method("get_side") and base.get_side() != is_hell_faction:
+			return base
+	return null

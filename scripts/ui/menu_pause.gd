@@ -2,13 +2,14 @@ extends CanvasLayer
 
 var pause = false
 
+"Fonction qui permets de mettre en pause en fonction 
+de si le bouton echap à été présser ou pas"
+
 func pause_unpause():
 	pause = !pause
-	
 	if pause : 
 		get_tree().paused = true
 		show()
-	
 	else : 
 		get_tree().paused = false
 		hide()

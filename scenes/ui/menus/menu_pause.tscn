@@ -1,3 +1,32 @@
-[gd_scene format=3 uid="uid://c7gthns8y8m1p"]
+[gd_scene load_steps=3 format=3 uid="uid://c7gthns8y8m1p"]
+
+[ext_resource type="Script" uid="uid://82m647nioemq" path="res://scripts/ui/menu_pause.gd" id="1_biepb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jji3j"]
+line_spacing = 60.0
+font_size = 70
 
 [node name="MenuPause" type="CanvasLayer"]
+script = ExtResource("1_biepb")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -109.5
+offset_top = -48.0
+offset_right = 109.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_jji3j")

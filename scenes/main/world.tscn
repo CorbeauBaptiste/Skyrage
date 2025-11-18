@@ -1,12 +1,12 @@
 [gd_scene load_steps=18 format=4 uid="uid://ce10vc07drsvy"]
 
 [ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://scripts/world/world.gd" id="1_aqk2v"]
-[ext_resource type="Texture2D" uid="uid://ci3rg03b4bw6w" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
-[ext_resource type="Texture2D" uid="uid://creyvj87itdgk" path="res://assets/sprites/map/spritesheet.png" id="4_pkg7o"]
-[ext_resource type="Texture2D" uid="uid://ebbk3njk4mq4" path="res://assets/sprites/bases/BaseEnfer.png" id="5_dwbse"]
+[ext_resource type="Texture2D" uid="uid://b6s2e1jj4fcuc" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
+[ext_resource type="Texture2D" uid="uid://bcxetluqaqsm5" path="res://assets/sprites/map/spritesheet.png" id="4_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://b5y0ofpx7oxq4" path="res://assets/sprites/bases/BaseEnfer.png" id="5_dwbse"]
 [ext_resource type="Script" uid="uid://bdnrhxa45axyp" path="res://scripts/entities/bases/BaseEnfer.gd" id="5_gbfbk"]
-[ext_resource type="Texture2D" uid="uid://cikkfty44jn73" path="res://assets/sprites/map/iso_tile_export.png" id="6_ioo17"]
-[ext_resource type="Texture2D" uid="uid://clijoohq1mk4t" path="res://assets/sprites/bases/BaseParadis.png" id="6_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://chaxu7tgfh12p" path="res://assets/sprites/map/iso_tile_export.png" id="6_ioo17"]
+[ext_resource type="Texture2D" uid="uid://dc28uwrnwqxyk" path="res://assets/sprites/bases/BaseParadis.png" id="6_pkg7o"]
 [ext_resource type="Script" uid="uid://bhpxx8e3ub6vm" path="res://scripts/entities/bases/BaseParadis.gd" id="7_ioo17"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fj7yv"]

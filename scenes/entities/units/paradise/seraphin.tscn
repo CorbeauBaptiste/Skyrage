@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://ceb1j2mcdxh7n"]
 
 [ext_resource type="Script" uid="uid://bfq6kcnbd5l0r" path="res://scripts/entities/units/paradise/Seraphin.gd" id="1_4dlos"]
-[ext_resource type="Texture2D" uid="uid://c04ewdydq1vf5" path="res://assets/sprites/units/paradise/seraphin.png" id="2_swywn"]
+[ext_resource type="Texture2D" uid="uid://c04ewdydq1vf5" path="res://assets/sprites/units/paradise/seraphin.png" id="2_4vqto"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vqto"]
 size = Vector2(30, 16)
@@ -116,7 +116,9 @@ script = ExtResource("1_4dlos")
 metadata/_custom_type_script = "uid://crka5xwh24rix"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_swywn")
+position = Vector2(9.53674e-07, -1.90735e-06)
+scale = Vector2(1.5459, 1.55394)
+texture = ExtResource("2_4vqto")
 hframes = 3
 vframes = 4
 frame = 6

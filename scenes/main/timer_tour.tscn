@@ -7,17 +7,26 @@
 [node name="TimerTour" type="Node"]
 script = ExtResource("1_cg7ls")
 
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -95.0
+offset_right = 95.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
 [node name="Label" type="Label" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -77.0
-offset_right = 77.0
-offset_bottom = 69.0
+offset_left = -58.5
+offset_right = 58.5
+offset_bottom = 63.0
 grow_horizontal = 2
 theme = SubResource("Theme_revtd")
-theme_override_font_sizes/font_size = 60
-text = "00 : 00"
+theme_override_font_sizes/font_size = 45
+text = "00:00"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 30.0

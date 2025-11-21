@@ -230,12 +230,13 @@ func _physics_process(delta: float) -> void:
 				if combat_component:
 					var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
 					
-					# Si c'est une base, portée augmentée de 60px (pour compenser la taille)
+					# Pas de marge pour les unités, grande marge pour les bases
 					var effective_range := combat_component.attack_range
-					if targeting_component.is_attacking_base:
-						effective_range += 60.0
 					
-					if distance <= effective_range + 100:
+					if targeting_component.current_enemy is Base:
+						effective_range += 160.0
+					
+					if distance <= effective_range:
 						# À portée : on attaque
 						_handle_combat()
 						velocity = Vector2.ZERO

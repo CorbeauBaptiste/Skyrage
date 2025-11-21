@@ -29,5 +29,5 @@ theme_override_font_sizes/font_size = 45
 text = "00:00"
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 30.0
+wait_time = 300.0
 one_shot = true

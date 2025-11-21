@@ -71,25 +71,25 @@ func _ready() -> void:
 	btn_ange_dechu.pressed.connect(func(): _try_spend(cout_ange_dechu, "ange_dechu"))
 	btn_demon.pressed.connect(func(): _try_spend(cout_demon, "demon"))
 
-	# Démarre en phase inactive (Paradis commence)
+	"(Tour par tour)# Démarre en phase inactive (Paradis commence)
 	_enter_phase(false)
-	_run_cycle()
+	_run_cycle()"
 
 # ========================================
 # UPDATE
 # ========================================
 
 func _process(_delta: float) -> void:
-	# Gestion de la disponibilité des boutons
+	"(Tour par tour)Gestion de la disponibilité des boutons
 	if buttons_forced_disabled:
 		btn_diablotin.disabled = true
 		btn_ange_dechu.disabled = true
 		btn_demon.disabled = true
-	else:
-		var gold: float = gold_manager.current_gold
-		btn_diablotin.disabled = gold < cout_diablotin
-		btn_ange_dechu.disabled = gold < cout_ange_dechu
-		btn_demon.disabled = gold < cout_demon
+	else:"
+	var gold: float = gold_manager.current_gold
+	btn_diablotin.disabled = gold < cout_diablotin
+	btn_ange_dechu.disabled = gold < cout_ange_dechu
+	btn_demon.disabled = gold < cout_demon
 
 # ========================================
 # DÉPENSES
@@ -100,8 +100,9 @@ func _process(_delta: float) -> void:
 ## @param cost: Coût de l'unité
 ## @param unit_type: Type d'unité à spawner
 func _try_spend(cost: float, unit_type: String) -> void:
+	"(Tour par tour)
 	if not is_phase_on:
-		return
+		return"
 	
 	if gold_manager.spend(cost):
 		match unit_type:
@@ -157,7 +158,7 @@ func _pulse_bar() -> void:
 func _run_cycle() -> void:
 	while true:
 		await get_tree().create_timer(Constants.PHASE_DURATION).timeout
-		_enter_phase(not is_phase_on)
+		_enter_phase(is_phase_on)
 
 
 ## Entre dans une phase (active ou inactive).
@@ -170,7 +171,7 @@ func _enter_phase(phase_on: bool) -> void:
 	if is_phase_on:
 		buttons_forced_disabled = false
 		gold_manager.set_process(true)
-		_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
+		#_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
 	else:
 		buttons_forced_disabled = true
 		gold_manager.set_process(false)

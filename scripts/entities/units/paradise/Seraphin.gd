@@ -37,8 +37,6 @@ func _ready() -> void:
 		pos_base = enemy_base.global_position
 
 
-##
-##
 ## @param delta: Temps écoulé
 func handle_movement(delta: float) -> void:
 	if not movement_component:

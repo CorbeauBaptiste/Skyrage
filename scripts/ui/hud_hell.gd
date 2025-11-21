@@ -70,9 +70,10 @@ func _ready() -> void:
 	btn_diablotin.pressed.connect(func(): _try_spend(cout_diablotin, "diablotin"))
 	btn_ange_dechu.pressed.connect(func(): _try_spend(cout_ange_dechu, "ange_dechu"))
 	btn_demon.pressed.connect(func(): _try_spend(cout_demon, "demon"))
+	
+	_enter_phase(true)
 
 	"(Tour par tour)# Démarre en phase inactive (Paradis commence)
-	_enter_phase(false)
 	_run_cycle()"
 
 # ========================================
@@ -131,6 +132,7 @@ func _on_gold_changed(current: float, max_value: float) -> void:
 ## @param _cost: Coût dépensé (non utilisé)
 func _on_gold_spent(_cost: float) -> void:
 	_pulse_bar()
+	_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
 
 # ========================================
 # UI

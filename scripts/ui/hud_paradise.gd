@@ -70,9 +70,10 @@ func _ready() -> void:
 	btn_archange.pressed.connect(func(): _try_spend(cout_archange, "archange"))
 	btn_ange.pressed.connect(func(): _try_spend(cout_ange, "ange"))
 	btn_seraphin.pressed.connect(func(): _try_spend(cout_seraphin, "seraphin"))
+	
+	_enter_phase(true)
 
 	"(Tour par tour)# Démarre la phase Paradis
-	_enter_phase(true)
 	_run_cycle()"
 
 # ========================================
@@ -132,6 +133,7 @@ func _on_gold_changed(current: float, max_value: float) -> void:
 ## @param _cost: Coût dépensé (non utilisé)
 func _on_gold_spent(_cost: float) -> void:
 	_pulse_bar()
+	_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
 
 # ========================================
 # UI

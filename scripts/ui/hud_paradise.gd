@@ -70,26 +70,28 @@ func _ready() -> void:
 	btn_archange.pressed.connect(func(): _try_spend(cout_archange, "archange"))
 	btn_ange.pressed.connect(func(): _try_spend(cout_ange, "ange"))
 	btn_seraphin.pressed.connect(func(): _try_spend(cout_seraphin, "seraphin"))
-
-	# Démarre la phase Paradis
+	
 	_enter_phase(true)
-	_run_cycle()
+
+	"(Tour par tour)# Démarre la phase Paradis
+	_run_cycle()"
 
 # ========================================
 # UPDATE
 # ========================================
 
 func _process(_delta: float) -> void:
-	# Gestion de la disponibilité des boutons
+	"# (Tour par tour) Gestion de la disponibilité des boutons
 	if buttons_forced_disabled:
 		btn_archange.disabled = true
 		btn_ange.disabled = true
 		btn_seraphin.disabled = true
-	else:
-		var gold: float = gold_manager.current_gold
-		btn_archange.disabled = gold < cout_archange
-		btn_ange.disabled = gold < cout_ange
-		btn_seraphin.disabled = gold < cout_seraphin
+	else:"
+	
+	var gold: float = gold_manager.current_gold
+	btn_archange.disabled = gold < cout_archange
+	btn_ange.disabled = gold < cout_ange
+	btn_seraphin.disabled = gold < cout_seraphin
 
 # ========================================
 # DÉPENSES
@@ -100,8 +102,9 @@ func _process(_delta: float) -> void:
 ## @param cost: Coût de l'unité
 ## @param unit_type: Type d'unité à spawner
 func _try_spend(cost: float, unit_type: String) -> void:
+	"(Tour par tour)
 	if not is_phase_on:
-		return
+		return"
 	
 	if gold_manager.spend(cost):
 		match unit_type:
@@ -130,6 +133,7 @@ func _on_gold_changed(current: float, max_value: float) -> void:
 ## @param _cost: Coût dépensé (non utilisé)
 func _on_gold_spent(_cost: float) -> void:
 	_pulse_bar()
+	_refresh_ui(gold_manager.current_gold, gold_manager.max_gold)
 
 # ========================================
 # UI
@@ -157,7 +161,7 @@ func _pulse_bar() -> void:
 func _run_cycle() -> void:
 	while true:
 		await get_tree().create_timer(Constants.PHASE_DURATION).timeout
-		_enter_phase(not is_phase_on)
+		_enter_phase(is_phase_on)
 
 
 ## Entre dans une phase (active ou inactive).

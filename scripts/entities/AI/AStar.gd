@@ -41,8 +41,12 @@ var cell_size: Vector2 = Vector2(32.0, 16.0)
 # Si true, on utilisera les conversions isométriques (stacked). Sinon comportement "orthogonal" original.
 var isometric: bool = true
 
-# Liste des positions d'obstacles (en coordonnées grille Vector2i).
-var obstacles: Array[Vector2i] = []
+# Dictionnaire des obstacles pour lookup O(1) - clé = Vector2i, valeur = true
+var obstacles: Dictionary = {}
+
+# Pour compatibilité : retourne le nombre d'obstacles
+func get_obstacle_count() -> int:
+	return obstacles.size()
 
 # Limite d'itérations pour éviter boucle infinie.
 var max_iterations: int = 10000
@@ -60,68 +64,70 @@ func find_path(start: Vector2, goal: Vector2) -> Array[Vector2]:
 	# Convertit en coordonnées grille (Vector2i)
 	var start_grid := _world_to_grid(start)
 	var goal_grid := _world_to_grid(goal)
-	
-	# Initialise les listes
-	var open_list: Array[PathNode] = []
-	var closed_list: Array[PathNode] = []
-	
-	# Crée le nœud de départ (position en monde = centre de case)
+	var goal_world := _grid_to_world(goal_grid)
+
+	# Initialise les structures - Dictionary pour lookup O(1)
+	var open_dict: Dictionary = {}  # grid_pos -> PathNode
+	var closed_dict: Dictionary = {}  # grid_pos -> true
+	var open_list: Array[PathNode] = []  # Pour trouver le min f_cost
+
+	# Crée le nœud de départ
 	var start_node := PathNode.new(_grid_to_world(start_grid))
 	start_node.g_cost = 0
-	start_node.h_cost = _heuristic(start_node.position, _grid_to_world(goal_grid))
+	start_node.h_cost = _heuristic(start_node.position, goal_world)
 	start_node.calculate_f_cost()
-	
+
 	open_list.append(start_node)
-	
+	open_dict[start_grid] = start_node
+
 	var iterations := 0
-	
+
 	while open_list.size() > 0 and iterations < max_iterations:
 		iterations += 1
-		
+
 		# 1. Trouve le nœud avec le plus petit f_cost
 		var current := _get_lowest_f_cost_node(open_list)
-		
-		# 2. Vérifie si on est arrivé (comparé aux centres, seuil adaptatif)
-		if _is_goal_reached(current.position, _grid_to_world(goal_grid)):
+		var current_grid := _world_to_grid(current.position)
+
+		# 2. Vérifie si on est arrivé
+		if _is_goal_reached(current.position, goal_world):
 			var path = _retrace_path(start_node, current)
 			_cache_path(cache_key, path)
 			return path
-		
+
 		# 3. Déplace de open à closed
 		open_list.erase(current)
-		closed_list.append(current)
-		
-		# 4. Explore les voisins (sur la grille)
-		for neighbor_grid in _get_neighbor_cells(_world_to_grid(current.position)):
-			# Ignore si obstacle
-			if _is_obstacle_at_grid(neighbor_grid):
+		open_dict.erase(current_grid)
+		closed_dict[current_grid] = true
+
+		# 4. Explore les voisins
+		for neighbor_grid in _get_neighbor_cells(current_grid):
+			# Ignore si obstacle ou déjà fermé - O(1)
+			if _is_obstacle_at_grid(neighbor_grid) or closed_dict.has(neighbor_grid):
 				continue
-			
+
 			var neighbor_world := _grid_to_world(neighbor_grid)
-			
-			# Ignore si déjà dans closed
-			if _is_in_closed_list(closed_list, neighbor_world):
-				continue
-			
-			# Calcule le nouveau g_cost (distance réelle entre centres)
 			var tentative_g_cost := current.g_cost + _calculate_movement_cost(current.position, neighbor_world)
-			
-			# Trouve ou crée le nœud voisin
-			var neighbor_node := _find_or_create_node(open_list, neighbor_world)
-			
+
+			# Vérifie si déjà dans open - O(1)
+			var neighbor_node: PathNode = open_dict.get(neighbor_grid)
+			var is_new := neighbor_node == null
+
+			if is_new:
+				neighbor_node = PathNode.new(neighbor_world)
+
 			# Si nouveau chemin plus court
 			if tentative_g_cost < neighbor_node.g_cost:
 				neighbor_node.parent = current
 				neighbor_node.g_cost = tentative_g_cost
-				neighbor_node.h_cost = _heuristic(neighbor_world, _grid_to_world(goal_grid))
+				neighbor_node.h_cost = _heuristic(neighbor_world, goal_world)
 				neighbor_node.calculate_f_cost()
-				
-				# Ajoute à open si nouveau
-				if not open_list.has(neighbor_node):
+
+				if is_new:
 					open_list.append(neighbor_node)
-	
+					open_dict[neighbor_grid] = neighbor_node
+
 	# Aucun chemin trouvé
-	print("[A*] Aucun chemin trouvé après %d itérations" % iterations)
 	return []
 
 # ========================================
@@ -168,20 +174,6 @@ func _get_lowest_f_cost_node(list: Array[PathNode]) -> PathNode:
 			lowest = node
 	return lowest
 
-func _is_in_closed_list(closed: Array[PathNode], pos: Vector2) -> bool:
-	var threshold = max(cell_size.x, cell_size.y) * 0.5
-	for node in closed:
-		if node.position.distance_to(pos) < threshold:
-			return true
-	return false
-
-func _find_or_create_node(list: Array[PathNode], pos: Vector2) -> PathNode:
-	var threshold = max(cell_size.x, cell_size.y) * 0.5
-	for node in list:
-		if node.position.distance_to(pos) < threshold:
-			return node
-	return PathNode.new(pos)
-
 # ========================================
 # RECONSTRUCTION DU CHEMIN
 # ========================================
@@ -206,8 +198,7 @@ func _is_obstacle_at_grid(grid_pos: Vector2i) -> bool:
 
 func add_obstacle(world_pos: Vector2) -> void:
 	var grid_pos := _world_to_grid(world_pos)
-	if not obstacles.has(grid_pos):
-		obstacles.append(grid_pos)
+	obstacles[grid_pos] = true
 
 func remove_obstacle(world_pos: Vector2) -> void:
 	var grid_pos := _world_to_grid(world_pos)
@@ -298,7 +289,7 @@ func _is_goal_reached(current: Vector2, goal: Vector2) -> bool:
 func get_debug_info() -> Dictionary:
 	return {
 		"cell_size": cell_size,
-		"obstacle_count": obstacles.size(),
+		"obstacle_count": get_obstacle_count(),
 		"max_iterations": max_iterations,
 		"isometric": isometric
 	}

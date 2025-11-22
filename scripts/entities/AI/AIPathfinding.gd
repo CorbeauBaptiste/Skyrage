@@ -7,12 +7,12 @@ const WALKABLE_TILE_COORDS := [
 	Vector2i(12, 2),
 ]
 
+# Cache statique partagé entre toutes les instances
+static var _shared_obstacles: Dictionary = {}
+static var _obstacles_loaded: bool = false
+
 var unit: Unit
 var astar: AStar
-
-var tilemap_sol: TileMapLayer
-var tilemap_decoration: TileMapLayer
-var obstacles_loaded := false
 
 var current_path: Array[Vector2] = []
 var current_waypoint_index := 0
@@ -21,6 +21,7 @@ var waypoint_reached_distance := 25.0
 var path_recalculation_time := 2.0
 var recalculation_timer := 0.0
 var direct_movement_threshold := 300.0
+var _last_delta := 0.016  # Pour l'évitement d'obstacles
 
 
 func _ready() -> void:
@@ -41,6 +42,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	recalculation_timer += delta
+	_last_delta = delta
 
 
 func move_towards_target(target_pos: Vector2) -> void:
@@ -64,7 +66,7 @@ func move_towards_target(target_pos: Vector2) -> void:
 	_follow_path()
 
 
-func _should_recalculate_path(target_pos: Vector2) -> bool:
+func _should_recalculate_path(_target_pos: Vector2) -> bool:
 	if current_path.is_empty():
 		return true
 	
@@ -145,12 +147,12 @@ func _follow_path() -> void:
 		waypoint = current_path[current_waypoint_index]
 
 	var direction := unit.global_position.direction_to(waypoint)
-	unit.movement_component.apply_velocity(direction)
+	unit.movement_component.apply_velocity_with_avoidance(direction, _last_delta)
 
 
 func _move_direct(target_pos: Vector2) -> void:
 	var direction := unit.global_position.direction_to(target_pos)
-	unit.movement_component.apply_velocity(direction)
+	unit.movement_component.apply_velocity_with_avoidance(direction, _last_delta)
 
 
 func _is_valid() -> bool:
@@ -158,22 +160,24 @@ func _is_valid() -> bool:
 
 
 func _load_obstacles_from_tilemaps() -> void:
-	if obstacles_loaded:
+	# Si les obstacles sont déjà chargés globalement, on les réutilise
+	if _obstacles_loaded:
+		astar.obstacles = _shared_obstacles
 		return
 
 	var world_node = unit.get_tree().root.get_node_or_null("Level")
 	if not world_node:
 		return
 
-	tilemap_sol = world_node.get_node_or_null("TileMap/Sol")
-	tilemap_decoration = world_node.get_node_or_null("TileMap/Decoration")
+	var tilemap_sol: TileMapLayer = world_node.get_node_or_null("TileMap/Sol")
+	var tilemap_decoration: TileMapLayer = world_node.get_node_or_null("TileMap/Decoration")
 
 	if not tilemap_sol:
 		return
 
 	var bases = unit.get_tree().get_nodes_in_group("bases")
 	var base_exclusion_zones: Array[Rect2] = []
-	
+
 	for base in bases:
 		if is_instance_valid(base):
 			var exclusion_zone = Rect2(
@@ -182,49 +186,47 @@ func _load_obstacles_from_tilemaps() -> void:
 			)
 			base_exclusion_zones.append(exclusion_zone)
 
-	# CORRECTION CRITIQUE : Récupérer la position GLOBALE du tilemap
 	var tilemap_offset := tilemap_sol.global_position
-	print("[DEBUG] Position TileMap Sol: %s" % tilemap_offset)
 
 	# Ajoute obstacles SOL
 	for cell in tilemap_sol.get_used_cells():
 		var atlas := tilemap_sol.get_cell_atlas_coords(cell)
 		if atlas not in WALKABLE_TILE_COORDS:
-			# LOCAL + OFFSET = GLOBAL
 			var local_pos := tilemap_sol.map_to_local(cell)
 			var global_pos := local_pos + tilemap_offset
-			
+
 			var in_exclusion_zone := false
 			for zone in base_exclusion_zones:
 				if zone.has_point(global_pos):
 					in_exclusion_zone = true
 					break
-			
+
 			if not in_exclusion_zone:
 				astar.add_obstacle(global_pos)
 
 	# Ajoute obstacles DECORATION
 	if tilemap_decoration:
 		var deco_offset := tilemap_decoration.global_position
-		print("[DEBUG] Position TileMap Decoration: %s" % deco_offset)
-		
+
 		for cell in tilemap_decoration.get_used_cells():
 			var tile_data := tilemap_decoration.get_cell_tile_data(cell)
 			if tile_data and tile_data.get_collision_polygons_count(0) > 0:
 				var local_pos := tilemap_decoration.map_to_local(cell)
 				var global_pos := local_pos + deco_offset
-				
+
 				var in_exclusion_zone := false
 				for zone in base_exclusion_zones:
 					if zone.has_point(global_pos):
 						in_exclusion_zone = true
 						break
-				
+
 				if not in_exclusion_zone:
 					_add_obstacle_with_margin(global_pos, 1)
 
-	obstacles_loaded = true
-	print("[Pathfinding] %s: %d obstacles" % [unit.unit_name, astar.obstacles.size()])
+	# Sauvegarde dans le cache statique partagé
+	_shared_obstacles = astar.obstacles
+	_obstacles_loaded = true
+	print("[Pathfinding] Obstacles chargés: %d (partagés entre toutes les unités)" % astar.get_obstacle_count())
 
 
 func _add_obstacle_with_margin(world_pos: Vector2, margin_radius: int = 1) -> void:

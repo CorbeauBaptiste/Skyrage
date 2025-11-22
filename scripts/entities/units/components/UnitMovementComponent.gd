@@ -76,25 +76,33 @@ func _ready() -> void:
 func calculate_avoidance() -> Vector2:
 	if not _body:
 		return Vector2.ZERO
-	
+
 	var avoidance := Vector2.ZERO
 	var nearby_count := 0
-	
+	var my_pos := _body.global_position
+	var radius_sq := avoidance_radius * avoidance_radius
+
 	for unit in _body.get_tree().get_nodes_in_group("units"):
 		if unit == _body or not is_instance_valid(unit):
 			continue
-		
-		var distance := _body.global_position.distance_to(unit.global_position)
-		
-		if distance < avoidance_radius and distance > 0:
-			var push_direction := _body.global_position.direction_to(unit.global_position)
+
+		var unit_node := unit as Node2D
+		if not unit_node:
+			continue
+
+		var diff: Vector2 = unit_node.global_position - my_pos
+		var dist_sq: float = diff.length_squared()
+
+		# Utilise distance_squared pour éviter sqrt coûteux
+		if dist_sq < radius_sq and dist_sq > 0.01:
+			var distance := sqrt(dist_sq)  # sqrt seulement si nécessaire
 			var push_strength := 1.0 - (distance / avoidance_radius)
-			avoidance -= push_direction * push_strength
+			avoidance -= diff.normalized() * push_strength
 			nearby_count += 1
-	
+
 	if nearby_count > 0:
 		avoidance = avoidance.normalized()
-	
+
 	return avoidance
 
 

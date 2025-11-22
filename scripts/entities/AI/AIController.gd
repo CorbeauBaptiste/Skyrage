@@ -104,7 +104,9 @@ func process_ai(delta: float) -> void:
 	var priority_target: Node2D = null
 	if unit.targeting_component:
 		priority_target = unit.targeting_component.find_priority_target()
-	
+		if priority_target and priority_target is Unit:
+			unit.targeting_component.current_enemy = priority_target
+
 	# Prend une décision
 	var decision_result = decision_tree.decide(
 		unit,
@@ -122,9 +124,8 @@ func process_ai(delta: float) -> void:
 	# Log les changements de décision
 	if decision != last_decision:
 		last_decision = decision
-		print("🎯 [IA] %s - Nouvelle décision: %s" % [unit.unit_name, decision])
+		print("[IA] %s - Nouvelle décision: %s" % [unit.unit_name, decision])
 	
-	# Exécute l'action
 	_execute_decision(decision, delta)
 
 
@@ -141,13 +142,13 @@ func _is_valid() -> bool:
 ## Exécute l'action décidée par l'arbre de décision.
 ##
 ## @param decision: Action à exécuter
-## @param delta: Temps écoulé
-func _execute_decision(decision: String, delta: float) -> void:
+## @param _delta: Temps écoulé (non utilisé actuellement)
+func _execute_decision(decision: String, _delta: float) -> void:
 	match decision:
 		"MOVE_TO_BASE":
 			_move_to_base()
 		"PURSUE_L_UNIT":
-			_pursue_L_unit()  # Nouvelle fonction pour attaque coordonnée
+			_pursue_l_unit()
 		"PURSUE_UNIT":
 			_pursue_target()
 		"ATTACK_UNIT", "ATTACK_BASE":
@@ -185,44 +186,51 @@ func _move_to_base() -> void:
 
 
 ## Poursuit une unité L en coordination avec un partenaire.
-func _pursue_L_unit() -> void:
+func _pursue_l_unit() -> void:
 	if not state_evaluator or not group_coordinator:
 		_pursue_target()  # Fallback sur poursuite normale
 		return
 	
 	# Trouve la cible L la plus proche
-	var target_L = state_evaluator.find_closest_L_enemy()
-	
-	if not target_L or not is_instance_valid(target_L):
+	var target_large = state_evaluator.find_closest_L_enemy()
+
+	if not target_large or not is_instance_valid(target_large):
 		_move_to_base()  # Pas de cible L, va à la base
 		return
-	
+
 	# Assigne cette unité à la cible L dans le coordinateur
-	group_coordinator.assign_to_target(unit, target_L)
-	
+	group_coordinator.assign_to_target(unit, target_large)
+
 	# Récupère la position d'attaque assignée (gauche ou droite de la cible)
-	var attack_position := group_coordinator.get_attack_position(unit, target_L)
-	
+	var attack_position := group_coordinator.get_attack_position(unit, target_large)
+
 	# Vérifie si on est déjà en formation
-	var in_formation := group_coordinator.is_in_formation(unit, target_L)
-	
+	var in_formation := group_coordinator.is_in_formation(unit, target_large)
+
 	if in_formation:
 		# En formation : attaque la cible directement
-		var distance := unit.global_position.distance_to(target_L.global_position)
+		var distance := unit.global_position.distance_to(target_large.global_position)
 		var attack_range := unit.combat_component.attack_range if unit.combat_component else 150.0
-		
+
 		if distance <= attack_range:
 			# À portée : définit la cible pour que Unit._physics_process() gère l'attaque
 			if unit.targeting_component:
-				unit.targeting_component.set_target(target_L)
+				unit.targeting_component.set_target(target_large)
 		else:
 			# Trop loin : se rapproche légèrement
-			var direction := unit.global_position.direction_to(target_L.global_position)
+			var direction := unit.global_position.direction_to(target_large.global_position)
 			if unit.movement_component:
 				unit.movement_component.apply_velocity(direction)
 	else:
 		# Pas encore en formation : va à la position assignée
-		if pathfinding.has_method("move_towards_target"):
+		var distance_to_pos := unit.global_position.distance_to(attack_position)
+
+		# Si très proche de la position, mouvement direct (évite U-turns)
+		if distance_to_pos < 80.0:
+			var direction := unit.global_position.direction_to(attack_position)
+			if unit.movement_component:
+				unit.movement_component.apply_velocity(direction)
+		elif pathfinding.has_method("move_towards_target"):
 			pathfinding.move_towards_target(attack_position)
 
 
@@ -230,10 +238,19 @@ func _pursue_L_unit() -> void:
 func _pursue_target() -> void:
 	if not unit.targeting_component:
 		return
-	
+
 	var target: Node2D = unit.targeting_component.find_priority_target()
-	if target and is_instance_valid(target) and pathfinding.has_method("move_towards_target"):
-		pathfinding.move_towards_target(target.global_position)
+	if target and is_instance_valid(target):
+		var distance := unit.global_position.distance_to(target.global_position)
+		var attack_range := unit.combat_component.attack_range if unit.combat_component else 150.0
+
+		# Si très proche de la cible, mouvement direct sans évitement d'obstacles
+		if distance < attack_range + 50.0:
+			var direction := unit.global_position.direction_to(target.global_position)
+			if unit.movement_component:
+				unit.movement_component.apply_velocity(direction)
+		elif pathfinding.has_method("move_towards_target"):
+			pathfinding.move_towards_target(target.global_position)
 
 
 ## Fuit les ennemis proches.

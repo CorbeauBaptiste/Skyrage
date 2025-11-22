@@ -39,11 +39,14 @@ class Decision:
 # CONSTANTES
 # ========================================
 
-## Seuil de PV pour fuir (20%).
-const FLEE_HEALTH_THRESHOLD: float = 0.2
+## Seuil de PV pour fuir (10%).
+const FLEE_HEALTH_THRESHOLD: float = 0.10
 
-## Seuil de PV pour se replier (40%).
-const RETREAT_HEALTH_THRESHOLD: float = 0.4
+## Seuil de PV pour se replier (25%).
+const RETREAT_HEALTH_THRESHOLD: float = 0.25
+
+## Distance maximale pour "commit to fight" (ne fuit pas si proche d'un ennemi).
+const COMMIT_TO_FIGHT_DISTANCE: float = 200.0
 
 # ========================================
 # LOGIQUE DE DÉCISION
@@ -76,12 +79,18 @@ func decide(
 	var unit_typed := unit as Unit
 	var health_percent := _get_health_percent(unit_typed)
 	var can_attack: bool = unit_typed.can_attack
-	
-	# Priorité 1 : Survie
-	if health_percent < FLEE_HEALTH_THRESHOLD:
+
+	# Vérifie si on est "engagé" en combat (ennemi très proche)
+	var is_committed_to_fight := false
+	if nearest_enemy and is_instance_valid(nearest_enemy):
+		var distance_to_enemy := unit.global_position.distance_to(nearest_enemy.global_position)
+		is_committed_to_fight = distance_to_enemy <= COMMIT_TO_FIGHT_DISTANCE
+
+	# Priorité 1 : Survie (SAUF si engagé en combat)
+	if health_percent < FLEE_HEALTH_THRESHOLD and not is_committed_to_fight:
 		return Decision.new("FLEE", 100, "PV critiques (%.0f%%)" % (health_percent * 100))
-	
-	if health_percent < RETREAT_HEALTH_THRESHOLD:
+
+	if health_percent < RETREAT_HEALTH_THRESHOLD and not is_committed_to_fight:
 		return Decision.new("RETREAT", 90, "PV bas (%.0f%%)" % (health_percent * 100))
 	
 	# Priorité 2 : Combat

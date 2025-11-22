@@ -141,7 +141,12 @@ func _spawn_projectile() -> void:
 		projectile.targets_enfer = not _parent_unit.is_hell_faction
 	
 	projectile.source_unit = _parent_unit
-	projectile.max_distance = attack_range
+	projectile.source_unit = _parent_unit
+	if current_target is Base:
+		# a revoir la valeur, si on en met une pour chaque unite, ou une globale (200px)
+		projectile.max_distance = attack_range + 200.0
+	else:
+		projectile.max_distance = attack_range + 50.0
 	
 	var final_damage := int(current_damage * damage_multiplier)
 	projectile.damage = final_damage

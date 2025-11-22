@@ -12,6 +12,7 @@ extends Node2D
 var item_spawn_system: ItemSpawnSystem
 var item_effect_manager: ItemEffectManager
 var item_ui_system: ItemUISystem
+var active_items_display: ActiveItemsDisplay
 
 # ========================================
 # SÉLECTION
@@ -158,6 +159,11 @@ func _setup_item_systems() -> void:
 	add_child(item_ui_system)
 	print("✅ ItemUISystem configuré")
 
+	# Système d'affichage des items actifs
+	active_items_display = ActiveItemsDisplay.new()
+	add_child(active_items_display)
+	print("✅ ActiveItemsDisplay configuré")
+
 # ========================================
 # GESTION DES ITEMS
 # ========================================
@@ -170,26 +176,31 @@ func _process(_delta: float) -> void:
 
 func _on_item_collected(item: Item, position: Vector2) -> void:
 	print("📦 Item collecté: %s à %s" % [item.name, position])
-	
+
 	# Trouve l'unité la plus proche
 	var collector: Unit = null
 	var min_dist: float = INF
-	
+
 	for unit in get_tree().get_nodes_in_group("units"):
 		if unit is Unit:
 			var dist: float = unit.global_position.distance_to(position)
 			if dist < min_dist:
 				min_dist = dist
 				collector = unit
-	
+
 	if not collector:
 		push_warning("Aucune unité trouvée pour collecter l'item")
 		return
-	
+
 	# Affiche le feedback UI
 	if item_ui_system:
 		item_ui_system.show_item_collected(item, position, self)
-	
+
+	# Affiche l'item dans l'interface (tous les types, même instantanés)
+	if active_items_display:
+		var camp: String = "enfer" if collector.get_side() else "paradis"
+		active_items_display.add_active_item(camp, item, float(item.duration))
+
 	# Applique l'effet de l'item
 	if item_effect_manager:
 		item_effect_manager.apply_item_effect(item, collector, self)
@@ -294,16 +305,13 @@ func _perform_selection(drag_end: Vector2) -> void:
 	for item in selected:
 		if not item.has("collider"):
 			continue
-		
+
 		var collider: Node = item.collider
 		if is_instance_valid(collider) and collider is Unit:
-			var unit_is_enfer: bool = collider.get_side()
-			
-			if unit_is_enfer == current_phase_is_enfer:
-				if collider.selection_component:
-					collider.selection_component.set_selected(true)
-				valid_selected.append(item)
-	
+			if collider.selection_component:
+				collider.selection_component.set_selected(true)
+			valid_selected.append(item)
+
 	selected = valid_selected
 
 

@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://da4deqtcb4jwv"]
+
+[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="1_2m3j4"]
+
+[resource]
+font = ExtResource("1_2m3j4")
+font_size = 32

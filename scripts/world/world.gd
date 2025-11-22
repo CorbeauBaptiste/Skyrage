@@ -91,7 +91,7 @@ func _setup_bases() -> void:
 func _setup_ui() -> void:
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
-	
+
 	# HUD Enfer
 	hud_enfer = preload("res://scenes/ui/hud/hud_hell.tscn").instantiate()
 	ui_layer.add_child(hud_enfer)
@@ -111,10 +111,11 @@ func _setup_ui() -> void:
 		hud_paradis.btn_archange_pressed.connect(func(): _spawn_units("paradis", "archange"))
 		hud_paradis.btn_ange_pressed.connect(func(): _spawn_units("paradis", "ange"))
 		hud_paradis.btn_seraphin_pressed.connect(func(): _spawn_units("paradis", "seraphin"))
-		hud_paradis.phase_changed.connect(func(is_active): 
+		hud_paradis.phase_changed.connect(func(is_active):
 			if is_active:
 				_on_phase_changed(false)
 		)
+
 
 
 func _setup_item_systems() -> void:

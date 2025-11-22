@@ -1,7 +1,8 @@
 [gd_scene load_steps=19 format=4 uid="uid://ce10vc07drsvy"]
 
 [ext_resource type="Script" uid="uid://c2mnuwq4bhrjw" path="res://scripts/world/world.gd" id="1_aqk2v"]
-[ext_resource type="PackedScene" uid="uid://dfhpe4050iroy" path="res://scenes/main/timer_tour.tscn" id="2_smv1n"]
+[ext_resource type="PackedScene" uid="uid://c7gthns8y8m1p" path="res://scenes/ui/menus/menu_pause.tscn" id="2_menu_pause"]
+[ext_resource type="PackedScene" uid="uid://dfhpe4050iroy" path="res://scenes/main/timer_tour.tscn" id="3_timer_tour"]
 [ext_resource type="Texture2D" uid="uid://dwoxul44h1sjr" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="3_wse8f"]
 [ext_resource type="Texture2D" uid="uid://u7ppf5oswa04" path="res://assets/sprites/map/spritesheet.png" id="4_pkg7o"]
 [ext_resource type="Texture2D" uid="uid://crie8ri614iw5" path="res://assets/sprites/bases/BaseEnfer.png" id="5_dwbse"]
@@ -1911,7 +1912,12 @@ size = Vector2(160, 160)
 [node name="Level" type="Node2D"]
 script = ExtResource("1_aqk2v")
 
-[node name="TimerTour" parent="." instance=ExtResource("2_smv1n")]
+[node name="MenuPause" parent="." instance=ExtResource("2_menu_pause")]
+process_mode = 3
+visible = false
+
+[node name="TimerTour" parent="." instance=ExtResource("3_timer_tour")]
+
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_fj7yv")

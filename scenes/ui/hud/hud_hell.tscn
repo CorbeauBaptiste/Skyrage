@@ -66,15 +66,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "GOLD : "
 
-[node name="GoldLabelE" type="Label" parent="VBoxContainer2E/GoldBarE/GoldLabelE"]
-layout_mode = 0
-offset_left = 119.0
-offset_top = -107.0
-offset_right = 181.0
-offset_bottom = -19.0
-theme_override_font_sizes/font_size = 64
-text = "IA"
-
 [node name="HBoxContainerE" type="HBoxContainer" parent="VBoxContainer2E"]
 unique_name_in_owner = true
 layout_mode = 2

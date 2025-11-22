@@ -13,7 +13,7 @@ extends CharacterBody2D
 ## @tutorial: Voir Diablotin.gd, Archange.gd pour exemples d'implémentation
 
 # ========================================
-# SIGNAUX
+# SIGNALS
 # ========================================
 
 ## Émis quand la santé change.
@@ -26,7 +26,7 @@ signal unit_died()
 signal damage_dealt(amount: int)
 
 # ========================================
-# PROPRIÉTÉS EXPORTÉES
+# EXPORTED PROPERTIES
 # ========================================
 
 @export_group("Identité")
@@ -64,7 +64,7 @@ signal damage_dealt(amount: int)
 @export var can_attack: bool = true
 
 # ========================================
-# VARIABLES D'ÉTAT
+# STATES VARIABLES
 # ========================================
 
 ## Cible actuelle (Vector2 ou Node2D).
@@ -102,7 +102,7 @@ var selection_component: UnitSelectionComponent = null
 var item_effect_component: UnitItemEffectComponent = null
 
 # ========================================
-# SCENE DE PROJECTILE
+# PROJECTILE SCENES
 # ========================================
 
 var arrow_scene: PackedScene = preload("res://scenes/entities/projectiles/projectile.tscn")
@@ -112,8 +112,6 @@ var arrow_scene: PackedScene = preload("res://scenes/entities/projectiles/projec
 # ========================================
 
 func _ready() -> void:
-	print("🚀 Unit._ready() START for %s" % unit_name)
-	
 	# Configuration physique
 	collision_layer = 2
 	collision_mask = 1
@@ -137,13 +135,9 @@ func _deferred_setup() -> void:
 	
 	# Marquer les components comme prêts
 	components_ready = true
-	
-	print("✅ Unit setup complete for %s (HP:%d, Speed:%.1f, Dmg:%d)" % [unit_name, max_health, base_speed, base_damage])
 
 ## Configure les composants de l'unité.
 func _setup_components() -> void:
-	print("🔧 Setting up components for %s" % unit_name)
-
 	# Création des composants avec leurs vrais types
 	health_component = _create_component("HealthComponent", UnitHealthComponent)
 	movement_component = _create_component("MovementComponent", UnitMovementComponent)
@@ -152,10 +146,8 @@ func _setup_components() -> void:
 	selection_component = _create_component("SelectionComponent", UnitSelectionComponent)
 	item_effect_component = _create_component("ItemEffectComponent", UnitItemEffectComponent)
 	
-	# Attendre que les components soient ajoutés à l'arbre
 	await get_tree().process_frame
 	
-	# Configuration manuelle des propriétés (plus fiable que setup())
 	if health_component:
 		health_component.max_health = max_health
 		health_component.current_health = max_health
@@ -177,10 +169,8 @@ func _setup_components() -> void:
 func _create_component(component_name: String, component_type) -> Node:
 	var existing := get_node_or_null(component_name)
 	if existing:
-		print("  ✓ %s exists" % component_name)
 		return existing
 		
-	print("  ➕ Creating %s" % component_name)
 	var component = component_type.new()
 	component.name = component_name
 	add_child(component)
@@ -201,7 +191,7 @@ func _connect_signals() -> void:
 		combat_component.damage_dealt.connect(_on_damage_dealt)
 
 # ========================================
-# BOUCLE PRINCIPALE (À NE PAS OVERRIDE)
+# MAIN LOOP
 # ========================================
 
 func _physics_process(delta: float) -> void:
@@ -219,7 +209,7 @@ func _physics_process(delta: float) -> void:
 	
 	# 2. Mise à jour du ciblage
 	if targeting_component:
-		# Priorité 1 : Ennemi détecté (peu importe s'il y a un ordre manuel)
+		# Priorité 1 : Ennemi détecté
 		if targeting_component.current_enemy and is_instance_valid(targeting_component.current_enemy):
 			# Vérifie si l'unité peut attaquer
 			if can_attack:
@@ -246,12 +236,10 @@ func _physics_process(delta: float) -> void:
 						# Pas à portée : on s'approche de l'ennemi
 						var direction := global_position.direction_to(targeting_component.current_enemy.global_position)
 						if movement_component:
-							var avoidance := movement_component.calculate_avoidance()
-							var final_direction := (direction * 0.8 + avoidance * 0.2).normalized()
-							movement_component.apply_velocity(final_direction)
+							movement_component.apply_velocity_with_avoidance(direction, delta)
 						else:
 							velocity = direction.normalized() * base_speed
-						
+
 						move_and_slide()
 						_update_animation()
 						return
@@ -276,12 +264,10 @@ func _physics_process(delta: float) -> void:
 				# Sinon on se déplace vers la cible
 				var direction := global_position.direction_to(target_pos)
 				if movement_component:
-					var avoidance := movement_component.calculate_avoidance()
-					var final_direction := (direction + avoidance * 0.3).normalized()
-					movement_component.apply_velocity(final_direction)
+					movement_component.apply_velocity_with_avoidance(direction, delta)
 				else:
 					velocity = direction.normalized() * base_speed
-				
+
 				move_and_slide()
 				_update_animation()
 				return
@@ -296,7 +282,7 @@ func _physics_process(delta: float) -> void:
 	_update_animation()
 
 # ========================================
-# MÉTHODE ABSTRAITE (OBLIGATOIRE)
+# ABSTRACT METHODE
 # ========================================
 
 ## ⚠️ MÉTHODE ABSTRAITE : Doit être override par toutes les unités enfants.
@@ -311,9 +297,9 @@ func _physics_process(delta: float) -> void:
 func handle_movement(delta: float) -> void:
 	# Si on a un movement_component, on l'utilise
 	if movement_component and is_instance_valid(movement_component):
-		# Si on a une vélocité non nulle, on l'applique
+		# Si on a une vélocité non nulle, on l'applique avec évitement
 		if velocity != Vector2.ZERO:
-			movement_component.apply_velocity(velocity.normalized())
+			movement_component.apply_velocity_with_avoidance(velocity.normalized(), delta)
 		else:
 			movement_component.stop()
 	else:
@@ -322,7 +308,7 @@ func handle_movement(delta: float) -> void:
 			move_and_slide()
 
 # ========================================
-# SYSTÈME DE COMBAT
+# FIGHT SYSTEM
 # ========================================
 
 ## Gère le combat avec l'ennemi actuel.
@@ -343,7 +329,7 @@ func _handle_combat() -> void:
 	combat_component.try_attack()
 
 # ========================================
-# GESTION DE LA SANTÉ (IDamageable)
+# HEALTH GESTION (IDamageable)
 # ========================================
 
 ## Inflige des dégâts à l'unité.
@@ -386,7 +372,7 @@ func get_missing_health() -> int:
 	return 0
 
 # ========================================
-# GESTION DU CAMP (ITargetable)
+# TEAM GESTION (ITargetable)
 # ========================================
 
 ## Retourne le camp de l'unité.
@@ -439,7 +425,7 @@ func _update_animation() -> void:
 			anim_player.play("running-up")
 
 # ========================================
-# CALLBACKS DES SIGNAUX
+# SIGNALS CALLBACKS
 # ========================================
 
 func _on_health_changed(current: int, max_hp: int) -> void:

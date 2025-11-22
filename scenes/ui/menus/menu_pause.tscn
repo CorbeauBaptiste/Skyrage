@@ -7,6 +7,7 @@ line_spacing = 60.0
 font_size = 70
 
 [node name="MenuPause" type="CanvasLayer"]
+layer = 100
 script = ExtResource("1_biepb")
 
 [node name="Panel" type="Panel" parent="."]

@@ -113,6 +113,7 @@ offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+process_mode = 3
 script = ExtResource("1_g20ld")
 
 [node name="Background" type="TextureRect" parent="."]

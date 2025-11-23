@@ -99,11 +99,11 @@ func _setup_ui() -> void:
 		hud_enfer.btn_diablotin_pressed.connect(func(): _spawn_units("enfer", "diablotin"))
 		hud_enfer.btn_ange_dechu_pressed.connect(func(): _spawn_units("enfer", "ange_dechu"))
 		hud_enfer.btn_demon_pressed.connect(func(): _spawn_units("enfer", "demon"))
-		hud_enfer.phase_changed.connect(func(is_active): 
+		hud_enfer.phase_changed.connect(func(is_active):
 			if is_active:
 				_on_phase_changed(true)
 		)
-	
+
 	# HUD Paradis
 	hud_paradis = preload("res://scenes/ui/hud/hud_paradise.tscn").instantiate()
 	ui_layer.add_child(hud_paradis)
@@ -115,6 +115,22 @@ func _setup_ui() -> void:
 			if is_active:
 				_on_phase_changed(false)
 		)
+
+	# Désactiver les HUDs des équipes IA
+	_apply_game_mode()
+
+
+## Applique les restrictions du mode de jeu actuel.
+func _apply_game_mode() -> void:
+	print("[World] Mode de jeu: %s" % GameMode.Mode.keys()[GameMode.current_mode])
+
+	# Désactiver le HUD de l'équipe IA (Enfer)
+	if GameMode.enfer_is_ai and hud_enfer:
+		hud_enfer.disable_for_ai()
+
+	# Désactiver le HUD de l'équipe IA (Paradis)
+	if GameMode.paradis_is_ai and hud_paradis:
+		hud_paradis.disable_for_ai()
 
 
 
@@ -292,16 +308,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _perform_selection(drag_end: Vector2) -> void:
 	select_rect.extents = abs(drag_end - drag_start) / 2
-	
+
 	var space: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = select_rect
 	query.collision_mask = 2
 	query.transform = Transform2D(0, (drag_end + drag_start) / 2)
-	
+
 	selected = space.intersect_shape(query)
-	
-	# Filtrer les unités valides
+
+	# Filtrer les unités valides (et appartenant à une équipe contrôlée par un joueur)
 	var valid_selected: Array = []
 	for item in selected:
 		if not item.has("collider"):
@@ -309,11 +325,27 @@ func _perform_selection(drag_end: Vector2) -> void:
 
 		var collider: Node = item.collider
 		if is_instance_valid(collider) and collider is Unit:
+			# Vérifier si l'unité appartient à une équipe contrôlée par un joueur
+			if not _can_select_unit(collider):
+				continue
+
 			if collider.selection_component:
 				collider.selection_component.set_selected(true)
 			valid_selected.append(item)
 
 	selected = valid_selected
+
+
+## Vérifie si une unité peut être sélectionnée par le joueur.
+##
+## @param unit: L'unité à vérifier
+## @return: true si l'unité peut être sélectionnée
+func _can_select_unit(unit: Unit) -> bool:
+	# Déterminer l'équipe de l'unité
+	var unit_team: String = "enfer" if unit.is_hell_faction else "paradis"
+
+	# L'unité ne peut être sélectionnée que si son équipe est contrôlée par un joueur
+	return GameMode.is_team_player(unit_team)
 
 
 # MODIFIÉ : Fonction de dessin appelée par le Control dans le CanvasLayer

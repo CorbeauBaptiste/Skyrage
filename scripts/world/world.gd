@@ -42,6 +42,13 @@ var hud_paradis: Control
 var current_phase_is_enfer: bool = false
 
 # ========================================
+# IA DE BASE
+# ========================================
+
+var ai_enfer: BaseAIController = null
+var ai_paradis: BaseAIController = null
+
+# ========================================
 # INITIALISATION
 # ========================================
 
@@ -124,13 +131,38 @@ func _setup_ui() -> void:
 func _apply_game_mode() -> void:
 	print("[World] Mode de jeu: %s" % GameMode.Mode.keys()[GameMode.current_mode])
 
-	# Désactiver le HUD de l'équipe IA (Enfer)
-	if GameMode.enfer_is_ai and hud_enfer:
-		hud_enfer.disable_for_ai()
+	# Désactiver le HUD de l'équipe IA (Enfer) et activer l'IA
+	if GameMode.enfer_is_ai:
+		if hud_enfer:
+			hud_enfer.disable_for_ai()
+		_setup_ai("enfer")
 
-	# Désactiver le HUD de l'équipe IA (Paradis)
-	if GameMode.paradis_is_ai and hud_paradis:
-		hud_paradis.disable_for_ai()
+	# Désactiver le HUD de l'équipe IA (Paradis) et activer l'IA
+	if GameMode.paradis_is_ai:
+		if hud_paradis:
+			hud_paradis.disable_for_ai()
+		_setup_ai("paradis")
+
+
+## Configure l'IA pour une équipe.
+func _setup_ai(team: String) -> void:
+	var base: Base = base_enfer if team == "enfer" else base_paradis
+
+	if not base:
+		push_error("[World] Base %s introuvable pour l'IA" % team)
+		return
+
+	var ai_controller: BaseAIController = BaseAIController.new()
+	ai_controller.name = "AI_" + team.capitalize()
+	add_child(ai_controller)
+	ai_controller.setup(base, self)
+
+	if team == "enfer":
+		ai_enfer = ai_controller
+	else:
+		ai_paradis = ai_controller
+
+	print("[World] IA %s configurée" % team.capitalize())
 
 
 
@@ -270,6 +302,15 @@ func _clear_selection() -> void:
 # ========================================
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Contrôle de vitesse du jeu (touches 1-5)
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_1: Engine.time_scale = 1.0
+			KEY_2: Engine.time_scale = 2.0
+			KEY_3: Engine.time_scale = 3.0
+			KEY_4: Engine.time_scale = 5.0
+			KEY_5: Engine.time_scale = 10.0
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			# Début du clic

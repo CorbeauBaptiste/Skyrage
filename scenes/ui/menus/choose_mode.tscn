@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
 [ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="5_g6nc4"]
 [ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/ui/joueur_contre_joueur.gd" id="6_rlcv8"]
+[ext_resource type="Script" path="res://scripts/ui/choose_mode.gd" id="7_choose"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]
 texture = ExtResource("1_kpgrt")
@@ -78,6 +79,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("7_choose")
 
 [node name="Back" type="TextureRect" parent="."]
 layout_mode = 1
@@ -139,7 +141,6 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_fw63o")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fwqhx")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ub12g")
 text = "JOUEURS VS JOUEURS"
-script = ExtResource("6_rlcv8")
 
 [node name="mode2" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -158,5 +159,3 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_geyd6")
 text = "IA VS IA"
 
 [connection signal="button_down" from="Back/exit" to="Back/exit" method="_on_button_down_exit_choose"]
-[connection signal="button_down" from="VBoxContainer/mode1" to="Back/exit" method="_on_mode_1_button_down"]
-[connection signal="button_down" from="VBoxContainer/mode1" to="VBoxContainer/mode1" method="_on_button_down"]

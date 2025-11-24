@@ -3,6 +3,9 @@ extends CanvasLayer
 var pause = false
 var parametres_instance: Node = null
 
+func _ready() -> void:
+	hide()
+
 "Fonction qui permets de mettre en pause en fonction
 de si le bouton echap à été présser ou pas"
 

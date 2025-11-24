@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://duav0ofjejfw8"]
 
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="1_1xu0v"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="1_61erh"]
+[ext_resource type="Texture2D" uid="uid://bxguq6rmx7rx8" path="res://assets/sprites/backgrounds/title.png" id="1_1xu0v"]
+[ext_resource type="Texture2D" uid="uid://m84rb2av4uny" path="res://assets/sprites/backgrounds/background_menu.png" id="1_61erh"]
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_x2m5c"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="2_l3ipc"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_hyvu0"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="2_l3ipc"]
+[ext_resource type="FontFile" uid="uid://c2xk7c0g5dhaj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_hyvu0"]
 [ext_resource type="LabelSettings" uid="uid://78t4f837fjtd" path="res://assets/font/credits_label_settings.tres" id="4_if7rd"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]

@@ -1,15 +1,15 @@
 [gd_scene load_steps=28 format=3 uid="uid://dov8fiurwdqsl"]
 
 [ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/ui/parametre.gd" id="1_g20ld"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="2_vy0v6"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="3_qn5cf"]
-[ext_resource type="Texture2D" uid="uid://qioa71paxu41" path="res://assets/sprites/menu/bars/progress_bar_end_point.png" id="4_3y87n"]
-[ext_resource type="Texture2D" uid="uid://bcpqys3x6wyud" path="res://assets/sprites/menu/bars/progress_bar_empty.png" id="5_fwc1c"]
-[ext_resource type="Texture2D" uid="uid://cfoltrc1xl3vw" path="res://assets/sprites/menu/bars/progress_bar_full.png" id="6_cp0ru"]
+[ext_resource type="Texture2D" uid="uid://m84rb2av4uny" path="res://assets/sprites/backgrounds/background_menu.png" id="2_vy0v6"]
+[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="3_qn5cf"]
+[ext_resource type="Texture2D" uid="uid://bl0lw0awyfh4f" path="res://assets/sprites/menu/bars/progress_bar_end_point.png" id="4_3y87n"]
+[ext_resource type="Texture2D" uid="uid://ctd0cn867161v" path="res://assets/sprites/menu/bars/progress_bar_empty.png" id="5_fwc1c"]
+[ext_resource type="Texture2D" uid="uid://1q0mueec1hkq" path="res://assets/sprites/menu/bars/progress_bar_full.png" id="6_cp0ru"]
 [ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/ui/brithness.gd" id="7_w6kfw"]
-[ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="8_1voy7"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="9_m51i1"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="10_x8v71"]
+[ext_resource type="AudioStream" uid="uid://b4gi7jbtg2k5e" path="res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="8_1voy7"]
+[ext_resource type="Texture2D" uid="uid://bxguq6rmx7rx8" path="res://assets/sprites/backgrounds/title.png" id="9_m51i1"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="10_x8v71"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jhvt5"]
 texture = ExtResource("3_qn5cf")
@@ -103,6 +103,7 @@ texture = ExtResource("10_x8v71")
 texture = ExtResource("10_x8v71")
 
 [node name="Paramètres" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,7 +114,6 @@ offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-process_mode = 3
 script = ExtResource("1_g20ld")
 
 [node name="Background" type="TextureRect" parent="."]

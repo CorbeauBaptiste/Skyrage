@@ -1,11 +1,11 @@
 [gd_scene load_steps=22 format=3 uid="uid://csw5rvqxejroh"]
 
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_gnp2c"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="5_g6nc4"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
+[ext_resource type="Texture2D" uid="uid://m84rb2av4uny" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
+[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
+[ext_resource type="Texture2D" uid="uid://bxguq6rmx7rx8" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
+[ext_resource type="FontFile" uid="uid://c2xk7c0g5dhaj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="5_g6nc4"]
 [ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/ui/joueur_contre_joueur.gd" id="6_rlcv8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w82kn"]

@@ -1,14 +1,15 @@
-[gd_scene load_steps=20 format=3 uid="uid://3naivixtwygu"]
+[gd_scene load_steps=21 format=3 uid="uid://3naivixtwygu"]
 
 [ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/ui/menu_principal.gd" id="1_o0pl7"]
-[ext_resource type="Texture2D" uid="uid://cas3w2wbjrgcd" path="res://assets/sprites/backgrounds/background_menu.png" id="2_mqn46"]
-[ext_resource type="Texture2D" uid="uid://cq3v5rgrjaxds" path="res://assets/sprites/backgrounds/title.png" id="3_kucxf"]
-[ext_resource type="FontFile" uid="uid://rw4sfmvtxov0" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_mqn46"]
-[ext_resource type="FontFile" uid="uid://cfmqnmgvdug83" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
-[ext_resource type="Texture2D" uid="uid://ct0j2addlcfuh" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
+[ext_resource type="Texture2D" uid="uid://b2jliny4kk18c" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="2_kucxf"]
+[ext_resource type="FontFile" uid="uid://c2xk7c0g5dhaj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_mqn46"]
+[ext_resource type="FontFile" uid="uid://cle5ymqmvigli" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
+[ext_resource type="Texture2D" uid="uid://djvo0boylnlfv" path="res://assets/font/Eagle_Lake/logo.png" id="4_kucxf"]
+[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
+[ext_resource type="Texture2D" uid="uid://caa2v15tsjek2" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="7_pq103"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0dla8"]
-texture = ExtResource("3_kucxf")
+texture = ExtResource("4_kucxf")
 texture_margin_left = 80.0
 texture_margin_top = 30.0
 texture_margin_bottom = 100.0
@@ -17,18 +18,20 @@ expand_margin_top = 40.0
 expand_margin_bottom = 40.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s16su"]
+content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ptpru"]
-texture = ExtResource("4_pq103")
+texture = ExtResource("7_pq103")
 expand_margin_top = 20.0
 expand_margin_bottom = 200.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js3ya"]
+content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d5fec"]
@@ -42,8 +45,9 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_waw0y"]
+content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sirq2"]
@@ -57,8 +61,9 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4o44"]
+content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mcy8y"]
@@ -71,8 +76,9 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nt6gs"]
+content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [node name="MenuPrincipal" type="Control"]
@@ -91,31 +97,32 @@ size_flags_horizontal = 4
 script = ExtResource("1_o0pl7")
 
 [node name="Background" type="TextureRect" parent="."]
+self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
+light_mask = 1023
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -860.848
-offset_top = -695.696
-offset_right = 1059.15
-offset_bottom = 584.304
+offset_left = -1132.85
+offset_top = -997.696
+offset_right = 1235.15
+offset_bottom = 794.304
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_mqn46")
+texture = ExtResource("2_kucxf")
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-offset_left = 400.0
-offset_top = -130.0
-offset_right = 1800.0
-offset_bottom = 320.0
+offset_left = 612.0
+offset_top = -186.0
+offset_right = 1690.0
+offset_bottom = 476.0
 theme_override_fonts/font = ExtResource("3_pq103")
 theme_override_font_sizes/font_size = 90
 theme_override_styles/normal = SubResource("StyleBoxTexture_0dla8")
-text = "SKYRAGE "
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -126,10 +133,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.848
-offset_top = -140.304
-offset_right = 499.152
-offset_bottom = 259.696
+offset_left = -292.848
+offset_top = -60.696
+offset_right = 507.152
+offset_bottom = 482.304
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 39

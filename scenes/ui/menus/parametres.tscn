@@ -1,20 +1,21 @@
 [gd_scene load_steps=28 format=3 uid="uid://dov8fiurwdqsl"]
 
 [ext_resource type="Script" uid="uid://dlfxpjiqhn8oo" path="res://scripts/ui/parametre.gd" id="1_g20ld"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="2_vy0v6"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="3_qn5cf"]
-[ext_resource type="Texture2D" uid="uid://qioa71paxu41" path="res://assets/sprites/menu/bars/progress_bar_end_point.png" id="4_3y87n"]
-[ext_resource type="Texture2D" uid="uid://bcpqys3x6wyud" path="res://assets/sprites/menu/bars/progress_bar_empty.png" id="5_fwc1c"]
-[ext_resource type="Texture2D" uid="uid://cfoltrc1xl3vw" path="res://assets/sprites/menu/bars/progress_bar_full.png" id="6_cp0ru"]
+[ext_resource type="Texture2D" uid="uid://b2jliny4kk18c" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="2_g20ld"]
+[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="3_qn5cf"]
+[ext_resource type="Texture2D" uid="uid://bl0lw0awyfh4f" path="res://assets/sprites/menu/bars/progress_bar_end_point.png" id="4_3y87n"]
+[ext_resource type="Texture2D" uid="uid://ctd0cn867161v" path="res://assets/sprites/menu/bars/progress_bar_empty.png" id="5_fwc1c"]
+[ext_resource type="Texture2D" uid="uid://1q0mueec1hkq" path="res://assets/sprites/menu/bars/progress_bar_full.png" id="6_cp0ru"]
 [ext_resource type="Script" uid="uid://dbpietmc7wjdc" path="res://scripts/ui/brithness.gd" id="7_w6kfw"]
-[ext_resource type="AudioStream" uid="uid://c4e2i8273jj43" path="res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="8_1voy7"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="9_m51i1"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="10_x8v71"]
+[ext_resource type="AudioStream" uid="uid://b4gi7jbtg2k5e" path="res://assets/audio/menu/musique_menu_principal_orchestrale_epique.mp3" id="8_1voy7"]
+[ext_resource type="Texture2D" uid="uid://qbp4uagign0s" path="res://assets/font/Eagle_Lake/paramétre.png" id="9_vy0v6"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="10_x8v71"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jhvt5"]
+content_margin_bottom = 20.0
 texture = ExtResource("3_qn5cf")
-expand_margin_top = 15.0
-expand_margin_bottom = 15.0
+expand_margin_top = 40.0
+expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j0evp"]
 texture = ExtResource("5_fwc1c")
@@ -36,9 +37,10 @@ expand_margin_top = 7.0
 expand_margin_bottom = 7.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k1fe6"]
+content_margin_bottom = 20.0
 texture = ExtResource("3_qn5cf")
-expand_margin_top = 15.0
-expand_margin_bottom = 15.0
+expand_margin_top = 40.0
+expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wpqh2"]
 texture = ExtResource("5_fwc1c")
@@ -61,9 +63,12 @@ expand_margin_top = 7.0
 expand_margin_bottom = 7.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_phf5m"]
+content_margin_bottom = 40.0
 texture = ExtResource("3_qn5cf")
-expand_margin_top = 15.0
-expand_margin_bottom = 15.0
+expand_margin_left = 60.0
+expand_margin_top = 60.0
+expand_margin_right = 60.0
+expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6872e"]
 texture = ExtResource("5_fwc1c")
@@ -86,7 +91,7 @@ expand_margin_top = 7.0
 expand_margin_bottom = 7.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lujcr"]
-texture = ExtResource("9_m51i1")
+texture = ExtResource("9_vy0v6")
 expand_margin_left = 80.0
 expand_margin_right = 30.0
 
@@ -103,6 +108,7 @@ texture = ExtResource("10_x8v71")
 texture = ExtResource("10_x8v71")
 
 [node name="Paramètres" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,23 +119,23 @@ offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-process_mode = 3
 script = ExtResource("1_g20ld")
 
 [node name="Background" type="TextureRect" parent="."]
+self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -962.0
-offset_top = -627.0
-offset_right = 958.0
-offset_bottom = 653.0
+offset_left = -1186.0
+offset_top = -880.5
+offset_right = 1182.0
+offset_bottom = 911.5
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_vy0v6")
+texture = ExtResource("2_g20ld")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background"]
 layout_mode = 1
@@ -138,13 +144,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -181.0
-offset_top = -62.5
-offset_right = 169.0
-offset_bottom = 344.5
+offset_left = -191.0
+offset_top = -57.0
+offset_right = 159.0
+offset_bottom = 475.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 31
+theme_override_constants/separation = 40
 
 [node name="BRIGHTNESS" type="Label" parent="Background/VBoxContainer"]
 layout_mode = 2
@@ -215,11 +221,10 @@ autoplay = true
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 240.0
-offset_right = 1640.0
-offset_bottom = 450.0
+offset_left = 496.0
+offset_right = 1446.0
+offset_bottom = 556.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_lujcr")
-text = "PARAMÈTRES"
 label_settings = SubResource("LabelSettings_uxf0q")
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -1,11 +1,11 @@
 [gd_scene load_steps=22 format=3 uid="uid://csw5rvqxejroh"]
 
+[ext_resource type="Texture2D" uid="uid://b2jliny4kk18c" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="1_g6nc4"]
 [ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_gnp2c"]
-[ext_resource type="Texture2D" uid="uid://clt1u2sds40mq" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
-[ext_resource type="Texture2D" uid="uid://dye56mlahth6q" path="res://assets/sprites/backgrounds/background_menu.png" id="1_w82kn"]
-[ext_resource type="Texture2D" uid="uid://ohw1xn2s346g" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
-[ext_resource type="Texture2D" uid="uid://c6swici34hih2" path="res://assets/sprites/backgrounds/title.png" id="2_ub12g"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="5_g6nc4"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="1_kpgrt"]
+[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="2_1iq64"]
+[ext_resource type="Texture2D" uid="uid://beicblpna2ba" path="res://assets/font/Eagle_Lake/choixmode.png" id="4_g6nc4"]
+[ext_resource type="FontFile" uid="uid://c2xk7c0g5dhaj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="5_g6nc4"]
 [ext_resource type="Script" uid="uid://4c20y3i2ks81" path="res://scripts/ui/joueur_contre_joueur.gd" id="6_rlcv8"]
 [ext_resource type="Script" path="res://scripts/ui/choose_mode.gd" id="7_choose"]
 
@@ -19,7 +19,7 @@ texture = ExtResource("1_kpgrt")
 texture = ExtResource("1_kpgrt")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6nno"]
-texture = ExtResource("2_ub12g")
+texture = ExtResource("4_g6nc4")
 expand_margin_left = 80.0
 expand_margin_right = 30.0
 
@@ -28,8 +28,9 @@ font = ExtResource("5_g6nc4")
 font_size = 40
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fw63o"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fwqhx"]
@@ -38,13 +39,15 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ub12g"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fjthy"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1aawk"]
@@ -53,13 +56,15 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qn01r"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dpkm3"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgjr2"]
@@ -68,8 +73,9 @@ expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_geyd6"]
+content_margin_bottom = 40.0
 texture = ExtResource("2_1iq64")
-expand_margin_top = 20.0
+expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
 [node name="Choosemode" type="Control"]
@@ -82,6 +88,7 @@ grow_vertical = 2
 script = ExtResource("7_choose")
 
 [node name="Back" type="TextureRect" parent="."]
+self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,14 +97,14 @@ offset_top = -90.0
 offset_bottom = 110.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_w82kn")
+texture = ExtResource("1_g6nc4")
 
 [node name="exit" type="Button" parent="Back"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 110.0
-offset_right = 140.0
-offset_bottom = 230.0
+offset_left = 254.0
+offset_top = 366.0
+offset_right = 374.0
+offset_bottom = 486.0
 theme_override_font_sizes/font_size = 64
 theme_override_styles/hover = SubResource("StyleBoxTexture_w82kn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_rlcv8")
@@ -109,12 +116,12 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -700.0
-offset_right = 700.0
-offset_bottom = 400.0
+offset_left = -610.0
+offset_top = -59.0
+offset_right = 633.0
+offset_bottom = 570.0
 grow_horizontal = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_d6nno")
-text = "SÉLECTIONNEZ UN MODE"
 label_settings = SubResource("LabelSettings_gnp2c")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -127,9 +134,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -318.0
-offset_top = -37.0
+offset_top = -5.0
 offset_right = 340.0
-offset_bottom = 396.0
+offset_bottom = 428.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 54

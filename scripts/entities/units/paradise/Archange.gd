@@ -80,11 +80,7 @@ func handle_movement(delta: float) -> void:
 
 func _navigate_to_target(delta: float) -> void:
 	var direction := global_position.direction_to(target_movement.global_position)
-	
-	var avoidance := movement_component.calculate_avoidance()
-	var final_direction := (direction + avoidance * 0.3).normalized()
-	
-	movement_component.apply_velocity(final_direction)
+	movement_component.apply_velocity_with_avoidance(direction, delta, true)
 
 
 func _navigate_by_walls(delta: float) -> void:
@@ -102,14 +98,11 @@ func _navigate_by_walls(delta: float) -> void:
 			turn_timer = TURN_COOLDOWN
 	
 	_update_droite_rotation(current_direction)
-	
+
 	var dir := _match_current_direction(current_direction)
-	
+
 	old_position = global_position
-	var avoidance := movement_component.calculate_avoidance()
-	var final_direction := (dir + avoidance * 0.2).normalized()
-	
-	movement_component.apply_velocity(final_direction)
+	movement_component.apply_velocity_with_avoidance(dir, delta, true)
 	
 	await get_tree().process_frame
 	var actual_speed := (global_position - old_position).length() / delta

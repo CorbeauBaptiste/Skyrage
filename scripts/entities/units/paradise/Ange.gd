@@ -37,48 +37,25 @@ func _ready() -> void:
 	super._ready()
 
 
-##
-##
 ## @param delta: Temps écoulé
 func handle_movement(delta: float) -> void:
 	if not movement_component:
 		return
-	
-	debug_rays_data.clear()
-	
+
 	var target_pos: Vector2 = Vector2.ZERO
 	if targeting_component and targeting_component.target:
 		target_pos = targeting_component.get_target_position()
-	
+
 	if target_pos == Vector2.ZERO:
 		movement_component.stop()
 		return
-	
+
 	var direction_to_target := (target_pos - global_position).normalized()
-	var move_dir: Vector2 = direction_to_target
-	var space_state := get_world_2d().direct_space_state
-	
-	var circle_shape := CircleShape2D.new()
-	circle_shape.radius = avoid_radius
-	var shape_params := PhysicsShapeQueryParameters2D.new()
-	shape_params.shape = circle_shape
-	shape_params.transform = Transform2D(0, global_position)
-	shape_params.exclude = [self]
-	shape_params.collision_mask = 1
-	var collision_bodies := space_state.intersect_shape(shape_params)
-	
-	if collision_bodies.size() > 0:
-		avoiding = true
-		move_dir = _find_best_free_direction(move_dir, space_state)
-	else:
-		avoiding = false
-	
-	var avoidance := movement_component.calculate_avoidance()
-	var final_direction := (move_dir + avoidance * 0.3).normalized()
-	movement_component.apply_velocity(final_direction)
-	
-	if debug_rays:
-		queue_redraw()
+
+	# Mise à jour de l'état avoiding basé sur le component
+	avoiding = movement_component.is_avoiding_obstacle()
+
+	movement_component.apply_velocity_with_avoidance(direction_to_target, delta, true)
 
 func _find_best_free_direction(base_dir: Vector2, space_state: PhysicsDirectSpaceState2D) -> Vector2:
 	var angles := [-60, -30, 0, 30, 60]

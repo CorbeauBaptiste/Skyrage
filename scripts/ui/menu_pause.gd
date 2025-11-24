@@ -53,3 +53,10 @@ func _on_fermer_parametres() -> void:
 func _on_quitter_button_down() -> void:
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/ui/menus/menu_principal.tscn")
+
+
+func _on_retour_button_down() -> void:
+	pause = false
+	get_tree().paused = false
+	_set_huds_visible(true)
+	hide()

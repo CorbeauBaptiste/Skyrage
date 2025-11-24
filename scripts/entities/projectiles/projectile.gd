@@ -136,20 +136,22 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	if body is Base:
 		var is_valid_target : bool = (targets_enfer and body.team == "enfer") or (not targets_enfer and body.team == "paradis")
-		
+
 		if is_valid_target:
 			var final_damage := damage
-			if source_unit and source_unit is Unit:
+			if is_instance_valid(source_unit) and source_unit is Unit:
 				if source_unit.combat_component:
 					final_damage = int(damage * source_unit.combat_component.damage_multiplier)
-			
-			body.take_damage(final_damage, source_unit)
+
+			# Passer l'attaquant seulement s'il existe encore
+			var attacker: Node2D = source_unit if is_instance_valid(source_unit) else null
+			body.take_damage(final_damage, attacker)
 			queue_free()
 		return
 	
 	if body is Unit:
 		var is_valid_target : bool = (targets_enfer and body.get_side() == true) or (not targets_enfer and body.get_side() == false)
-			
+
 		if is_valid_target:
 			if is_michael_glaive:
 				_explode_michael_glaive(body.global_position)
@@ -157,12 +159,12 @@ func _on_body_entered(body: Node2D) -> void:
 				_explode_area_damage(body.global_position)
 			else:
 				var final_damage := damage
-				if source_unit and source_unit is Unit:
+				if is_instance_valid(source_unit) and source_unit is Unit:
 					if source_unit.combat_component:
 						final_damage = int(damage * source_unit.combat_component.damage_multiplier)
-				
+
 				body.set_health(body.get_health() - final_damage)
-				
+
 			queue_free()
 
 # ========================================

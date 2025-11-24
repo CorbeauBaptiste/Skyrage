@@ -154,9 +154,9 @@ alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_pq103")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/hover = SubResource("StyleBoxTexture_s16su")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_ptpru")
 theme_override_styles/normal = SubResource("StyleBoxTexture_js3ya")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ptpru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s16su")
 text = "START"
 metadata/_edit_use_anchors_ = true
 
@@ -164,27 +164,27 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_pq103")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/hover = SubResource("StyleBoxTexture_d5fec")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_qj36n")
 theme_override_styles/normal = SubResource("StyleBoxTexture_waw0y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qj36n")
+theme_override_styles/hover = SubResource("StyleBoxTexture_d5fec")
 text = "PARAMÈTRES"
 
 [node name="CreditBTN" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_pq103")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/hover = SubResource("StyleBoxTexture_sirq2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3kwta")
 theme_override_styles/normal = SubResource("StyleBoxTexture_h4o44")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3kwta")
+theme_override_styles/hover = SubResource("StyleBoxTexture_sirq2")
 text = "CRÉDITS"
 
 [node name="QuitBTN" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_pq103")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/hover = SubResource("StyleBoxTexture_mcy8y")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_nt4t2")
 theme_override_styles/normal = SubResource("StyleBoxTexture_nt6gs")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_nt4t2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mcy8y")
 text = "QUITTER"
 metadata/_edit_use_anchors_ = true
 

@@ -20,3 +20,10 @@ func _process(delta: float) -> void:
 	if timer.is_stopped():
 		timer.start()
 		timer_started.emit()
+
+
+func _on_button_pause_button_down() -> void:
+	var pause_scene = load("res://scenes/ui/menus/menu_pause.tscn")
+	var pause_control = pause_scene.instantiate()
+	add_child(pause_control)
+	pause_control.pause_unpause()

@@ -40,8 +40,8 @@ const UNIT_COSTS = {
 # CONFIGURATION DE L'OR
 # -------------------------------------------
 const GOLD_CONFIG = {
-	"max_gold": 50.0,
-	"regen_per_sec": 10.0,
+	"max_gold": 20.0,
+	"regen_per_sec": 1.0,
 	"overtime_multiplier": 2.0,
 	"overtime_threshold": MATCH_DURATION - 60.0 # TEMPS GLOBAL - 1 MINIUTES
 }

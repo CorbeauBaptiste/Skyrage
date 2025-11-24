@@ -77,11 +77,14 @@ func _ready() -> void:
 
 ## Définit la base ennemie comme cible initiale.
 func _set_initial_target() -> void:
-	if not _parent_unit or not (_parent_unit is Unit):
+	if not is_instance_valid(_parent_unit) or not (_parent_unit is Unit):
 		return
-	
+
+	if not _parent_unit.is_inside_tree():
+		return
+
 	var parent_side: bool = (_parent_unit as Unit).is_hell_faction
-	
+
 	for base in _parent_unit.get_tree().get_nodes_in_group("bases"):
 		if is_instance_valid(base) and base is Base and base.get_side() != parent_side:
 			target = base
@@ -101,17 +104,20 @@ func _set_initial_target() -> void:
 ##
 ## @return: Cible prioritaire ou null
 func find_priority_target() -> Node2D:
-	if not (_parent_unit is Unit):
+	if not is_instance_valid(_parent_unit) or not (_parent_unit is Unit):
 		return null
-	
+
+	if not _parent_unit.is_inside_tree():
+		return null
+
 	var unit := _parent_unit as Unit
 	var unit_side := unit.is_hell_faction
 	var my_pos := unit.global_position
-	
+
 	# Trouve la base ennemie
 	var enemy_base: Base = null
 	var distance_to_base := INF
-	
+
 	for base in unit.get_tree().get_nodes_in_group("bases"):
 		if is_instance_valid(base) and base is Base and base.get_side() != unit_side:
 			enemy_base = base
@@ -119,11 +125,11 @@ func find_priority_target() -> Node2D:
 			break
 	
 	# Cherche les unités ennemies
-	var closest_L: Unit = null
-	var distance_to_L := INF
-	
-	var closest_SM: Unit = null
-	var distance_to_SM := INF
+	var closest_large: Unit = null
+	var distance_to_large := INF
+
+	var closest_small_medium: Unit = null
+	var distance_to_small_medium := INF
 	
 	for enemy_unit in unit.get_tree().get_nodes_in_group("units"):
 		if not is_instance_valid(enemy_unit) or not (enemy_unit is Unit):
@@ -136,33 +142,33 @@ func find_priority_target() -> Node2D:
 		var enemy_typed := enemy_unit as Unit
 		
 		# Unités L (priorité haute)
-		if enemy_typed.unit_size == "L" and distance < distance_to_L:
-			distance_to_L = distance
-			closest_L = enemy_typed
-		
+		if enemy_typed.unit_size == "L" and distance < distance_to_large:
+			distance_to_large = distance
+			closest_large = enemy_typed
+
 		# Unités S/M (priorité moyenne, seulement si dans Range)
 		elif enemy_typed.unit_size in ["S", "M"] and enemies_in_range.has(enemy_unit):
-			if distance < distance_to_SM:
-				distance_to_SM = distance
-				closest_SM = enemy_typed
+			if distance < distance_to_small_medium:
+				distance_to_small_medium = distance
+				closest_small_medium = enemy_typed
 	
 	# ========================================
 	# LOGIQUE DE PRIORITÉ
 	# ========================================
 	
 	# 1. Unité L plus proche que la base
-	if closest_L and distance_to_L < distance_to_base:
-		print("🎯 [Priorité] %s cible unité L : %s (%.0fpx vs base %.0fpx)" % [
-			unit.unit_name, closest_L.unit_name, distance_to_L, distance_to_base
+	if closest_large and distance_to_large < distance_to_base:
+		print("[Priorité] %s cible unité L : %s (%.0fpx vs base %.0fpx)" % [
+			unit.unit_name, closest_large.unit_name, distance_to_large, distance_to_base
 		])
-		return closest_L
-	
+		return closest_large
+
 	# 2. Unité S/M dans Range
-	if closest_SM:
-		print("🎯 [Priorité] %s cible unité S/M : %s (%.0fpx)" % [
-			unit.unit_name, closest_SM.unit_name, distance_to_SM
+	if closest_small_medium:
+		print("[Priorité] %s cible unité S/M : %s (%.0fpx)" % [
+			unit.unit_name, closest_small_medium.unit_name, distance_to_small_medium
 		])
-		return closest_SM
+		return closest_small_medium
 	
 	# 3. Base ennemie par défaut
 	if enemy_base:
@@ -186,6 +192,9 @@ func find_best_target() -> Node2D:
 ##
 ## @param body: Corps détecté
 func _on_enemy_in_range(body: Node2D) -> void:
+	if not is_instance_valid(_parent_unit) or not _parent_unit.is_inside_tree():
+		return
+
 	if body == _parent_unit or not _is_valid_enemy(body):
 		return
 	
@@ -207,6 +216,9 @@ func _on_enemy_in_range(body: Node2D) -> void:
 ##
 ## @param body: Corps qui sort
 func _on_enemy_out_of_range(body: Node2D) -> void:
+	if not is_instance_valid(_parent_unit) or not _parent_unit.is_inside_tree():
+		return
+
 	if body == _parent_unit:
 		return
 	
@@ -231,10 +243,10 @@ func _on_enemy_out_of_range(body: Node2D) -> void:
 func _is_valid_enemy(body: Node2D) -> bool:
 	if not is_instance_valid(body) or body == _parent_unit:
 		return false
-	
-	if not (_parent_unit is Unit):
+
+	if not is_instance_valid(_parent_unit) or not (_parent_unit is Unit):
 		return false
-	
+
 	var parent_side: bool = (_parent_unit as Unit).is_hell_faction
 	
 	if body is Unit:

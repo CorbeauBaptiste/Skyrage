@@ -44,10 +44,13 @@ var area_radius: float = 80.0
 var is_homing: bool = true
 
 ## Force du guidage.
-var homing_strength: float = 5.0
+var homing_strength: float = 2.5
 
 ## Angle max de rotation par frame.
-var max_homing_angle: float = PI / 4
+var max_homing_angle: float = PI / 8
+
+## Distance d'activation du guidage (px).
+var homing_activation_distance: float = 150.0
 
 ## Position de spawn.
 var spawn_position: Vector2
@@ -111,18 +114,25 @@ func _process(delta: float) -> void:
 	if target_unit and not is_instance_valid(target_unit):
 		queue_free()
 		return
-	
+
 	if global_position.distance_to(spawn_position) > max_distance and max_distance > 0:
 		queue_free()
 		return
-	
+
+	# Guidage activé seulement si proche de la cible
 	if is_homing and target_unit and is_instance_valid(target_unit):
-		var target_direction := (target_unit.global_position - global_position).normalized()
-		var current_direction := Vector2.RIGHT.rotated(rotation)
-		var angle_diff := current_direction.angle_to(target_direction)
-		angle_diff = clamp(angle_diff, -max_homing_angle, max_homing_angle)
-		rotation += angle_diff * homing_strength * delta
-	
+		var distance_to_target := global_position.distance_to(target_unit.global_position)
+
+		if distance_to_target < homing_activation_distance:
+			var target_direction := (target_unit.global_position - global_position).normalized()
+			var current_direction := Vector2.RIGHT.rotated(rotation)
+			var angle_diff := current_direction.angle_to(target_direction)
+			angle_diff = clamp(angle_diff, -max_homing_angle, max_homing_angle)
+
+			# Smooth rotation avec lerp
+			var rotation_change := angle_diff * homing_strength * delta
+			rotation += lerp(0.0, rotation_change, 0.7)
+
 	position += (Vector2.RIGHT * speed).rotated(rotation) * delta
 
 # ========================================

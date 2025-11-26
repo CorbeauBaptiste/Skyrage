@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://co4ke1q32ixk3" path="res://assets/sprites/units/paradise/archange.png" id="2_8upee"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5v82g"]
-size = Vector2(30, 16)
+size = Vector2(20, 12)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5v82g"]
-radius = 15.0
-height = 60.0
+radius = 12.0
+height = 48.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_csuuc"]
 radius = 29.0
@@ -122,10 +122,12 @@ vframes = 4
 frame = 6
 
 [node name="movement_collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 22)
+position = Vector2(0, 26)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("RectangleShape2D_5v82g")
 
 [node name="character_collision" type="CollisionShape2D" parent="."]
+scale = Vector2(1.2, 1.2)
 shape = SubResource("CapsuleShape2D_5v82g")
 
 [node name="Detect" type="Area2D" parent="."]

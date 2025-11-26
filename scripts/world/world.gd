@@ -272,10 +272,10 @@ func _spawn_units(camp: String, unit_type: String) -> void:
 	var unit_scene: PackedScene = Constants.UNITS[camp][unit_type]
 	var count: int = Constants.SPAWN_COUNTS[unit_type]
 	var cost: float = Constants.UNIT_COSTS[unit_type]
-	
+
 	# Spawner les unités avec délai (le coût est déjà payé par le HUD)
 	for i in range(count):
-		base.spawn_unit_no_cost(unit_scene)
+		await base.spawn_unit_no_cost(unit_scene)
 		if i < count - 1:
 			await get_tree().create_timer(0.5).timeout
 

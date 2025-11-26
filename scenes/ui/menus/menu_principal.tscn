@@ -1,12 +1,12 @@
 [gd_scene load_steps=21 format=3 uid="uid://3naivixtwygu"]
 
 [ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/ui/menu_principal.gd" id="1_o0pl7"]
-[ext_resource type="Texture2D" uid="uid://b2jliny4kk18c" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="2_kucxf"]
-[ext_resource type="FontFile" uid="uid://cle5ymqmvigli" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
-[ext_resource type="Texture2D" uid="uid://djvo0boylnlfv" path="res://assets/font/Eagle_Lake/logo.png" id="4_kucxf"]
-[ext_resource type="Texture2D" uid="uid://b7q0ojcv4ceth" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
-[ext_resource type="FontFile" uid="uid://cef2x06l03ume" path="res://assets/sprites/OPTIBelwe-Medium.otf" id="5_pq103"]
-[ext_resource type="Texture2D" uid="uid://caa2v15tsjek2" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="7_pq103"]
+[ext_resource type="Texture2D" uid="uid://ci3rg03b4bw6w" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="2_kucxf"]
+[ext_resource type="FontFile" uid="uid://gin4x60v7hg0" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
+[ext_resource type="Texture2D" uid="uid://pe5cxdy6mapc" path="res://assets/font/Eagle_Lake/logo.png" id="4_kucxf"]
+[ext_resource type="Texture2D" uid="uid://cc4be7gtqar0" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
+[ext_resource type="FontFile" uid="uid://12brbljirfpi" path="res://assets/sprites/OPTIBelwe-Medium.otf" id="5_pq103"]
+[ext_resource type="Texture2D" uid="uid://xy4qajf1kk05" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="7_pq103"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0dla8"]
 texture = ExtResource("4_kucxf")
@@ -17,7 +17,7 @@ expand_margin_left = 70.0
 expand_margin_top = 40.0
 expand_margin_bottom = 40.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s16su"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js3ya"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
@@ -29,13 +29,13 @@ texture = ExtResource("7_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js3ya"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s16su"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d5fec"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_waw0y"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
@@ -47,13 +47,13 @@ texture = ExtResource("7_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_waw0y"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d5fec"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sirq2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4o44"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
@@ -65,13 +65,13 @@ texture = ExtResource("7_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4o44"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sirq2"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mcy8y"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nt6gs"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0
@@ -83,7 +83,7 @@ texture = ExtResource("7_pq103")
 expand_margin_top = 60.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nt6gs"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mcy8y"]
 content_margin_bottom = 40.0
 texture = ExtResource("4_pq103")
 expand_margin_top = 60.0

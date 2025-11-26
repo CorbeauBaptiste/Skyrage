@@ -1,0 +1,45 @@
+site_name: Skyrage
+repo_url: https://github.com/CorbeauBaptiste/Skyrage
+repo_name: CorbeauBaptiste/Skyrage
+
+nav:
+  - Accueil: index.md
+  - Règles : pages/rules.md
+  - Créatures et pouvoirs : pages/creature_pouvoir.md
+  - Lore : pages/Lore.md
+
+theme:
+  name: material
+
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: red
+      background: "#0d0d0d"
+
+  font:
+    text: "Cinzel Decorative"
+    code: "Fira Code"
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - content.code.copy
+    - header.autohide
+    - navigation.instant
+    - navigation.top
+  
+  icon:
+    logo: material/sword-cross
+    repo: fontawesome/brands/github
+
+extra_css:
+  - styles/page.css
+
+plugins:
+  - search
+  - mkdocs_pymdownx_material_extras
+  - exporter
+  - minify:
+      minify_html: true

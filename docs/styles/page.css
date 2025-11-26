@@ -1,0 +1,16 @@
+:root {
+  --md-primary-fg-color: #b71c1c; 
+  --md-accent-fg-color: #ffcc00; 
+}
+
+[data-md-color-scheme="celestial"] {
+  --md-default-bg-color: #f5f9ff;
+  --md-default-fg-color: #1a237e;
+  --md-code-bg-color: #e8f0ff;
+}
+
+[data-md-color-scheme="inferno"] {
+  --md-default-bg-color: #0d0d0d;
+  --md-default-fg-color: #ffb74d;
+  --md-code-bg-color: #1c1c1c;
+}

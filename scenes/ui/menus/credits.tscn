@@ -1,0 +1,196 @@
+[gd_scene load_steps=14 format=3 uid="uid://duav0ofjejfw8"]
+
+[ext_resource type="Texture2D" uid="uid://b2jliny4kk18c" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="1_5me8w"]
+[ext_resource type="Script" uid="uid://q75tww8vrp6r" path="res://scripts/ui/exit.gd" id="1_x2m5c"]
+[ext_resource type="Texture2D" uid="uid://ss18hpf004uj" path="res://assets/font/Eagle_Lake/crédits.png" id="2_1tw12"]
+[ext_resource type="Texture2D" uid="uid://bmx43n6u4gnor" path="res://assets/sprites/backgrounds/cross.png" id="2_l3ipc"]
+[ext_resource type="FontFile" uid="uid://c2xk7c0g5dhaj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="3_hyvu0"]
+[ext_resource type="FontFile" uid="uid://cef2x06l03ume" path="res://assets/sprites/OPTIBelwe-Medium.otf" id="4_33cvl"]
+[ext_resource type="LabelSettings" uid="uid://78t4f837fjtd" path="res://assets/font/credits_label_settings.tres" id="4_if7rd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dc8n"]
+texture = ExtResource("2_1tw12")
+expand_margin_left = 50.0
+expand_margin_right = 15.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_x2m5c"]
+font = ExtResource("3_hyvu0")
+font_size = 48
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5me8w"]
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_61erh"]
+texture = ExtResource("2_l3ipc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mltl6"]
+texture = ExtResource("2_l3ipc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5hr54"]
+texture = ExtResource("2_l3ipc")
+
+[node name="Crédits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -91.0
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5me8w")
+
+[node name="Title" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -436.0
+offset_top = 311.0
+offset_right = 436.0
+offset_bottom = 855.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_3dc8n")
+label_settings = SubResource("LabelSettings_x2m5c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="TextureRect"]
+modulate = Color(0, 0, 0, 0.705882)
+light_mask = 0
+layout_mode = 2
+offset_left = 680.0
+offset_top = 770.0
+offset_right = 1661.0
+offset_bottom = 1397.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5me8w")
+
+[node name="credits" type="VBoxContainer" parent="TextureRect"]
+self_modulate = Color(0, 0, 0.0392157, 0)
+light_mask = 1048575
+layout_mode = 0
+offset_left = 762.0
+offset_top = 804.0
+offset_right = 1583.0
+offset_bottom = 1389.0
+
+[node name="speciales" type="HBoxContainer" parent="TextureRect/credits"]
+layout_mode = 2
+
+[node name="grades" type="VBoxContainer" parent="TextureRect/credits/speciales"]
+layout_mode = 2
+
+[node name="project_manager" type="Label" parent="TextureRect/credits/speciales/grades"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 32
+text = "Chef de projet : "
+
+[node name="git_manager" type="Label" parent="TextureRect/credits/speciales/grades"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+text = "Git manager :"
+label_settings = ExtResource("4_if7rd")
+
+[node name="com_manager" type="Label" parent="TextureRect/credits/speciales/grades"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 32
+text = "Chargé de communication : "
+
+[node name="sound_designer" type="Label" parent="TextureRect/credits/speciales/grades"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 24
+text = "Sound Designer : "
+label_settings = ExtResource("4_if7rd")
+
+[node name="names" type="VBoxContainer" parent="TextureRect/credits/speciales"]
+layout_direction = 3
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="project_manager" type="Label" parent="TextureRect/credits/speciales/names"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+text = "Baptiste Corbeau"
+label_settings = ExtResource("4_if7rd")
+
+[node name="git_manager" type="Label" parent="TextureRect/credits/speciales/names"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 32
+text = "Leny Guilmin"
+
+[node name="com_manager" type="Label" parent="TextureRect/credits/speciales/names"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+text = "Corentin Denis"
+label_settings = ExtResource("4_if7rd")
+
+[node name="sound_designer" type="Label" parent="TextureRect/credits/speciales/names"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 24
+text = "Anir Karami"
+label_settings = ExtResource("4_if7rd")
+
+[node name="Control" type="Control" parent="TextureRect/credits"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="developers" type="HBoxContainer" parent="TextureRect/credits"]
+layout_mode = 2
+
+[node name="grades" type="VBoxContainer" parent="TextureRect/credits/developers"]
+layout_direction = 2
+layout_mode = 2
+
+[node name="names" type="Label" parent="TextureRect/credits/developers/grades"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_33cvl")
+theme_override_font_sizes/font_size = 32
+text = "Développeurs : "
+
+[node name="names" type="VBoxContainer" parent="TextureRect/credits/developers"]
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="members" type="Label" parent="TextureRect/credits/developers/names"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_33cvl")
+text = "Baptiste Corbeau
+Leny Guilmin
+Corentin Denis
+Giovanni Losat
+Lucas Debryune
+Anir Karami"
+label_settings = ExtResource("4_if7rd")
+
+[node name="exit" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 378.0
+offset_right = 380.0
+offset_bottom = 498.0
+theme_override_font_sizes/font_size = 64
+theme_override_styles/hover = SubResource("StyleBoxTexture_61erh")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mltl6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5hr54")
+script = ExtResource("1_x2m5c")
+
+[connection signal="button_down" from="TextureRect/exit" to="TextureRect/exit" method="_on_button_down_exit_credits"]

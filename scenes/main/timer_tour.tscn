@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://dfhpe4050iroy"]
+
+[ext_resource type="Script" uid="uid://b7w154f62n47y" path="res://scripts/world/timer_tour.gd" id="1_cg7ls"]
+[ext_resource type="Texture2D" uid="uid://bo6keoqm8cfeb" path="res://assets/sprites/ui/buttons/buttonPause.png" id="2_j8enh"]
+
+[sub_resource type="Theme" id="Theme_revtd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8enh"]
+texture = ExtResource("2_j8enh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kurra"]
+texture = ExtResource("2_j8enh")
+
+[node name="TimerTour" type="Node"]
+script = ExtResource("1_cg7ls")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -95.0
+offset_right = 95.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -58.5
+offset_right = 58.5
+offset_bottom = 63.0
+grow_horizontal = 2
+theme = SubResource("Theme_revtd")
+theme_override_font_sizes/font_size = 45
+text = "00:00"
+
+[node name="buttonPause" type="Button" parent="."]
+offset_left = 906.0
+offset_top = 50.0
+offset_right = 1012.0
+offset_bottom = 129.0
+theme_override_styles/hover = SubResource("StyleBoxTexture_j8enh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_kurra")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 300.0
+one_shot = true
+
+[connection signal="button_down" from="buttonPause" to="." method="_on_button_pause_button_down"]

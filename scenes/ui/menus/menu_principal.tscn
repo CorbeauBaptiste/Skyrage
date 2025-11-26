@@ -1,0 +1,194 @@
+[gd_scene load_steps=21 format=3 uid="uid://3naivixtwygu"]
+
+[ext_resource type="Script" uid="uid://v15r7g35qs3v" path="res://scripts/ui/menu_principal.gd" id="1_o0pl7"]
+[ext_resource type="Texture2D" uid="uid://ci3rg03b4bw6w" path="res://assets/sprites/backgrounds/background_ingame.jpg" id="2_kucxf"]
+[ext_resource type="FontFile" uid="uid://gin4x60v7hg0" path="res://assets/font/MedievalSharp/MedievalSharp-Regular.ttf" id="3_pq103"]
+[ext_resource type="Texture2D" uid="uid://pe5cxdy6mapc" path="res://assets/font/Eagle_Lake/logo.png" id="4_kucxf"]
+[ext_resource type="Texture2D" uid="uid://cc4be7gtqar0" path="res://assets/sprites/ui/buttons/button.png" id="4_pq103"]
+[ext_resource type="FontFile" uid="uid://12brbljirfpi" path="res://assets/sprites/OPTIBelwe-Medium.otf" id="5_pq103"]
+[ext_resource type="Texture2D" uid="uid://xy4qajf1kk05" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="7_pq103"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0dla8"]
+texture = ExtResource("4_kucxf")
+texture_margin_left = 80.0
+texture_margin_top = 30.0
+texture_margin_bottom = 100.0
+expand_margin_left = 70.0
+expand_margin_top = 40.0
+expand_margin_bottom = 40.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_js3ya"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ptpru"]
+content_margin_bottom = 40.0
+texture = ExtResource("7_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s16su"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_waw0y"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qj36n"]
+content_margin_bottom = 40.0
+texture = ExtResource("7_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d5fec"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4o44"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3kwta"]
+content_margin_bottom = 40.0
+texture = ExtResource("7_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sirq2"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nt6gs"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nt4t2"]
+content_margin_bottom = 40.0
+texture = ExtResource("7_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mcy8y"]
+content_margin_bottom = 40.0
+texture = ExtResource("4_pq103")
+expand_margin_top = 60.0
+expand_margin_bottom = 20.0
+
+[node name="MenuPrincipal" type="Control"]
+layout_mode = 3
+anchor_left = -0.073
+anchor_top = 0.219
+anchor_right = 0.924
+anchor_bottom = 1.0
+offset_left = -2.84
+offset_top = -110.52
+offset_right = 84.616
+offset_bottom = -2.60791
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_o0pl7")
+
+[node name="Background" type="TextureRect" parent="."]
+self_modulate = Color(0.627451, 0.627451, 0.627451, 1)
+light_mask = 1023
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1132.85
+offset_top = -997.696
+offset_right = 1235.15
+offset_bottom = 794.304
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kucxf")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 612.0
+offset_top = -156.0
+offset_right = 1690.0
+offset_bottom = 506.0
+theme_override_fonts/font = ExtResource("3_pq103")
+theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxTexture_0dla8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -292.848
+offset_top = -60.696
+offset_right = 507.152
+offset_bottom = 482.304
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 39
+alignment = 1
+
+[node name="StartBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pq103")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_js3ya")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ptpru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s16su")
+text = "START"
+metadata/_edit_use_anchors_ = true
+
+[node name="ParamBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pq103")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_waw0y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qj36n")
+theme_override_styles/hover = SubResource("StyleBoxTexture_d5fec")
+text = "PARAMÈTRES"
+
+[node name="CreditBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pq103")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_h4o44")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3kwta")
+theme_override_styles/hover = SubResource("StyleBoxTexture_sirq2")
+text = "CRÉDITS"
+
+[node name="QuitBTN" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pq103")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_nt6gs")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_nt4t2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mcy8y")
+text = "QUITTER"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="button_down" from="VBoxContainer/StartBTN" to="." method="_on_start_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/ParamBTN" to="." method="_on_param_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/CreditBTN" to="." method="_on_credit_btn_button_down"]
+[connection signal="button_down" from="VBoxContainer/QuitBTN" to="." method="_on_quit_btn_button_down"]

@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://dpqpyghtwxkho" path="res://assets/sprites/units/hell/demon.png" id="2_rot22"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fnpni"]
-size = Vector2(30, 16)
+size = Vector2(40, 20)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fnpni"]
-radius = 15.0
-height = 60.0
+radius = 20.0
+height = 80.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_csuuc"]
 radius = 29.0
@@ -123,10 +123,13 @@ vframes = 4
 frame = 6
 
 [node name="movement_collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 22)
+position = Vector2(0, 46)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("RectangleShape2D_fnpni")
 
 [node name="character_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("CapsuleShape2D_fnpni")
 
 [node name="Detect" type="Area2D" parent="."]
@@ -145,7 +148,6 @@ libraries = {
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
-scale = Vector2(0.688306, 0.645362)
 shape = SubResource("CircleShape2D_ixyw5")
 
 [node name="Timer" type="Timer" parent="."]

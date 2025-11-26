@@ -121,7 +121,7 @@ vframes = 4
 frame = 6
 
 [node name="movement_collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 22)
+position = Vector2(0, 24)
 shape = SubResource("RectangleShape2D_vo3tg")
 debug_color = Color(0.9742, 0, 0.428507, 0.42)
 

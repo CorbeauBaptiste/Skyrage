@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://c04ewdydq1vf5" path="res://assets/sprites/units/paradise/seraphin.png" id="2_4vqto"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vqto"]
-size = Vector2(30, 16)
+size = Vector2(40, 20)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4vqto"]
-radius = 15.0
-height = 60.0
+radius = 20.0
+height = 90.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_csuuc"]
 radius = 29.0
@@ -124,10 +124,13 @@ vframes = 4
 frame = 6
 
 [node name="movement_collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 22)
+position = Vector2(0, 44)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("RectangleShape2D_4vqto")
 
 [node name="character_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+scale = Vector2(1.2, 1.2)
 shape = SubResource("CapsuleShape2D_4vqto")
 
 [node name="Detect" type="Area2D" parent="."]

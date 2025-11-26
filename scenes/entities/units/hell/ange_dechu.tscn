@@ -122,10 +122,11 @@ vframes = 4
 frame = 6
 
 [node name="movement_collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, 22)
+position = Vector2(0, 30)
 shape = SubResource("RectangleShape2D_dnbuk")
 
 [node name="character_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
 scale = Vector2(1.2, 1.2)
 shape = SubResource("CapsuleShape2D_dnbuk")
 disabled = true

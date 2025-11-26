@@ -80,7 +80,7 @@ func _ready() -> void:
 ##
 ## @return: Vecteur d'évitement normalisé (à combiner avec direction de mouvement)
 func calculate_avoidance() -> Vector2:
-	if not _body:
+	if not _body or not _body.is_inside_tree():
 		return Vector2.ZERO
 
 	var avoidance := Vector2.ZERO

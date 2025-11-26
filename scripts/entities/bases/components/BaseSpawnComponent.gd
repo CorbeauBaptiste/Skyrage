@@ -138,9 +138,14 @@ func spawn_unit(unit_scene: PackedScene) -> Unit:
 ## @param count: Nombre d'unités à spawner
 func spawn_multiple(unit_scene: PackedScene, count: int) -> void:
 	for i in range(count):
+		if not is_inside_tree():
+			return
+
 		await spawn_unit(unit_scene)
 
 		if i < count - 1:
+			if not is_inside_tree():
+				return
 			await get_tree().create_timer(spawn_delay).timeout
 
 
@@ -165,9 +170,12 @@ func _get_spawn_position() -> Vector2:
 func _get_enemy_base() -> Base:
 	if not _parent_base or _parent_base.team == null:
 		return null
-	
+
+	if not _parent_base.is_inside_tree():
+		return null
+
 	for base in _parent_base.get_tree().get_nodes_in_group("bases"):
 		if base.team != _parent_base.team:
 			return base
-	
+
 	return null

@@ -213,6 +213,6 @@ func _spawn_units(unit_type: String) -> void:
 	var count: int = Constants.SPAWN_COUNTS[unit_type]
 
 	for i in range(count):
-		base.spawn_unit_no_cost(unit_scene)
+		await base.spawn_unit_no_cost(unit_scene)
 		if i < count - 1:
 			await get_tree().create_timer(0.5).timeout

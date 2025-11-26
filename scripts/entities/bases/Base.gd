@@ -237,7 +237,7 @@ func spawn_unit(unit_scene: PackedScene, cost: float) -> Unit:
 		return null
 
 	# Spawne l'unité
-	var unit: Unit = spawn_component.spawn_unit(unit_scene)
+	var unit: Unit = await spawn_component.spawn_unit(unit_scene)
 
 	if unit:
 		print("✅ Unité spawnée: %s à %s (or restant: %.1f)" % [
@@ -258,7 +258,7 @@ func spawn_unit_no_cost(unit_scene: PackedScene) -> Unit:
 		push_error("Base %s: SpawnComponent manquant" % team)
 		return null
 
-	var unit: Unit = spawn_component.spawn_unit(unit_scene)
+	var unit: Unit = await spawn_component.spawn_unit(unit_scene)
 
 	if unit:
 		print("✅ Unité spawnée: %s à %s" % [unit.unit_name, unit.global_position])

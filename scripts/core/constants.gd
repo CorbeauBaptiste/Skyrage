@@ -31,10 +31,10 @@ const SPAWN_COUNTS = {
 const UNIT_COSTS = {
 	"archange": 	7.0, # 5.0
 	"ange": 		10.0, # 10.0
-	"seraphin": 	13.0, # 15.0 
-	"diablotin": 	7.0, # 6.0
-	"ange_dechu": 	10.0, # 11.0
-	"demon": 		13.0, # 16.0
+	"seraphin": 	13.0, # 15.0
+	"diablotin": 	8.0, # 7.0 (+1 pour compenser les meilleurs stats)
+	"ange_dechu": 	11.0, # 10.0 (+1 pour compenser les meilleurs stats)
+	"demon": 		14.0, # 13.0 (+1 pour compenser les meilleurs stats)
 }
 
 # CONFIGURATION DE L'OR

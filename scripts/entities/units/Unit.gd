@@ -241,13 +241,13 @@ func _physics_process(delta: float) -> void:
 				
 				if combat_component:
 					var distance := global_position.distance_to(targeting_component.current_enemy.global_position)
-					
+
 					# Pas de marge pour les unités, grande marge pour les bases
 					var effective_range := combat_component.attack_range
-					
+
 					if targeting_component.current_enemy is Base:
-						effective_range += 160.0
-					
+						effective_range += 80.0
+
 					if distance <= effective_range:
 						# À portée : on attaque
 						_handle_combat()
@@ -461,8 +461,9 @@ func _on_damage_dealt(amount: int) -> void:
 
 func _on_died() -> void:
 	# Notifie la base si on l'attaquait
-	if targeting_component and targeting_component.current_enemy is Base:
-		targeting_component.current_enemy.stop_attacking(self)
-	
+	if targeting_component and is_instance_valid(targeting_component.current_enemy):
+		if targeting_component.current_enemy is Base:
+			targeting_component.current_enemy.stop_attacking(self)
+
 	unit_died.emit()
 	queue_free()

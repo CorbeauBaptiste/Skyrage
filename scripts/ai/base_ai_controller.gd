@@ -115,6 +115,68 @@ func _get_current_strategy() -> String:
 		return "late"
 
 
+## Évalue le nombre d'unités alliées vs ennemies.
+## Retourne un ratio : valeurs négatives = on est en infériorité numérique
+func _evaluate_unit_balance() -> Dictionary:
+	if not base or not base.is_inside_tree():
+		return {"allied": 0, "enemy": 0, "ratio": 0.0}
+
+	var allied_count := 0
+	var enemy_count := 0
+
+	for unit in base.get_tree().get_nodes_in_group("units"):
+		if not is_instance_valid(unit) or not (unit is Unit):
+			continue
+
+		var unit_typed := unit as Unit
+		if unit_typed.is_hell_faction == (team == "enfer"):
+			allied_count += 1
+		else:
+			enemy_count += 1
+
+	var ratio := 0.0
+	if enemy_count > 0:
+		ratio = float(allied_count) / float(enemy_count)
+
+	return {
+		"allied": allied_count,
+		"enemy": enemy_count,
+		"ratio": ratio
+	}
+
+
+## Ajuste les probabilités en fonction du surnombre ennemi.
+## Si l'ennemi a beaucoup d'unités, favorise les S (spawn rapide et nombreux).
+## Retourne un modificateur : {"S": +%, "M": ±%, "L": -%}
+func _get_counter_strategy_modifier() -> Dictionary:
+	var balance := _evaluate_unit_balance()
+	var modifier := {"S": 0.0, "M": 0.0, "L": 0.0}
+
+	# Si ratio < 0.7 : on est en infériorité (ex: 7 vs 10)
+	if balance.ratio < 0.7 and balance.enemy > 5:
+		# CONTRE-STRATÉGIE : Spam de S pour compenser en nombre
+		modifier.S = +0.20  # +20% de chance pour S
+		modifier.M = +0.05  # +5% pour M
+		modifier.L = -0.25  # -25% pour L
+
+		print("[IA %s] DÉFENSIVE - Surnombre ennemi (%d vs %d) - Favorise S" % [
+			team.capitalize(), balance.allied, balance.enemy
+		])
+
+	# Si ratio > 1.3 : on est en supériorité (ex: 13 vs 10)
+	elif balance.ratio > 1.3 and balance.allied > 5:
+		# STRATÉGIE AGRESSIVE : Grosses unités pour finir
+		modifier.S = -0.15  # -15% pour S
+		modifier.M = +0.05  # +5% pour M
+		modifier.L = +0.10  # +10% pour L
+
+		print("[IA %s] OFFENSIVE - Supériorité (%d vs %d) - Favorise L" % [
+			team.capitalize(), balance.allied, balance.enemy
+		])
+
+	return modifier
+
+
 ## Décision early game : mix S/M pour une armée équilibrée avec aléatoire.
 func _early_game_decision(gold: float, units: Array, costs: Dictionary) -> String:
 	var small_unit: String = units[0]  # diablotin ou archange
@@ -141,20 +203,35 @@ func _mid_game_decision(gold: float, units: Array, costs: Dictionary) -> String:
 	var medium_unit: String = units[1]
 	var large_unit: String = units[2]
 
-	# Décider quel type d'unité viser (sans fallback)
-	# Priorités : 40% L, 35% M, 25% S
-	var rand: float = randf()
+	# Probabilités de base : 40% L, 35% M, 25% S
+	var prob_L := 0.40
+	var prob_M := 0.35
+	var prob_S := 0.25
 
+	# Ajustement dynamique selon la situation
+	var modifier := _get_counter_strategy_modifier()
+	prob_L += modifier.L
+	prob_M += modifier.M
+	prob_S += modifier.S
+
+	# Normaliser pour que la somme = 1.0
+	var total := prob_L + prob_M + prob_S
+	prob_L /= total
+	prob_M /= total
+	prob_S /= total
+
+	# Décider quel type d'unité viser
+	var rand: float = randf()
 	var target_unit: String = ""
 	var target_cost: float = 0.0
 
-	if rand < 0.4:  # 40% chance de viser L
+	if rand < prob_L:
 		target_unit = large_unit
 		target_cost = costs[large_unit]
-	elif rand < 0.75:  # 35% chance de viser M
+	elif rand < prob_L + prob_M:
 		target_unit = medium_unit
 		target_cost = costs[medium_unit]
-	else:  # 25% chance de viser S
+	else:
 		target_unit = small_unit
 		target_cost = costs[small_unit]
 
@@ -172,20 +249,35 @@ func _late_game_decision(gold: float, units: Array, costs: Dictionary) -> String
 	var medium_unit: String = units[1]
 	var large_unit: String = units[2]
 
-	# Décider quel type d'unité viser (sans fallback)
-	# Priorités : 60% L, 30% M, 10% S (spam de grosses unités)
-	var rand: float = randf()
+	# Probabilités de base : 60% L, 30% M, 10% S
+	var prob_L := 0.60
+	var prob_M := 0.30
+	var prob_S := 0.10
 
+	# Ajustement dynamique selon la situation
+	var modifier := _get_counter_strategy_modifier()
+	prob_L += modifier.L
+	prob_M += modifier.M
+	prob_S += modifier.S
+
+	# Normaliser pour que la somme = 1.0
+	var total := prob_L + prob_M + prob_S
+	prob_L /= total
+	prob_M /= total
+	prob_S /= total
+
+	# Décider quel type d'unité viser
+	var rand: float = randf()
 	var target_unit: String = ""
 	var target_cost: float = 0.0
 
-	if rand < 0.6:  # 60% chance de viser L
+	if rand < prob_L:
 		target_unit = large_unit
 		target_cost = costs[large_unit]
-	elif rand < 0.9:  # 30% chance de viser M
+	elif rand < prob_L + prob_M:
 		target_unit = medium_unit
 		target_cost = costs[medium_unit]
-	else:  # 10% chance de viser S
+	else:
 		target_unit = small_unit
 		target_cost = costs[small_unit]
 

@@ -70,8 +70,10 @@ func _ready() -> void:
 	_range_area.body_exited.connect(_on_enemy_out_of_range)
 	
 	# Configuration initiale
-	await get_tree().process_frame
-	await get_tree().process_frame
+	var tree := get_tree()
+	if tree:
+		await tree.process_frame
+		await tree.process_frame
 	_set_initial_target()
 
 

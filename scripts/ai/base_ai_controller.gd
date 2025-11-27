@@ -115,70 +115,85 @@ func _get_current_strategy() -> String:
 		return "late"
 
 
-## Décision early game : mix S/M pour une armée équilibrée.
+## Décision early game : mix S/M pour une armée équilibrée avec aléatoire.
 func _early_game_decision(gold: float, units: Array, costs: Dictionary) -> String:
 	var small_unit: String = units[0]  # diablotin ou archange
 	var medium_unit: String = units[1]  # ange_dechu ou ange
 
-	# Alterner : 2 achats S, puis 1 achat M
-	if purchase_count % 3 < 2:
+	# Priorités : 70% S, 30% M (si assez d'or)
+	var rand: float = randf()
+
+	if rand < 0.7:  # 70% chance d'acheter S
 		if gold >= costs[small_unit]:
 			return small_unit
-	else:
+	else:  # 30% chance d'acheter M
 		if gold >= costs[medium_unit]:
 			return medium_unit
-		if gold >= costs[small_unit]:
+		elif gold >= costs[small_unit]:
 			return small_unit
 
 	return ""
 
 
-## Décision mid game : mix équilibré S/M/L.
+## Décision mid game : mix équilibré S/M/L avec priorisation des L (maintenant à 13).
 func _mid_game_decision(gold: float, units: Array, costs: Dictionary) -> String:
 	var small_unit: String = units[0]
 	var medium_unit: String = units[1]
 	var large_unit: String = units[2]
 
-	# Cycle : S, M, S, L (répétition)
-	var cycle_pos: int = purchase_count % 4
+	# Décider quel type d'unité viser (sans fallback)
+	# Priorités : 40% L, 35% M, 25% S
+	var rand: float = randf()
 
-	if cycle_pos == 0 or cycle_pos == 2:
-		if gold >= costs[small_unit]:
-			return small_unit
-	elif cycle_pos == 1:
-		if gold >= costs[medium_unit]:
-			return medium_unit
-		if gold >= costs[small_unit]:
-			return small_unit
-	else:  # cycle_pos == 3
-		if gold >= costs[large_unit]:
-			return large_unit
-		if gold >= costs[medium_unit]:
-			return medium_unit
+	var target_unit: String = ""
+	var target_cost: float = 0.0
 
+	if rand < 0.4:  # 40% chance de viser L
+		target_unit = large_unit
+		target_cost = costs[large_unit]
+	elif rand < 0.75:  # 35% chance de viser M
+		target_unit = medium_unit
+		target_cost = costs[medium_unit]
+	else:  # 25% chance de viser S
+		target_unit = small_unit
+		target_cost = costs[small_unit]
+
+	# N'acheter QUE si on a assez d'or pour l'unité visée
+	if gold >= target_cost:
+		return target_unit
+
+	# Sinon, attendre
 	return ""
 
 
-## Décision late game : priorité aux unités L et M.
+## Décision late game : priorité maximale aux unités L et M.
 func _late_game_decision(gold: float, units: Array, costs: Dictionary) -> String:
 	var small_unit: String = units[0]
 	var medium_unit: String = units[1]
 	var large_unit: String = units[2]
 
-	# Cycle : L, M, L, M (priorité aux grosses unités)
-	var cycle_pos: int = purchase_count % 4
+	# Décider quel type d'unité viser (sans fallback)
+	# Priorités : 60% L, 30% M, 10% S (spam de grosses unités)
+	var rand: float = randf()
 
-	if cycle_pos == 0 or cycle_pos == 2:
-		if gold >= costs[large_unit]:
-			return large_unit
-		if gold >= costs[medium_unit]:
-			return medium_unit
-	else:
-		if gold >= costs[medium_unit]:
-			return medium_unit
-		if gold >= costs[small_unit]:
-			return small_unit
+	var target_unit: String = ""
+	var target_cost: float = 0.0
 
+	if rand < 0.6:  # 60% chance de viser L
+		target_unit = large_unit
+		target_cost = costs[large_unit]
+	elif rand < 0.9:  # 30% chance de viser M
+		target_unit = medium_unit
+		target_cost = costs[medium_unit]
+	else:  # 10% chance de viser S
+		target_unit = small_unit
+		target_cost = costs[small_unit]
+
+	# N'acheter QUE si on a assez d'or pour l'unité visée
+	if gold >= target_cost:
+		return target_unit
+
+	# Sinon, attendre
 	return ""
 
 # ========================================

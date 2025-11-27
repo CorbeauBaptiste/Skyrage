@@ -1,23 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://nsloahqnlbgc"]
+[gd_scene load_steps=11 format=3 uid="uid://nsloahqnlbgc"]
 
-[ext_resource type="Texture2D" uid="uid://wkipbur18x4o" path="res://assets/sprites/wins/hell/hell.png" id="1_b45jg"]
-[ext_resource type="Texture2D" uid="uid://b8ajdw2l1g3ut" path="res://assets/sprites/wins/trophy.png" id="2_plg05"]
-[ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/sprites/wins/win_button.png" id="3_07ld0"]
+[ext_resource type="Texture2D" uid="uid://bjfhebwsm8tj6" path="res://assets/sprites/wins/hell/hell_v2.png" id="1_b45jg"]
+[ext_resource type="Texture2D" uid="uid://ctan3wuj7jx" path="res://assets/sprites/wins/hell_trophy.png" id="3_b45jg"]
+[ext_resource type="Texture2D" uid="uid://bojkwpxhckim7" path="res://assets/sprites/ui/buttons/button.png" id="4_b45jg"]
 [ext_resource type="Script" uid="uid://cqx38is68ydgl" path="res://scripts/ui/retour_menu.gd" id="4_plg05"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="4_wgc51"]
+[ext_resource type="FontFile" uid="uid://bhrdifwpe2u3k" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="4_wgc51"]
+[ext_resource type="Texture2D" uid="uid://qtgjauuft2hy" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="5_pmj3o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nnxfi"]
 font = ExtResource("4_wgc51")
 font_size = 128
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o5360"]
-texture = ExtResource("3_07ld0")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wgc51"]
+texture = ExtResource("4_b45jg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uly41"]
-texture = ExtResource("3_07ld0")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojupb"]
+texture = ExtResource("5_pmj3o")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rl33w"]
-texture = ExtResource("3_07ld0")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dych5"]
+texture = ExtResource("4_b45jg")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -53,30 +54,31 @@ text = "Hell wins"
 label_settings = SubResource("LabelSettings_nnxfi")
 
 [node name="Coupe2" type="Sprite2D" parent="."]
-position = Vector2(639, 290)
-texture = ExtResource("2_plg05")
+position = Vector2(722, 385)
+scale = Vector2(0.463867, 0.411133)
+texture = ExtResource("3_b45jg")
 centered = false
 
-[node name="Button" type="Button" parent="."]
+[node name="Button2" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.505556
-anchor_right = 0.5
-anchor_bottom = 0.505556
-offset_left = -207.0
-offset_top = 304.0
-offset_right = 207.0
-offset_bottom = 377.0
+anchor_left = -1.60253
+anchor_top = -2.99003
+anchor_right = -1.52389
+anchor_bottom = -2.92799
+offset_left = 3746.85
+offset_top = 3977.23
+offset_right = 4160.85
+offset_bottom = 4050.23
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_wgc51")
 theme_override_font_sizes/font_size = 36
-theme_override_styles/hover = SubResource("StyleBoxTexture_o5360")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_uly41")
-theme_override_styles/normal = SubResource("StyleBoxTexture_rl33w")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wgc51")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ojupb")
+theme_override_styles/normal = SubResource("StyleBoxTexture_dych5")
 text = "Retour au menu"
 script = ExtResource("4_plg05")
 metadata/_edit_use_anchors_ = true
 
-[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
+[connection signal="button_down" from="Button2" to="Button2" method="_on_button_down"]

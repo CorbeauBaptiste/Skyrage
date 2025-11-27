@@ -101,8 +101,16 @@ func spawn_unit(unit_scene: PackedScene) -> Unit:
 	_parent_base.get_parent().add_child(unit)
 	unit.add_to_group("units")
 
+	# Vérifier que l'unité est toujours dans l'arbre
+	if not unit.is_inside_tree():
+		return null
+
 	# Attendre que les components soient initialisés
 	await unit.get_tree().process_frame
+
+	# Vérifier à nouveau après l'await
+	if not unit.is_inside_tree():
+		return null
 
 	# Réactiver les collisions
 	unit.collision_layer = 2
@@ -121,6 +129,10 @@ func spawn_unit(unit_scene: PackedScene) -> Unit:
 
 	# Activer le traitement
 	unit.components_ready = true
+
+	# Vérifier avant le second await
+	if not unit.is_inside_tree():
+		return null
 
 	# Réactiver l'évitement d'obstacles
 	await unit.get_tree().process_frame

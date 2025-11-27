@@ -113,14 +113,15 @@ func _perform_attack() -> void:
 	can_attack = false
 	
 	_spawn_projectile()
-	
+
 	var final_cooldown: float = max(0.1, attack_cooldown + cooldown_modifier)
 	if _timer:
 		_timer.start(final_cooldown)
-	
+
 	attack_performed.emit()
-	
-	await get_tree().create_timer(0.2).timeout
+
+	if is_inside_tree():
+		await get_tree().create_timer(0.2).timeout
 	is_attacking = false
 
 

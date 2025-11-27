@@ -24,12 +24,12 @@ signal gold_spent(cost: float)
 signal gold_not_enough(cost: float)
 
 ## Or maximum.
-@export var max_gold: float = 50.0
+@export var max_gold: float = Constants.GOLD_CONFIG["max_gold"]
 
 ## Régénération par seconde.
-@export var regen_per_sec: float = 10.0
+@export var regen_per_sec: float = Constants.GOLD_CONFIG["regen_per_sec"]
 
-## Si utilise courbe overtime (x2 après 4 min).
+## Si utilise courbe overtime.
 @export var use_overtime_curve: bool = true
 
 ## Référence au GoldManager (créé dynamiquement).

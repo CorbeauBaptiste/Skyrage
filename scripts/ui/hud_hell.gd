@@ -37,6 +37,9 @@ var is_phase_on: bool = false
 ## Si les boutons sont forcés désactivés.
 var buttons_forced_disabled: bool = false
 
+## Si le HUD est désactivé pour l'IA (aucune interaction possible).
+var is_disabled_for_ai: bool = false
+
 # ========================================
 # SIGNAUX
 # ========================================
@@ -169,7 +172,7 @@ func _run_cycle() -> void:
 func _enter_phase(phase_on: bool) -> void:
 	is_phase_on = phase_on
 	emit_signal("phase_changed", phase_on)
-	
+
 	if is_phase_on:
 		buttons_forced_disabled = false
 		gold_manager.set_process(true)
@@ -177,3 +180,19 @@ func _enter_phase(phase_on: bool) -> void:
 	else:
 		buttons_forced_disabled = true
 		gold_manager.set_process(false)
+
+# ========================================
+# MODE IA
+# ========================================
+
+## Désactive le HUD pour le mode IA.
+## Les boutons sont cachés et l'or ne se régénère plus.
+func disable_for_ai() -> void:
+	is_disabled_for_ai = true
+	btn_diablotin.visible = false
+	btn_ange_dechu.visible = false
+	btn_demon.visible = false
+	bar.visible = false
+	label.visible = false
+	gold_manager.set_process(false)
+	print("[HUD Enfer] Désactivé pour l'IA")

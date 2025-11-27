@@ -41,23 +41,20 @@ func _ready() -> void:
 func handle_movement(delta: float) -> void:
 	if not movement_component:
 		return
-	
+
 	# Récupère la cible depuis targeting_component
 	current_target = null
 	if targeting_component and targeting_component.current_enemy:
 		current_target = targeting_component.current_enemy
-	
+
 	# Si on a une cible valide, on s'arrête (le système d'attaque automatique prend le relais)
 	if current_target and is_instance_valid(current_target):
 		movement_component.stop()
 		return
-	
-	# Sinon on va vers la base ennemie
+
+	# Sinon on va vers la base ennemie avec évitement complet (obstacles + unités)
 	var direction := global_position.direction_to(pos_base)
-	var avoidance := movement_component.calculate_avoidance()
-	var final_direction := (direction + avoidance * 0.6).normalized()
-	
-	movement_component.apply_velocity(final_direction)
+	movement_component.apply_velocity_with_avoidance(direction, delta, true)
 
 func _find_enemy_base() -> Node2D:
 	for base in get_tree().get_nodes_in_group("bases"):

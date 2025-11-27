@@ -19,7 +19,7 @@ extends Node
 @export var avoidance_radius: float = 30.0
 
 ## Poids de l'évitement dans le calcul final.
-@export_range(0.0, 1.0) var avoidance_weight: float = 0.3
+@export_range(0.0, 1.0) var avoidance_weight: float = 0.5
 
 @export_group("Évitement d'obstacles")
 ## Nombre de rayons pour la détection d'obstacles.
@@ -35,13 +35,16 @@ extends Node
 @export var obstacle_collision_mask: int = 1
 
 ## Force du burst d'évitement (multiplicateur de vitesse).
-@export var obstacle_avoid_strength: float = 1.35
+@export var obstacle_avoid_strength: float = 1.15
 
 ## Angle de rotation lors de l'évitement (degrés).
 @export var obstacle_avoid_angle_deg: float = 35.0
 
 ## Durée du burst d'évitement (secondes).
-@export var obstacle_steer_burst_time: float = 0.18
+@export var obstacle_steer_burst_time: float = 0.12
+
+## Durée maximale d'un burst d'évitement (timeout).
+@export var obstacle_burst_max_duration: float = 0.5
 
 ## Active l'évitement d'obstacles.
 @export var obstacle_avoidance_enabled: bool = true
@@ -61,6 +64,9 @@ var _obstacle_steer_timer: float = 0.0
 ## Vélocité du burst d'évitement.
 var _obstacle_steer_velocity: Vector2 = Vector2.ZERO
 
+## Temps total écoulé dans le burst actuel.
+var _total_burst_time: float = 0.0
+
 
 func _ready() -> void:
 	current_speed = base_speed
@@ -74,7 +80,7 @@ func _ready() -> void:
 ##
 ## @return: Vecteur d'évitement normalisé (à combiner avec direction de mouvement)
 func calculate_avoidance() -> Vector2:
-	if not _body:
+	if not _body or not _body.is_inside_tree():
 		return Vector2.ZERO
 
 	var avoidance := Vector2.ZERO
@@ -240,7 +246,8 @@ func calculate_obstacle_avoidance(desired_direction: Vector2) -> bool:
 			sign_dir = -1 if desired_direction.x >= 0.0 else 1
 
 	# Calcule la direction d'évitement avec boost de vitesse
-	var avoid_dir := desired_direction.rotated(deg_to_rad(sign_dir * obstacle_avoid_angle_deg)).normalized()
+	var angle := deg_to_rad(sign_dir * obstacle_avoid_angle_deg)
+	var avoid_dir := desired_direction.rotated(angle).normalized()
 	_obstacle_steer_velocity = avoid_dir * current_speed * obstacle_avoid_strength
 	_obstacle_steer_timer = obstacle_steer_burst_time
 
@@ -252,15 +259,31 @@ func calculate_obstacle_avoidance(desired_direction: Vector2) -> bool:
 ## @param direction: Direction souhaitée du mouvement
 ## @param delta: Temps écoulé depuis la dernière frame
 ## @param include_unit_avoidance: Inclure l'évitement des autres unités
-func apply_velocity_with_avoidance(direction: Vector2, delta: float, include_unit_avoidance: bool = true) -> void:
+func apply_velocity_with_avoidance(
+	direction: Vector2,
+	delta: float,
+	include_unit_avoidance: bool = true
+) -> void:
 	if not _body:
 		return
 
-	# Si en burst d'évitement, on continue le burst
+	# Si en burst d'évitement, vérifier timeout
 	if _obstacle_steer_timer > 0.0:
-		_obstacle_steer_timer -= delta
-		_body.velocity = _obstacle_steer_velocity
-		return
+		_total_burst_time += delta
+
+		# Timeout : sortie forcée du burst
+		if _total_burst_time > obstacle_burst_max_duration:
+			_obstacle_steer_timer = 0.0
+			_total_burst_time = 0.0
+			_obstacle_steer_velocity = Vector2.ZERO
+		else:
+			# Continue le burst normalement
+			_obstacle_steer_timer -= delta
+			_body.velocity = _obstacle_steer_velocity
+			return
+	else:
+		# Reset compteur si pas en burst
+		_total_burst_time = 0.0
 
 	# Vérifie les obstacles devant
 	var dir_normalized := direction.normalized()

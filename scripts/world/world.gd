@@ -42,6 +42,13 @@ var hud_paradis: Control
 var current_phase_is_enfer: bool = false
 
 # ========================================
+# IA DE BASE
+# ========================================
+
+var ai_enfer: BaseAIController = null
+var ai_paradis: BaseAIController = null
+
+# ========================================
 # INITIALISATION
 # ========================================
 
@@ -99,11 +106,11 @@ func _setup_ui() -> void:
 		hud_enfer.btn_diablotin_pressed.connect(func(): _spawn_units("enfer", "diablotin"))
 		hud_enfer.btn_ange_dechu_pressed.connect(func(): _spawn_units("enfer", "ange_dechu"))
 		hud_enfer.btn_demon_pressed.connect(func(): _spawn_units("enfer", "demon"))
-		hud_enfer.phase_changed.connect(func(is_active): 
+		hud_enfer.phase_changed.connect(func(is_active):
 			if is_active:
 				_on_phase_changed(true)
 		)
-	
+
 	# HUD Paradis
 	hud_paradis = preload("res://scenes/ui/hud/hud_paradise.tscn").instantiate()
 	ui_layer.add_child(hud_paradis)
@@ -115,6 +122,47 @@ func _setup_ui() -> void:
 			if is_active:
 				_on_phase_changed(false)
 		)
+
+	# Désactiver les HUDs des équipes IA
+	_apply_game_mode()
+
+
+## Applique les restrictions du mode de jeu actuel.
+func _apply_game_mode() -> void:
+	print("[World] Mode de jeu: %s" % GameMode.Mode.keys()[GameMode.current_mode])
+
+	# Désactiver le HUD de l'équipe IA (Enfer) et activer l'IA
+	if GameMode.enfer_is_ai:
+		if hud_enfer:
+			hud_enfer.disable_for_ai()
+		_setup_ai("enfer")
+
+	# Désactiver le HUD de l'équipe IA (Paradis) et activer l'IA
+	if GameMode.paradis_is_ai:
+		if hud_paradis:
+			hud_paradis.disable_for_ai()
+		_setup_ai("paradis")
+
+
+## Configure l'IA pour une équipe.
+func _setup_ai(team: String) -> void:
+	var base: Base = base_enfer if team == "enfer" else base_paradis
+
+	if not base:
+		push_error("[World] Base %s introuvable pour l'IA" % team)
+		return
+
+	var ai_controller: BaseAIController = BaseAIController.new()
+	ai_controller.name = "AI_" + team.capitalize()
+	add_child(ai_controller)
+	ai_controller.setup(base, self)
+
+	if team == "enfer":
+		ai_enfer = ai_controller
+	else:
+		ai_paradis = ai_controller
+
+	print("[World] IA %s configurée" % team.capitalize())
 
 
 
@@ -224,10 +272,10 @@ func _spawn_units(camp: String, unit_type: String) -> void:
 	var unit_scene: PackedScene = Constants.UNITS[camp][unit_type]
 	var count: int = Constants.SPAWN_COUNTS[unit_type]
 	var cost: float = Constants.UNIT_COSTS[unit_type]
-	
-	# Spawner les unités avec délai
+
+	# Spawner les unités avec délai (le coût est déjà payé par le HUD)
 	for i in range(count):
-		await base.spawn_unit(unit_scene, cost)
+		await base.spawn_unit_no_cost(unit_scene)
 		if i < count - 1:
 			await get_tree().create_timer(0.5).timeout
 
@@ -254,6 +302,15 @@ func _clear_selection() -> void:
 # ========================================
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Contrôle de vitesse du jeu (touches 1-5)
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_1: Engine.time_scale = 1.0
+			KEY_2: Engine.time_scale = 2.0
+			KEY_3: Engine.time_scale = 3.0
+			KEY_4: Engine.time_scale = 5.0
+			KEY_5: Engine.time_scale = 10.0
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			# Début du clic
@@ -292,16 +349,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _perform_selection(drag_end: Vector2) -> void:
 	select_rect.extents = abs(drag_end - drag_start) / 2
-	
+
 	var space: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = select_rect
 	query.collision_mask = 2
 	query.transform = Transform2D(0, (drag_end + drag_start) / 2)
-	
+
 	selected = space.intersect_shape(query)
-	
-	# Filtrer les unités valides
+
+	# Filtrer les unités valides (et appartenant à une équipe contrôlée par un joueur)
 	var valid_selected: Array = []
 	for item in selected:
 		if not item.has("collider"):
@@ -309,11 +366,27 @@ func _perform_selection(drag_end: Vector2) -> void:
 
 		var collider: Node = item.collider
 		if is_instance_valid(collider) and collider is Unit:
+			# Vérifier si l'unité appartient à une équipe contrôlée par un joueur
+			if not _can_select_unit(collider):
+				continue
+
 			if collider.selection_component:
 				collider.selection_component.set_selected(true)
 			valid_selected.append(item)
 
 	selected = valid_selected
+
+
+## Vérifie si une unité peut être sélectionnée par le joueur.
+##
+## @param unit: L'unité à vérifier
+## @return: true si l'unité peut être sélectionnée
+func _can_select_unit(unit: Unit) -> bool:
+	# Déterminer l'équipe de l'unité
+	var unit_team: String = "enfer" if unit.is_hell_faction else "paradis"
+
+	# L'unité ne peut être sélectionnée que si son équipe est contrôlée par un joueur
+	return GameMode.is_team_player(unit_team)
 
 
 # MODIFIÉ : Fonction de dessin appelée par le Control dans le CanvasLayer

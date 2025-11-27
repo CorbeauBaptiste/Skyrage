@@ -112,16 +112,19 @@ var arrow_scene: PackedScene = preload("res://scenes/entities/projectiles/projec
 # ========================================
 
 func _ready() -> void:
-	# Configuration physique
-	collision_layer = 2
-	collision_mask = 1
+	# Configuration physique (si pas géré par le spawn)
+	if collision_layer != 0:
+		collision_layer = 2
+		collision_mask = 3
+
 	add_to_group("units")
-	
+
 	# Setup des nodes
 	_setup_nodes()
-	
+
 	# Setup différé pour laisser les enfants définir leurs propriétés
 	call_deferred("_deferred_setup")
+
 
 ## Setup différé exécuté après que les classes enfants aient configuré leurs valeurs
 func _deferred_setup() -> void:
@@ -191,6 +194,25 @@ func _connect_signals() -> void:
 		combat_component.damage_dealt.connect(_on_damage_dealt)
 
 # ========================================
+# POSITION CONSTRAINTS
+# ========================================
+
+## Limites de la map (avec marge de sécurité).
+const MAP_BOUNDS := Rect2(50, 50, 1820, 980)
+
+## Contraint la position de l'unité dans les limites de la map.
+func _clamp_position_to_map() -> void:
+	if global_position.x < MAP_BOUNDS.position.x:
+		global_position.x = MAP_BOUNDS.position.x
+	elif global_position.x > MAP_BOUNDS.position.x + MAP_BOUNDS.size.x:
+		global_position.x = MAP_BOUNDS.position.x + MAP_BOUNDS.size.x
+
+	if global_position.y < MAP_BOUNDS.position.y:
+		global_position.y = MAP_BOUNDS.position.y
+	elif global_position.y > MAP_BOUNDS.position.y + MAP_BOUNDS.size.y:
+		global_position.y = MAP_BOUNDS.position.y + MAP_BOUNDS.size.y
+
+# ========================================
 # MAIN LOOP
 # ========================================
 
@@ -200,7 +222,7 @@ func _physics_process(delta: float) -> void:
 	## Gère automatiquement les ordres de mouvement via targeting_component.target.
 	if not components_ready:
 		return
-	
+
 	# 1. Si en train d'attaquer, on ne bouge pas
 	if combat_component and combat_component.is_attacking:
 		velocity = Vector2.ZERO
@@ -274,11 +296,14 @@ func _physics_process(delta: float) -> void:
 	
 	# 3. Pas d'ennemi à portée et pas d'ordre : on laisse handle_movement() gérer
 	handle_movement(delta)
-	
+
 	# 4. Application du mouvement
 	move_and_slide()
-	
-	# 5. Animation
+
+	# 5. Contraindre position APRÈS mouvement (évite sortie map)
+	_clamp_position_to_map()
+
+	# 6. Animation
 	_update_animation()
 
 # ========================================

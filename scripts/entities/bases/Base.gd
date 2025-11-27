@@ -224,28 +224,45 @@ func spawn_unit(unit_scene: PackedScene, cost: float) -> Unit:
 	if not spawn_component or not gold_component:
 		push_error("Base %s: Components manquants pour spawn" % team)
 		return null
-	
+
 	print("💰 Tentative spawn pour %s (or: %.1f, coût: %.1f)" % [team, gold_component.get_current_gold(), cost])
-	
+
 	# Vérifie si assez d'or
 	if not gold_component.can_spend(cost):
 		print("⚠️ Or insuffisant pour %s" % team)
 		return null
-	
+
 	# Dépense l'or
 	if not gold_component.spend(cost):
 		return null
-	
+
 	# Spawne l'unité
-	var unit: Unit = spawn_component.spawn_unit(unit_scene)
-	
+	var unit: Unit = await spawn_component.spawn_unit(unit_scene)
+
 	if unit:
 		print("✅ Unité spawnée: %s à %s (or restant: %.1f)" % [
-			unit.unit_name, 
-			unit.global_position, 
+			unit.unit_name,
+			unit.global_position,
 			gold_component.get_current_gold()
 		])
-	
+
+	return unit
+
+
+## Spawne une unité sans vérifier/dépenser l'or (coût déjà payé).
+##
+## @param unit_scene: Scene de l'unité
+## @return: Unité créée ou null
+func spawn_unit_no_cost(unit_scene: PackedScene) -> Unit:
+	if not spawn_component:
+		push_error("Base %s: SpawnComponent manquant" % team)
+		return null
+
+	var unit: Unit = await spawn_component.spawn_unit(unit_scene)
+
+	if unit:
+		print("✅ Unité spawnée: %s à %s" % [unit.unit_name, unit.global_position])
+
 	return unit
 
 

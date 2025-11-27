@@ -1,12 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7gthns8y8m1p"]
+[gd_scene load_steps=5 format=3 uid="uid://bsk2fleyc7ker"]
 
 [ext_resource type="Script" uid="uid://82m647nioemq" path="res://scripts/ui/menu_pause.gd" id="1_biepb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_biepb"]
+bg_color = Color(0.854902, 0.878431, 0.898039, 0.403922)
+corner_radius_top_left = 32
+corner_radius_bottom_right = 32
+shadow_size = 15
 
 [sub_resource type="LabelSettings" id="LabelSettings_jji3j"]
 line_spacing = 60.0
 font_size = 70
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jji3j"]
+bg_color = Color(0.854902, 0.878431, 0.898039, 0.403922)
+border_color = Color(0.236959, 0.231825, 0.198986, 1)
+corner_radius_top_left = 25
+corner_radius_bottom_right = 25
+corner_detail = 14
+shadow_size = 15
+
 [node name="MenuPause" type="CanvasLayer"]
+process_mode = 3
 layer = 100
 script = ExtResource("1_biepb")
 
@@ -17,51 +32,91 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="."]
+[node name="panelTitre" type="Panel" parent="."]
+offset_left = 820.0
+offset_top = 258.0
+offset_right = 1104.0
+offset_bottom = 373.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_biepb")
+
+[node name="Label" type="Label" parent="panelTitre"]
+layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.194
-anchor_right = 0.5
-anchor_bottom = 0.194
-offset_left = -116.0
-offset_top = -46.52
-offset_right = 103.0
-offset_bottom = 49.48
+anchor_left = 0.0422535
+anchor_top = 0.0956521
+anchor_right = 0.975352
+anchor_bottom = 0.930435
 grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
 text = "PAUSE"
 label_settings = SubResource("LabelSettings_jji3j")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="param" type="Button" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -163.5
-offset_top = -38.5
-offset_right = 163.5
-offset_bottom = 38.5
+[node name="PanelButton" type="Panel" parent="."]
+anchors_preset = -1
+anchor_right = 0.117
+anchor_bottom = 0.188
+offset_left = 655.0
+offset_top = 422.0
+offset_right = 1042.36
+offset_bottom = 581.96
+theme_override_styles/panel = SubResource("StyleBoxFlat_jji3j")
+
+[node name="param" type="Button" parent="PanelButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.416856
+anchor_top = 0.523385
+anchor_right = 0.610109
+anchor_bottom = 0.595085
+offset_left = -114.116
+offset_top = -40.9889
+offset_right = 114.614
+offset_bottom = 11.9843
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 50
 text = "PARAMETRES"
+metadata/_edit_use_anchors_ = true
 
-[node name="quitter" type="Button" parent="."]
+[node name="quitter" type="Button" parent="PanelButton"]
+layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.530208
-anchor_top = 0.480556
-anchor_right = 0.569271
-anchor_bottom = 0.509259
-offset_left = -168.0
-offset_top = 98.0
-offset_right = -27.0
-offset_bottom = 144.0
+anchor_left = 0.444516
+anchor_top = 0.623452
+anchor_right = 0.583261
+anchor_bottom = 0.695151
+offset_left = -77.0437
+offset_top = 34.687
+offset_right = 74.0444
+offset_bottom = 87.6602
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 50
 text = "QUITTER"
+metadata/_edit_use_anchors_ = true
 
-[connection signal="button_down" from="param" to="." method="_on_param_button_down"]
-[connection signal="button_down" from="quitter" to="." method="_on_quitter_button_down"]
+[node name="retour" type="Button" parent="PanelButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.447953
+anchor_top = 0.416266
+anchor_right = 0.579664
+anchor_bottom = 0.487966
+offset_left = -72.1474
+offset_top = -120.105
+offset_right = 71.2458
+offset_bottom = -67.1315
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "RETOUR"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="button_down" from="PanelButton/param" to="." method="_on_param_button_down"]
+[connection signal="button_down" from="PanelButton/quitter" to="." method="_on_quitter_button_down"]
+[connection signal="button_down" from="PanelButton/retour" to="." method="_on_retour_button_down"]

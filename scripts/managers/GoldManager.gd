@@ -24,15 +24,15 @@ signal gold_not_enough(cost: float)
 # ========================================
 
 ## Or maximum.
-var max_gold: float = 20.0
+var max_gold: float = Constants.GOLD_CONFIG["max_gold"]
 
 ## Or actuel.
 var current_gold: float = 0.0
 
 ## Régénération par seconde.
-var regen_per_sec: float = 0.8
+var regen_per_sec: float = Constants.GOLD_CONFIG["regen_per_sec"]
 
-## Si utilise la courbe overtime (x2 après 4 minutes).
+## Si utilise la courbe overtime.
 var use_overtime_curve: bool = true
 
 ## Temps écoulé depuis le début.
@@ -55,9 +55,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	t_elapsed += delta
 	
-	# Active le boost overtime après 240 secondes (4 minutes)
+	# Active le boost overtime
 	if use_overtime_curve:
-		regen_mult = 2.0 if t_elapsed >= 240.0 else 1.0
+		var threshold: float = Constants.GOLD_CONFIG["overtime_threshold"]
+		var multiplier: float = Constants.GOLD_CONFIG["overtime_multiplier"]
+		regen_mult = multiplier if t_elapsed >= threshold else 1.0
 	
 	# Régénération de l'or
 	if current_gold < max_gold:

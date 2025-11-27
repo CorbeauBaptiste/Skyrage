@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cyk5cu86jnda"]
+[gd_scene load_steps=11 format=3 uid="uid://cyk5cu86jnda"]
 
-[ext_resource type="Texture2D" uid="uid://dwiiu35nqefa5" path="res://assets/sprites/wins/paradise/paradise.png" id="1_pw4if"]
-[ext_resource type="Texture2D" uid="uid://b8ajdw2l1g3ut" path="res://assets/sprites/wins/trophy.png" id="2_o5360"]
-[ext_resource type="Texture2D" uid="uid://dhkfduhi5scna" path="res://assets/sprites/wins/win_button.png" id="3_uly41"]
-[ext_resource type="FontFile" uid="uid://bwcd3v12u8hfj" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="4_u4nl0"]
+[ext_resource type="Texture2D" uid="uid://d2w3u1ufxod8k" path="res://assets/sprites/wins/paradise/paradise_v2.png" id="1_hcbts"]
+[ext_resource type="Texture2D" uid="uid://ckkii3bv3ian0" path="res://assets/sprites/wins/h_trophy.png" id="3_hcbts"]
+[ext_resource type="Texture2D" uid="uid://bojkwpxhckim7" path="res://assets/sprites/ui/buttons/button.png" id="4_hcbts"]
+[ext_resource type="FontFile" uid="uid://bhrdifwpe2u3k" path="res://assets/font/Eagle_Lake/EagleLake-Regular.ttf" id="4_u4nl0"]
 [ext_resource type="Script" uid="uid://cqx38is68ydgl" path="res://scripts/ui/retour_menu.gd" id="4_uly41"]
+[ext_resource type="Texture2D" uid="uid://qtgjauuft2hy" path="res://assets/sprites/ui/buttons/buttoncliqué.png" id="5_u4nl0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hmolu"]
 font = ExtResource("4_u4nl0")
@@ -12,13 +13,13 @@ font_size = 128
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o5360"]
-texture = ExtResource("3_uly41")
+texture = ExtResource("4_hcbts")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uly41"]
-texture = ExtResource("3_uly41")
+texture = ExtResource("5_u4nl0")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rl33w"]
-texture = ExtResource("3_uly41")
+texture = ExtResource("4_hcbts")
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -37,7 +38,7 @@ anchor_top = -0.00277778
 anchor_bottom = -0.00277778
 offset_right = 1920.0
 offset_bottom = 1280.0
-texture = ExtResource("1_pw4if")
+texture = ExtResource("1_hcbts")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
@@ -55,17 +56,18 @@ text = "Heaven wins"
 label_settings = SubResource("LabelSettings_hmolu")
 
 [node name="Coupe2" type="Sprite2D" parent="."]
-position = Vector2(637, 307)
-texture = ExtResource("2_o5360")
+position = Vector2(751, 322)
+scale = Vector2(0.445313, 0.454102)
+texture = ExtResource("3_hcbts")
 centered = false
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = -1
+anchor_left = 0.471875
+anchor_top = 0.374074
+anchor_right = 0.550521
+anchor_bottom = 0.436111
 offset_left = -207.0
 offset_top = 310.0
 offset_right = 207.0
